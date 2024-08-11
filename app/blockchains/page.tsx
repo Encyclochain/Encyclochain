@@ -1,43 +1,52 @@
 // frontend/src/pages/index.tsx
 
-import fs from "fs";
-import path from "path";
-import { CarouselSize } from "../../components/Carousel/CarouselBooks";
-import { CarouselMedia } from "../../components/Carousel/CarouselMedia";
-import { CarouselCategoryX } from "../../components/Carousel/CarouselCategoryX";
-
-import { Header } from "@/components/Header";
+import fs from 'fs';
+import path from 'path';
+import Image from 'next/image';
+import prisma from '@/lib/db';
+import discord from '../../assets/Social/Discord.svg';
+import twitter from '../../assets/Social/twitter.svg';
+import { CarouselSize } from '../../components/Carousel/CarouselBooks';
+import { CarouselMedia } from '../../components/Carousel/CarouselMedia';
+import { CarouselCategoryX } from '../../components/Carousel/CarouselCategoryX';
 import { Banner } from "@/components/Blockchains/Banner";
 
-interface Article {
-  articleId: string;
-  title: string;
-  description: string;
-  webLink: string;
-  image: string;
-  category: string;
-  author: string;
+interface gneh {
+  articleId: number;
   createdAt: string;
   updatedAt: string;
+  title: string;
+  description: string;
+  link: string;
+  imagelink: string;
+  category: string;
+  author: string;
 }
 
 export default async function Page() {
-  const filePath = path.join(process.cwd(), "article.json");
-  const jsonData = fs.readFileSync(filePath, "utf-8");
+  const articles = await prisma.resource.findMany({
+    where: {
+      blockchains: {
+        some: {
+          title: {
+            equals: 'Bitcoin',
+          },
+        },
+      },
+      categories: {
+        some: {
+          title: {
+            equals: ''
+          }
+        }
+      }
+    },
+  });
+
   const articles: Article[] = JSON.parse(jsonData);
-
-  const articlesInCategoryX = articles.filter(
-    (article: Article) => article.category === "X"
-  );
-  const books = articles.filter(
-    (article: Article) => article.category === "Books"
-  );
-  const medias = articles.filter(
-    (article: Article) => article.category === "Medias"
-  );
-
-  // Détectez si vous êtes sur la page Bitcoin
-  const isBitcoinPage = true; // Remplacez par une vraie logique si nécessaire
+  const articlesInCategoryX = articles.filter((article: Article) => article.category === "X");
+  const books = articles.filter((article: Article) => article.category === "Books");
+  const medias = articles.filter((article: Article) => article.category === "Medias");
 
   return (
     <main>
