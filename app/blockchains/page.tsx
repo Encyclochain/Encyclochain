@@ -1,9 +1,6 @@
-// frontend/src/pages/index.tsx
-
-import fs from 'fs';
-import path from 'path';
 import Image from 'next/image';
 import prisma from '@/lib/db';
+
 import discord from '../../assets/Social/Discord.svg';
 import twitter from '../../assets/Social/twitter.svg';
 import { CarouselSize } from '../../components/Carousel/CarouselBooks';
@@ -11,20 +8,22 @@ import { CarouselMedia } from '../../components/Carousel/CarouselMedia';
 import { CarouselCategoryX } from '../../components/Carousel/CarouselCategoryX';
 import { Banner } from "@/components/Blockchains/Banner";
 
-interface gneh {
-  articleId: number;
-  createdAt: string;
-  updatedAt: string;
-  title: string;
-  description: string;
-  link: string;
-  imagelink: string;
-  category: string;
-  author: string;
-}
-
 export default async function Page() {
-  const articles = await prisma.resource.findMany({
+  const prisma_res = await prisma.resource.findMany({
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      link: true,
+      imagelink: true,
+      typeId: true,
+      categories: {
+        select: {
+          id: true,
+          title: true,
+        },
+      },
+    },
     where: {
       blockchains: {
         some: {
@@ -33,20 +32,13 @@ export default async function Page() {
           },
         },
       },
-      categories: {
-        some: {
-          title: {
-            equals: ''
-          }
-        }
-      }
     },
   });
 
-  const articles: Article[] = JSON.parse(jsonData);
-  const articlesInCategoryX = articles.filter((article: Article) => article.category === "X");
-  const books = articles.filter((article: Article) => article.category === "Books");
-  const medias = articles.filter((article: Article) => article.category === "Medias");
+  const bitcoin_core = prisma_res.filter((res: any) => res.categories.at(0)?.title === 'Developer core');
+  const bitcoin_light = prisma_res.filter((res: any) => res.categories.at(0)?.title === 'Blocks');
+  const books = prisma_res.filter((res: any) => res.categories.at(0)?.title === 'Books');
+  const x_accounts = prisma_res.filter((res: any) => res.categories.at(0)?.id === 'Medias');
 
   return (
     <main>
@@ -57,9 +49,17 @@ export default async function Page() {
       <div className="flex items-center">
         <div className="flex justify-center items-center my-8 mb-[12%] max-md:flex-col w-full">
           <h2 className="font-bold text-xl max-md:mb-[30px] mr-[20px]">
-            Category X
+            Bitcoin Core
           </h2>
-          <CarouselCategoryX articles={articlesInCategoryX} />
+          <CarouselCategoryX resources={bitcoin_core} />
+        </div>
+      </div>
+      <div className="flex items-center">
+        <div className="flex justify-center items-center my-8 mb-[12%] max-md:flex-col w-full">
+          <h2 className="font-bold text-xl max-md:mb-[30px] mr-[20px]">
+            Bitcoin Lightning
+          </h2>
+          <CarouselCategoryX resources={bitcoin_light} />
         </div>
       </div>
       <div className="flex justify-center items-center my-8 mb-[12%] max-md:flex-col">
@@ -71,7 +71,7 @@ export default async function Page() {
           <h2 className="font-bold text-xl max-md:mb-[30px] mr-[20px]">
             Medias
           </h2>
-          <CarouselMedia Medias={medias} />
+          <CarouselMedia medias={x_accounts} />
         </div>
       </div>
     </main >

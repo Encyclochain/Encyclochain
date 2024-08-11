@@ -1,7 +1,8 @@
-"use client"; 
+"use client";
 
 import * as React from "react";
 import Image from 'next/image';
+
 import { Card, CardContent } from "@/components/ui/card";
 import bookBit from '../../public/articles/bitcoinmagazine.png';
 import { CarouselPagination } from "./CarouselPagination";
@@ -14,20 +15,8 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 
-interface Article {
-  articleId: string;
-  title: string;
-  description: string;
-  webLink: string;
-  image: string;
-  category: string;
-  author: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
 interface CarouselSizeProps {
-  Medias: Article[];
+  medias: Array<any>;
 }
 
 export function CarouselMedia({ Medias }: CarouselSizeProps) {
@@ -49,7 +38,7 @@ export function CarouselMedia({ Medias }: CarouselSizeProps) {
                 <CardContent className="flex items-center justify-center w-[100%] h-[100%]">
                   <a href={Medias.webLink} className=" w-[100%] h-[100%] flex flex-col justify-between">
                     <div>
-                      <Image src={bookBit} alt={Medias.title} layout="responsive" width={645} height={240} style={{ objectFit: 'cover' }}/>
+                      <Image src={media.imagelink} alt={media.title} layout="responsive" width={645} height={240} style={{ objectFit: 'cover' }} />
                     </div>
                     {/* <h3 className='font-semibold mx-3 mb-6'>{Medias.title}</h3>*/}
                   </a>
@@ -60,8 +49,8 @@ export function CarouselMedia({ Medias }: CarouselSizeProps) {
         ))}
       </CarouselContent>
       <CarouselPrevious />
-      <CarouselNext/>
-      <CarouselPagination api={api}/>
+      <CarouselNext />
+      <CarouselPagination api={api} />
     </Carousel>
   );
 }

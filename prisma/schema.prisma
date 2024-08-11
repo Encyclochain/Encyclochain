@@ -46,10 +46,18 @@ model Resource {
   updatedAt   DateTime   @default(now()) //verify method for current time
   title       String     @db.VarChar(255)
   description String?
-  link        String     @db.VarChar(255)
+  link        String     
   imagelink   String     @db.VarChar(255)
   blockchains Chain[]
   categories  Category[]
   author      User       @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   authorId    Int
+  type        Type?      @relation(fields: [typeId], references: [id])
+  typeId      Int
+}
+
+model Type {
+  id        Int        @id @default(autoincrement())
+  title     String     @db.VarChar(255)
+  resources Resource[]
 }

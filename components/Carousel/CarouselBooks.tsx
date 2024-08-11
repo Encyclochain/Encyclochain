@@ -14,20 +14,8 @@ import {
 } from "@/components/ui/carousel";
 import { CarouselPagination } from "./CarouselPagination";
 
-interface Article {
-  articleId: string;
-  title: string;
-  description: string;
-  webLink: string;
-  image: string;
-  category: string;
-  author: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
 interface CarouselSizeProps {
-  books: Article[];
+  books: Array<any>;
 }
 
 export function CarouselSize({ books }: CarouselSizeProps) {
