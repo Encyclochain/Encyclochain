@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { AccordionDemo } from "./Accordion";
+import { AccordionDonation } from "./Accordion";
+import { Social } from "./Social";
 import twitter from "../assets/Social/twitter.svg";
 import discord from "../assets/Social/Discord.svg";
 import mail from "../assets/Social/mail.svg";
@@ -12,7 +13,7 @@ export function Footer() {
         <div className="max-md:w-full max-md:flex max-md:justify-center">
           <Image
             src={EC}
-            alt="Twitter Logo"
+            alt="Encyclochain Logo"
             className="dark:invert"
             width={80}
             height={24}
@@ -24,26 +25,7 @@ export function Footer() {
           and other field in the future. Beginner, confirmed, developer and more
           you will find your need.
         </p>
-        <div className="flex gap-[15px] mt-[20px] max-md:w-full max-md:flex max-md:justify-center">
-          <a href="https://x.com/Encyclochain" target="_blank">
-            <Image
-              src={twitter}
-              alt="Twitter Logo"
-              className="dark:invert"
-              width={20}
-              height={24}
-              priority
-            />
-          </a>
-          <Image
-            src={discord}
-            alt="Discord Logo"
-            className="dark:invert"
-            width={20}
-            height={24}
-            priority
-          />
-        </div>
+        <Social design="flex gap-[15px] mt-[20px] max-md:w-full max-md:flex max-md:justify-center" />
       </div>
 
       <div className="group rounded-lg px-5 py-4 transition-colors flex-1 min-h-[200px]">
@@ -53,7 +35,7 @@ export function Footer() {
         >
           Donation
         </h2>
-        <AccordionDemo />
+        <AccordionDonation />
       </div>
 
       <div className="group rounded-lg px-5 py-4 flex flex-col gap-[30px] flex-1 min-h-[200px]">

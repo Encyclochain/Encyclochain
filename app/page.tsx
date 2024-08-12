@@ -2,63 +2,32 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+
+import { ConnectButton } from "@/components/wallet/ConnectButton";
+import { useAccount } from "wagmi";
+
 import Bitcoin from "../assets/Icone/Bitcoin.svg";
 import Eth from "../assets/Icone/eth.svg";
 import Avalanche from "../assets/Icone/Avalanche.svg";
 import Solana from "../assets/Icone/Solana.png";
 import mail from "../assets/Social/mail.svg";
-import discord from "../assets/Social/Discord.svg";
-import twitter from "../assets/Social/twitter.svg";
-import { Button } from "@/components/ui/button";
-import { ConnectButton } from "@/components/wallet/ConnectButton";
-import { useAccount } from "wagmi";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 
-import { AccordionDemo } from "../components/Accordion";
-import { AccordionHeader } from "../components/AccordionHeader";
+import { AccordionHeader } from "../components/Accordion";
+import { Social } from "@/components/Social";
+import { Header } from "@/components/Header";
 import CryptoWidget from "../components/CryptoWidget";
 
 export default function Home() {
   const { address, isConnected } = useAccount();
+
   return (
     <main className="flex  flex-col items-center">
-      <div className="z-10 w-full items-center p-[20px] justify-between font-mono text-sm flex">
-        <p className="font-garamond text-gray-900 font-serif text-3xl font-medium normal-case not-italic no-underline leading-tight tracking-tighter">
-          Encyclochain
-        </p>
-        <CryptoWidget />
-        <div className="flex items-end  gap-[30px] ">
-          <a href="https://x.com/Encyclochain" target="_blank">
-            <Image
-              src={twitter}
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={20}
-              height={24}
-              priority
-            />
-          </a>
-          <Image
-            src={discord}
-            alt="Vercel Logo"
-            className="dark:invert"
-            width={20}
-            height={24}
-            priority
-          />
-        </div>
-      </div>
+      <Header design="z-10 w-full items-center p-[20px] justify-between font-mono text-sm flex" />
       <div className="w-full p-[20px] lg:hidden">
         <AccordionHeader />
       </div>
-      <p className=" font-garamond text-gray-900 font-serif text-3xl w-full text-center font-medium normal-case not-italic no-underline leading-tight tracking-tighter max-lg:hidden">
-        Blockchains encyclopedia
-      </p>
+
       <ConnectButton />
       {isConnected && (
         <Button className="bg-[#627EEA] hover:bg-[#627EEA]  rounded-sm">
