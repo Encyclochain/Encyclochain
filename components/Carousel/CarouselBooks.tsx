@@ -1,7 +1,7 @@
 import * as React from "react";
-import Image from 'next/image';
+import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
-import bookBit from '../../public/articles/early-bird.jpg';
+import bookBit from "../../public/articles/early-bird.jpg";
 import {
   Carousel,
   CarouselContent,
@@ -36,16 +36,37 @@ export function CarouselSize({ books }: CarouselSizeProps) {
     >
       <CarouselContent className="gap-[10%]">
         {books.map((book) => (
-          <CarouselItem key={book.articleId} className="md:basis-1/2 lg:basis-[400px] h-[300px]">
+          <CarouselItem
+            key={book.articleId}
+            className="md:basis-1/2 lg:basis-[300px] h-[300px]"
+          >
             <div className="w-[100%] h-[100%]">
               <Card className="w-[100%] h-[100%] rounded-none">
                 <CardContent className="flex items-center justify-center w-[100%] h-[100%]">
-                  <a href={book.webLink} className=" w-[100%] h-[100%] flex justify-between flex-row gap-4">
-                    <div style={{ position: 'relative',width: '100%', height: '0', paddingBottom: '37.21%' }}>
-                      <Image src={bookBit} alt={book.title} layout="cover" width={645} height={240} style={{ objectFit: 'cover' }} className="w-[100%]"/>
+                  <a
+                    href={book.webLink}
+                    className=" w-[100%] h-[100%] flex justify-between flex-row gap-4"
+                  >
+                    <div
+                      style={{
+                        position: "relative",
+                        width: "100%",
+                        height: "0",
+                        paddingBottom: "37.21%",
+                      }}
+                    >
+                      <Image
+                        src={bookBit}
+                        alt={book.title}
+                        layout="cover"
+                        width={645}
+                        height={300}
+                        style={{ objectFit: "cover" }}
+                        className="w-[100%] h-[300px]"
+                      />
                     </div>
-                    <div className="w-[88%] pt-3 pr-3">
-                      <h3 className='font-semibold pb-4'>{book.title}</h3>
+                    <div className="w-[40%] pt-3 pr-3">
+                      <h3 className="font-semibold pb-4">{book.title}</h3>
                       <p>{book.description}</p>
                     </div>
                   </a>
