@@ -43,11 +43,11 @@ export function CarouselCategoryX({ articles }: CarouselCategoryXProps) {
             className="md:basis-1/2 lg:basis-1/3 h-[100%] pr-[5%] flex items-center"
           >
             <div className="h-[100%]">
-              <Card className=" w-[100%] h-[100%] ">
-                <CardContent className="flex items-center justify-center w-[100%] h-[100%]">
+              <Card className=" w-[100%] h-[100%] border-none">
+                <CardContent className="flex items-center justify-center w-[100%] h-[100%] md:h-[300px]">
                   <a
                     href={article.webLink}
-                    className=" w-[100%] h-[100%] flex flex-col gap-7"
+                    className=" w-[100%] h-[100%] flex flex-col justify-between max-md:gap-[30px]"
                   >
                     <div
                       style={{
@@ -71,7 +71,7 @@ export function CarouselCategoryX({ articles }: CarouselCategoryXProps) {
                       <h3 className="font-semibold pb-2">{article.title}</h3>
                       <p>{article.description}</p>
                     </div>
-                    <Button className="bg-[#F7931A] hover:bg-[#F7931A]">
+                    <Button className="bg-[#F7931A] hover:bg-[#F7931A] rounded-none w-max p-[20px] max-md:w-full max-md:rounded-[5px]">
                       Explore
                     </Button>
                   </a>

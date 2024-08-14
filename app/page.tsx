@@ -79,10 +79,9 @@ export default function Home() {
           <Image
             src={Bitcoin}
             alt="Bitcoin Logo"
-            className="dark:invert"
+            className="dark:invert h-auto"
             width={185}
             height={24}
-            priority
           />
           <Button className="bg-[#F7931A] hover:bg-[#F7931A] rounded-sm">
             <Link href="/blockchains">Explore</Link>
@@ -95,7 +94,6 @@ export default function Home() {
             className="dark:invert"
             width={185}
             height={24}
-            priority
           />
           <Button className="bg-[#627EEA] hover:bg-[#627EEA]  rounded-sm">
             Explore
@@ -108,7 +106,6 @@ export default function Home() {
             className="dark:invert"
             width={185}
             height={24}
-            priority
           />
           <Button className="bg-[#000000] hover:bg-[#000000] rounded-sm">
             Explore
@@ -121,7 +118,6 @@ export default function Home() {
             className="dark:invert"
             width={185}
             height={24}
-            priority
           />
           <Button className="bg-[#E84142] hover:bg-[#E84142] rounded-sm">
             Explore

@@ -39,7 +39,9 @@ export default async function Page() {
     <main>
       <Header design="z-10 w-full items-center p-[20px] justify-between font-mono text-sm lg:flex fixed bg-white" />
       <div className="bg-[#F7931A] flex h-[54vh] justify-center items-center flex-col">
-        <h1 className="text-white text-[104px] font-semibold">₿ITCOIN</h1>
+        <h1 className="text-white text-[104px] font-semibold max-md:text-[80px]">
+          ₿ITCOIN
+        </h1>
         <a
           href="https://bitcoin.org/bitcoin.pdf"
           className="bg-white text-[#F7931A] px-6 py-3 rounded-sm font-medium"
@@ -48,30 +50,20 @@ export default async function Page() {
         </a>
       </div>
       <div className="flex items-center">
-        <div className="flex justify-center items-center my-8 mb-[20vh] max-md:flex-col">
-          <h2 className="font-bold text-xl ml-[20px] w-max max-md:mb-[40px] max-md:hidden">
-            Category X
-          </h2>
-        </div>
-        <div className="flex justify-center items-center my-8 mb-[20vh] max-md:flex-col">
-          <h2 className="font-bold text-xl max-md:mb-[40px] md:hidden">
+        <div className="flex justify-center items-center my-8 mb-[20vh] max-md:flex-col w-full">
+          <h2 className="font-bold text-xl max-md:mb-[40px] mr-[20px]">
             Category X
           </h2>
           <CarouselCategoryX articles={articlesInCategoryX} />
         </div>
       </div>
       <div className="flex justify-center items-center my-8 mb-[20vh] max-md:flex-col">
-        <h2 className="font-bold text-xl max-md:mb-[40px]">Books</h2>
+        <h2 className="font-bold text-xl max-md:mb-[40px] mr-[20px]">Books</h2>
         <CarouselSize books={books} />
       </div>
       <div className="flex items-center">
         <div className="flex justify-center items-center my-8 mb-[20vh] max-md:flex-col">
-          <h2 className="font-bold text-xl ml-[20px] w-max max-md:mb-[40px] max-md:hidden">
-            Medias
-          </h2>
-        </div>
-        <div className="flex justify-center items-center my-8 mb-[20vh] max-md:flex-col">
-          <h2 className="font-bold text-xl max-md:mb-[40px]  md:hidden">
+          <h2 className="font-bold text-xl max-md:mb-[40px] mr-[20px]">
             Medias
           </h2>
           <CarouselMedia Medias={medias} />
