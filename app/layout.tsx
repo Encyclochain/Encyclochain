@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   const initialState = cookieToInitialState(config, headers().get("cookie"));
   return (
-    <html lang="en">
+    <html lang="fr">
       <body>
         <Provider initialState={initialState}>{children}</Provider>
         <Footer></Footer>

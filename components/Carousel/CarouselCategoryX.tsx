@@ -44,7 +44,7 @@ export function CarouselCategoryX({ articles }: CarouselCategoryXProps) {
           >
             <div className="h-[100%]">
               <Card className=" w-[100%] h-[100%] border-none">
-                <CardContent className="flex items-center justify-center w-[100%] h-[100%] md:h-[300px]">
+                <CardContent className="flex items-center justify-center w-[100%] h-[100%] md:h-[300px] 4xl:h-[350px]">
                   <a
                     href={article.webLink}
                     className=" w-[100%] h-[100%] flex flex-col justify-between max-md:gap-[30px]"

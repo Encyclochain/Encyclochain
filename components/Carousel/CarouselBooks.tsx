@@ -45,27 +45,19 @@ export function CarouselSize({ books }: CarouselSizeProps) {
                 <CardContent className="flex items-center justify-center w-[100%] h-[100%]">
                   <a
                     href={book.webLink}
-                    className=" w-[100%] h-[100%] flex justify-between flex-row gap-4"
+                    className=" w-[100%] h-[100%] flex  flex-row gap-4"
                   >
-                    <div
-                      style={{
-                        position: "relative",
-                        width: "100%",
-                        height: "0",
-                        paddingBottom: "37.21%",
-                      }}
-                    >
+                    <div>
                       <Image
                         src={bookBit}
                         alt={book.title}
                         layout="cover"
                         width={645}
                         height={300}
-                        style={{ objectFit: "cover" }}
-                        className="w-[100%] h-[300px]"
+                        className="w-[100%] h-[300px] object-cover max-md:object-contain max-md:w-[auto] max-md:p-[10px]"
                       />
                     </div>
-                    <div className="w-[40%] pt-3 pr-3">
+                    <div className="w-[50%] pt-3 pr-3">
                       <h3 className="font-semibold pb-4">{book.title}</h3>
                       <p>{book.description}</p>
                     </div>

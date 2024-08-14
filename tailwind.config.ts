@@ -20,6 +20,9 @@ const config = {
       },
     },
     extend: {
+      screens: {
+        "4xl": "1980px",
+      },
       fontFamily: {
         garamond: ["EB Garamond", "serif"],
         poppins: ["Poppins", "serif"],

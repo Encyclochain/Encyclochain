@@ -62,7 +62,7 @@ export default async function Page() {
         <CarouselSize books={books} />
       </div>
       <div className="flex items-center">
-        <div className="flex justify-center items-center my-8 mb-[20vh] max-md:flex-col">
+        <div className="flex justify-center items-center my-8 mb-[20vh] max-md:flex-col w-full">
           <h2 className="font-bold text-xl max-md:mb-[40px] mr-[20px]">
             Medias
           </h2>
