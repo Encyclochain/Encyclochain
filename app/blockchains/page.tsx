@@ -1,12 +1,10 @@
-import Image from 'next/image';
 import prisma from '@/lib/db';
 
-import discord from '../../assets/Social/Discord.svg';
-import twitter from '../../assets/Social/twitter.svg';
 import { CarouselSize } from '../../components/Carousel/CarouselBooks';
 import { CarouselMedia } from '../../components/Carousel/CarouselMedia';
 import { CarouselCategoryX } from '../../components/Carousel/CarouselCategoryX';
-import { Banner } from "@/components/Blockchains/Banner";
+
+import { Header } from '@/components/Header';
 
 export default async function Page() {
   const prisma_res = await prisma.resource.findMany({

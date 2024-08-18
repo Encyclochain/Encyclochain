@@ -40,7 +40,6 @@ export function CarouselMedia({ Medias }: CarouselSizeProps) {
                     <div>
                       <Image src={media.imagelink} alt={media.title} layout="responsive" width={645} height={240} style={{ objectFit: 'cover' }} />
                     </div>
-                    {/* <h3 className='font-semibold mx-3 mb-6'>{Medias.title}</h3>*/}
                   </a>
                 </CardContent>
               </Card>

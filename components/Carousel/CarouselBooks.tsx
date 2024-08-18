@@ -3,7 +3,6 @@
 import * as React from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
-import bookBit from "../../public/articles/early-bird.jpg";
 import {
   Carousel,
   CarouselContent,
