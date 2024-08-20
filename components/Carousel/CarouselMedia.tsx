@@ -1,13 +1,17 @@
+"use client"; 
+
 import * as React from "react";
 import Image from 'next/image';
 import { Card, CardContent } from "@/components/ui/card";
 import bookBit from '../../public/articles/bitcoinmagazine.png';
+import { CarouselPagination } from "./CarouselPagination";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
 
 interface Article {
@@ -27,21 +31,24 @@ interface CarouselSizeProps {
 }
 
 export function CarouselMedia({ Medias }: CarouselSizeProps) {
+  const [api, setApi] = React.useState<CarouselApi>();
+
   return (
     <Carousel
       opts={{
         align: "start",
       }}
-      className="w-[80%]"
+      className="w-[80%] max-sm:w-[90%]"
+      setApi={setApi}
     >
-      <CarouselContent>
+      <CarouselContent className="max-sm:pl-0 gap-[10%]">
         {Medias.map((Medias) => (
-          <CarouselItem key={Medias.articleId} className="md:basis-1/2 lg:basis-1/3 h-[320px] pr-[5%] flex items-center pb-[100px]">
-            <div className="p-1 w-[100%]">
+          <CarouselItem key={Medias.articleId} className="max-md:basis-1/1 md:basis-[380px] max-md:h-[100%] h-[300px] flex items-center">
+            <div className="w-[100%]">
               <Card className=" w-[100%] h-[100%]">
                 <CardContent className="flex items-center justify-center w-[100%] h-[100%]">
                   <a href={Medias.webLink} className=" w-[100%] h-[100%] flex flex-col justify-between">
-                    <div style={{ position: 'relative', width: '100%', height: '0', paddingBottom: '37.21%' }}>
+                    <div>
                       <Image src={bookBit} alt={Medias.title} layout="responsive" width={645} height={240} style={{ objectFit: 'cover' }}/>
                     </div>
                     {/* <h3 className='font-semibold mx-3 mb-6'>{Medias.title}</h3>*/}
@@ -53,7 +60,8 @@ export function CarouselMedia({ Medias }: CarouselSizeProps) {
         ))}
       </CarouselContent>
       <CarouselPrevious />
-      <CarouselNext />
+      <CarouselNext/>
+      <CarouselPagination api={api}/>
     </Carousel>
   );
 }

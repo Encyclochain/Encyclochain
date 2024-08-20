@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
@@ -8,7 +10,9 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
+import { CarouselPagination } from "./CarouselPagination";
 
 interface Article {
   articleId: string;
@@ -27,18 +31,21 @@ interface CarouselSizeProps {
 }
 
 export function CarouselSize({ books }: CarouselSizeProps) {
+  const [api, setApi] = React.useState<CarouselApi>();
+
   return (
     <Carousel
       opts={{
         align: "start",
       }}
-      className="w-[80%]"
+      className="w-[80%] max-sm:w-[90%]"
+      setApi={setApi}
     >
-      <CarouselContent className="gap-[10%]">
+      <CarouselContent className="gap-[8%] max-sm:pl-0">
         {books.map((book) => (
           <CarouselItem
             key={book.articleId}
-            className="md:basis-1/2 lg:basis-[300px] h-[300px]"
+            className="max-md:basis-1/1 md:basis-[380px] h-[300px]"
           >
             <div className="w-[100%] h-[100%]">
               <Card className="w-[100%] h-[100%] rounded-none">
@@ -54,7 +61,7 @@ export function CarouselSize({ books }: CarouselSizeProps) {
                         layout="cover"
                         width={645}
                         height={300}
-                        className="w-[100%] h-[300px] object-cover max-md:object-contain max-md:w-[auto] max-md:p-[10px]"
+                        className="w-[100%] h-[300px] object-cover max-md:object-contain max-md:w-[auto] max-md:pl-[10px]"
                       />
                     </div>
                     <div className="w-[50%] pt-3 pr-3">
@@ -70,6 +77,7 @@ export function CarouselSize({ books }: CarouselSizeProps) {
       </CarouselContent>
       <CarouselPrevious />
       <CarouselNext />
+      <CarouselPagination api={api} />
     </Carousel>
   );
 }
