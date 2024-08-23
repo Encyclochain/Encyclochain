@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -27,8 +21,8 @@ model Chain {
   createdAt   DateTime   @default(now()) @db.Timestamp(6)
   title       String     @db.VarChar(255)
   description String?
-  resources   Resource[]
   categories  Category[]
+  resources   Resource[]
 }
 
 model Category {
@@ -43,17 +37,17 @@ model Category {
 model Resource {
   id          Int        @id @default(autoincrement())
   createdAt   DateTime   @default(now()) @db.Timestamp(6)
-  updatedAt   DateTime   @default(now()) //verify method for current time
-  title       String     @db.VarChar(255)
+  updatedAt   DateTime   @default(now())
+  title       String?    @db.VarChar(255)
   description String?
-  link        String     
-  imagelink   String     @db.VarChar(255)
-  blockchains Chain[]
-  categories  Category[]
-  author      User       @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  link        String
+  imagelink   String?    @db.VarChar(255)
   authorId    Int
-  type        Type?      @relation(fields: [typeId], references: [id])
   typeId      Int
+  author      User       @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  type        Type       @relation(fields: [typeId], references: [id])
+  categories  Category[]
+  blockchains Chain[]
 }
 
 model Type {
