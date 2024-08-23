@@ -28,7 +28,7 @@ export default function Home() {
         <AccordionHeader />
       </div>
 
-      <ConnectButton />
+      {/*<ConnectButton />*/}
       {isConnected && (
         <Button className="bg-[#627EEA] hover:bg-[#627EEA]  rounded-sm">
           Explore
