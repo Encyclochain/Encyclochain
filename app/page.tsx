@@ -4,22 +4,21 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
-import { ConnectButton } from "@/components/wallet/ConnectButton";
-import { useAccount } from "wagmi";
+//import { ConnectButton } from "@/components/wallet/ConnectButton";
+//import { useAccount } from "wagmi";
 
 import Bitcoin from "../assets/Icone/Bitcoin.svg";
 import Eth from "../assets/Icone/eth.svg";
 import Avalanche from "../assets/Icone/Avalanche.svg";
 import Solana from "../assets/Icone/Solana.png";
-import mail from "../assets/Social/mail.svg";
 
 import { AccordionHeader } from "../components/Accordion";
-import { Social } from "@/components/Social";
 import { Header } from "@/components/Header";
-import CryptoWidget from "../components/CryptoWidget";
+
+//import CryptoWidget from "../components/CryptoWidget";
 
 export default function Home() {
-  const { address, isConnected } = useAccount();
+  //const { address, isConnected } = useAccount();
 
   return (
     <main className="flex  flex-col items-center">
@@ -28,12 +27,13 @@ export default function Home() {
         <AccordionHeader />
       </div>
 
-      {/*<ConnectButton />*/}
+      {/*<ConnectButton />}
       {isConnected && (
         <Button className="bg-[#627EEA] hover:bg-[#627EEA]  rounded-sm">
           Explore
         </Button>
-      )}
+      )*/}
+
       <div className=" w-full  flex flex gap-[150px] pt-[5%] pb-0 pl-[5%] pr-[5%] max-lg:hidden">
         <div className="flex flex-col gap-[25px] ">
           <h2 className="font-garamond text-[18px] font-semibold ">What?</h2>

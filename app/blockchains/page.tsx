@@ -5,20 +5,22 @@ import { CarouselMedia } from '../../components/Carousel/CarouselMedia';
 import { CarouselCategoryX } from '../../components/Carousel/CarouselCategoryX';
 
 import { Header } from '@/components/Header';
+import { Banner } from '@/components/Blockchains/Banner';
 
 export default async function Page() {
-  const prisma_res = await prisma.resource.findMany({
+  //requesting all categories corresponding to Bitcoin with all resources linked
+  const prisma_res = await prisma.category.findMany({
     select: {
       id: true,
       title: true,
-      description: true,
-      link: true,
-      imagelink: true,
-      typeId: true,
-      categories: {
+      resources: {
         select: {
           id: true,
           title: true,
+          description: true,
+          link: true,
+          imagelink: true,
+          typeId: true,
         },
       },
     },
@@ -31,12 +33,10 @@ export default async function Page() {
         },
       },
     },
-  });
+  })
 
-  const bitcoin_core = prisma_res.filter((res: any) => res.categories.at(0)?.title === 'Developer core');
-  const bitcoin_light = prisma_res.filter((res: any) => res.categories.at(0)?.title === 'Blocks');
-  const books = prisma_res.filter((res: any) => res.categories.at(0)?.title === 'Books');
-  const x_accounts = prisma_res.filter((res: any) => res.categories.at(0)?.id === 'Medias');
+  //TODO : real logic
+  const isBitcoinPage = true;
 
   return (
     <main>
@@ -44,34 +44,19 @@ export default async function Page() {
         showArrow={isBitcoinPage} // Passez showArrow à true si vous êtes sur la page Bitcoin
       />
       <Banner />
-      <div className="flex items-center">
-        <div className="flex justify-center items-center my-8 mb-[12%] max-md:flex-col w-full">
-          <h2 className="font-bold text-xl max-md:mb-[30px] mr-[20px]">
-            Bitcoin Core
-          </h2>
-          <CarouselCategoryX resources={bitcoin_core} />
-        </div>
-      </div>
-      <div className="flex items-center">
-        <div className="flex justify-center items-center my-8 mb-[12%] max-md:flex-col w-full">
-          <h2 className="font-bold text-xl max-md:mb-[30px] mr-[20px]">
-            Bitcoin Lightning
-          </h2>
-          <CarouselCategoryX resources={bitcoin_light} />
-        </div>
-      </div>
-      <div className="flex justify-center items-center my-8 mb-[12%] max-md:flex-col">
-        <h2 className="font-bold text-xl max-md:mb-[30px] mr-[20px]">Books</h2>
-        <CarouselSize books={books} />
-      </div>
-      <div className="flex items-center">
-        <div className="flex justify-center items-center my-8 mb-[12%] max-md:flex-col w-full">
-          <h2 className="font-bold text-xl max-md:mb-[30px] mr-[20px]">
-            Medias
-          </h2>
-          <CarouselMedia medias={x_accounts} />
-        </div>
-      </div>
+      {//creating one carousel for each category (TODO : do not show empty categories)
+        prisma_res.map((cat) => (
+          cat.resources !== null ? (
+            <div key={cat.id} className="flex items-center">
+              <div className="flex justify-center items-center my-8 mb-[12%] max-md:flex-col w-full">
+                <h2 className="font-bold text-xl max-md:mb-[30px] mr-[20px]">
+                  {cat.title}
+                </h2>
+                <CarouselCategoryX resources={cat.resources} />
+              </div>
+            </div>
+          ) : null
+        ))}
     </main >
   );
 }

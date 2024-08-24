@@ -21,8 +21,8 @@ model Chain {
   createdAt   DateTime   @default(now()) @db.Timestamp(6)
   title       String     @db.VarChar(255)
   description String?
-  categories  Category[]
-  resources   Resource[]
+  categories  Category[] @relation("CategoryToChain")
+  resources   Resource[] @relation("ChainToResource")
 }
 
 model Category {
@@ -30,8 +30,8 @@ model Category {
   createdAt   DateTime   @default(now()) @db.Timestamp(6)
   title       String     @db.VarChar(255)
   description String?
-  blockchains Chain[]
-  resources   Resource[]
+  blockchains Chain[]    @relation("CategoryToChain")
+  resources   Resource[] @relation("CategoryToResource")
 }
 
 model Resource {
@@ -46,8 +46,8 @@ model Resource {
   typeId      Int
   author      User       @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   type        Type       @relation(fields: [typeId], references: [id])
-  categories  Category[]
-  blockchains Chain[]
+  categories  Category[] @relation("CategoryToResource")
+  blockchains Chain[]    @relation("ChainToResource")
 }
 
 model Type {
