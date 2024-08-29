@@ -1,3 +1,4 @@
+/*
 import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
 
 import { cookieStorage, createStorage } from "wagmi";
@@ -29,3 +30,4 @@ export const config = defaultWagmiConfig({
     storage: cookieStorage,
   }),
 });
+*/
