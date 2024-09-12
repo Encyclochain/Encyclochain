@@ -13,11 +13,11 @@ import {
 } from "@/components/ui/carousel";
 import { CarouselPagination } from "./CarouselPagination";
 
-interface CarouselSizeProps {
+interface Carousel_ImgLeftProps {
   books: Array<any>;
 }
 
-export function CarouselSize({ books }: CarouselSizeProps) {
+export function Carousel_ImgLeft({ books }: Carousel_ImgLeftProps) {
   const [api, setApi] = React.useState<CarouselApi>();
 
   return (

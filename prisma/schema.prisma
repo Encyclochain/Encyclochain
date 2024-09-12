@@ -17,20 +17,32 @@ model User {
 }
 
 model Chain {
-  id          Int        @id @default(autoincrement())
-  createdAt   DateTime   @default(now()) @db.Timestamp(6)
-  title       String     @db.VarChar(255)
+  id          Int          @id @default(autoincrement())
+  createdAt   DateTime     @default(now()) @db.Timestamp(6)
+  title       String       @db.VarChar(255)
   description String?
-  categories  Category[] @relation("CategoryToChain")
-  resources   Resource[] @relation("ChainToResource")
+  sectionInfo SectionInfo?
+  Category    Category[]   @relation("CategoryToChain")
+  Resource    Resource[]   @relation("ChainToResource")
 }
 
+model SectionInfo {
+  id             Int      @id @default(autoincrement())
+  createdAt      DateTime @default(now()) @db.Timestamp(6)
+  color          String   @db.VarChar(255)
+  imageLink      String
+  whitepaperLink String?  @db.VarChar(255)
+  twitterLink    String?  @db.VarChar(255)
+  websiteLink    String?  @db.VarChar(255)
+  chainId        Int      @unique
+  blockchain     Chain    @relation(fields: [chainId], references: [id], onUpdate: NoAction)
+}
 model Category {
   id          Int        @id @default(autoincrement())
   createdAt   DateTime   @default(now()) @db.Timestamp(6)
   title       String     @db.VarChar(255)
   description String?
-  blockchains Chain[]    @relation("CategoryToChain")
+  blockchain  Chain[]    @relation("CategoryToChain")
   resources   Resource[] @relation("CategoryToResource")
 }
 
@@ -45,13 +57,13 @@ model Resource {
   authorId    Int
   typeId      Int
   author      User       @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  type        Type       @relation(fields: [typeId], references: [id])
+  Type        Type       @relation(fields: [typeId], references: [id])
   categories  Category[] @relation("CategoryToResource")
-  blockchains Chain[]    @relation("ChainToResource")
+  blockchain  Chain[]    @relation("ChainToResource")
 }
 
 model Type {
-  id        Int        @id @default(autoincrement())
-  title     String     @db.VarChar(255)
-  resources Resource[]
+  id       Int        @id @default(autoincrement())
+  title    String     @db.VarChar(255)
+  Resource Resource[]
 }
