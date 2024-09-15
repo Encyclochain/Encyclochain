@@ -27,7 +27,10 @@ export async function SectionSelect() {
             width={185}
             height={24} 
           />
-          <Button className={` mt-4 text-white bg-[${sectionInfo.color}]  `}>
+          <Button   className="mt-4 text-white rounded-md"
+            style={{
+              backgroundColor: sectionInfo.color, // Appliquer la couleur dynamique directement
+            }}>
             <Link href={`/blockchains/${sectionInfo.blockchain.title}`}> {/* Lien dynamique vers la section */}
               Explore {sectionInfo.blockchain.title}
             </Link>
