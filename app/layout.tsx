@@ -1,11 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { headers } from "next/headers";
-import { Footer } from "@/components/Footer";
-import { cookieToInitialState } from "wagmi";
 
-import { config } from "@/configwallet";
-import Provider from "@/components/wallet/Provider";
+import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Encyclochain",
@@ -17,12 +13,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const initialState = cookieToInitialState(config, headers().get("cookie"));
   return (
     <html lang="fr">
       <body className="h-[100vh]">
-        <Provider initialState={initialState}>{children}</Provider>
-        <Footer></Footer>
+        {children}
+        <Footer />
       </body>
     </html>
   );

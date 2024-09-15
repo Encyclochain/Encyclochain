@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int        @id @default(autoincrement())
+  name          String     @db.VarChar(255)
+  wallet        String     @db.VarChar(255)
+  createdAt     DateTime   @default(now()) @db.Timestamp(6)
+  verified      Boolean    @default(false)
+  contributions Resource[]
+}
+
+model Chain {
+  id          Int          @id @default(autoincrement())
+  createdAt   DateTime     @default(now()) @db.Timestamp(6)
+  title       String       @db.VarChar(255)
+  description String?
+  sectionInfo SectionInfo?
+  Category    Category[]   @relation("CategoryToChain")
+  Resource    Resource[]   @relation("ChainToResource")
+}
+
+model SectionInfo {
+  id             Int      @id @default(autoincrement())
+  createdAt      DateTime @default(now()) @db.Timestamp(6)
+  color          String   @db.VarChar(255)
+  imageLink      String
+  whitepaperLink String?  @db.VarChar(255)
+  twitterLink    String?  @db.VarChar(255)
+  websiteLink    String?  @db.VarChar(255)
+  chainId        Int      @unique
+  blockchain     Chain    @relation(fields: [chainId], references: [id], onUpdate: NoAction)
+}
+model Category {
+  id          Int        @id @default(autoincrement())
+  createdAt   DateTime   @default(now()) @db.Timestamp(6)
+  title       String     @db.VarChar(255)
+  description String?
+  blockchain  Chain[]    @relation("CategoryToChain")
+  resources   Resource[] @relation("CategoryToResource")
+}
+
+model Resource {
+  id          Int        @id @default(autoincrement())
+  createdAt   DateTime   @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime   @default(now())
+  title       String?    @db.VarChar(255)
+  description String?
+  link        String
+  imagelink   String?    @db.VarChar(255)
+  authorId    Int
+  typeId      Int
+  author      User       @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Type        Type       @relation(fields: [typeId], references: [id])
+  categories  Category[] @relation("CategoryToResource")
+  blockchain  Chain[]    @relation("ChainToResource")
+}
+
+model Type {
+  id       Int        @id @default(autoincrement())
+  title    String     @db.VarChar(255)
+  Resource Resource[]
+}

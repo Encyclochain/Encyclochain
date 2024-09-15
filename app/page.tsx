@@ -1,26 +1,8 @@
-"use client";
-
-import Link from "next/link";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-
-import { ConnectButton } from "@/components/wallet/ConnectButton";
-import { useAccount } from "wagmi";
-
-import Bitcoin from "../assets/Icone/Bitcoin.svg";
-import Eth from "../assets/Icone/eth.svg";
-import Avalanche from "../assets/Icone/Avalanche.svg";
-import Solana from "../assets/Icone/Solana.png";
-import mail from "../assets/Social/mail.svg";
-
 import { AccordionHeader } from "../components/Accordion";
-import { Social } from "@/components/Social";
 import { Header } from "@/components/Header";
-import CryptoWidget from "../components/CryptoWidget";
+import { SectionSelect } from "../components/sectionSelect";
 
 export default function Home() {
-  const { address, isConnected } = useAccount();
-
   return (
     <main className="flex  flex-col items-center">
       <Header design="z-10 w-full items-center p-[20px] justify-between font-mono text-sm flex" />
@@ -28,12 +10,6 @@ export default function Home() {
         <AccordionHeader />
       </div>
 
-      {/*<ConnectButton />*/}
-      {isConnected && (
-        <Button className="bg-[#627EEA] hover:bg-[#627EEA]  rounded-sm">
-          Explore
-        </Button>
-      )}
       <div className=" w-full  flex flex gap-[150px] pt-[5%] pb-0 pl-[5%] pr-[5%] max-lg:hidden">
         <div className="flex flex-col gap-[25px] ">
           <h2 className="font-garamond text-[18px] font-semibold ">What?</h2>
@@ -74,56 +50,7 @@ export default function Home() {
       <p className="text-gray-900 font-serif text-3xl font-medium normal-case not-italic no-underline  mt-[20px] leading-tight tracking-tighter lg:hidden">
         Blockchains encyclopedia
       </p>
-      <div className="mt-[5%] mb-[5%] flex w-full justify-between p-[50px] max-md:flex-wrap">
-        <div className="flex flex-col items-center gap-[20px] w-[25%] max-md:w-[40%] mb-[20px]">
-          <Image
-            src={Bitcoin}
-            alt="Bitcoin Logo"
-            className="dark:invert h-auto"
-            width={185}
-            height={24}
-          />
-          <Button className="bg-[#F7931A] hover:bg-[#F7931A] rounded-sm">
-            <Link href="/blockchains">Explore</Link>
-          </Button>
-        </div>
-        <div className="flex flex-col items-center gap-[20px] w-[25%] max-md:w-[40%]">
-          <Image
-            src={Eth}
-            alt="Eth Logo"
-            className="dark:invert"
-            width={185}
-            height={24}
-          />
-          <Button className="bg-[#627EEA] hover:bg-[#627EEA]  rounded-sm">
-            Explore
-          </Button>
-        </div>
-        <div className="flex flex-col items-center gap-[20px] w-[25%] max-md:w-[40%]">
-          <Image
-            src={Solana}
-            alt="Solana Logo"
-            className="dark:invert"
-            width={185}
-            height={24}
-          />
-          <Button className="bg-[#000000] hover:bg-[#000000] rounded-sm">
-            Explore
-          </Button>
-        </div>
-        <div className="flex flex-col items-center gap-[20px] w-[25%] max-md:w-[40%]">
-          <Image
-            src={Avalanche}
-            alt="Avalanche Logo"
-            className="dark:invert"
-            width={185}
-            height={24}
-          />
-          <Button className="bg-[#E84142] hover:bg-[#E84142] rounded-sm">
-            Explore
-          </Button>
-        </div>
-      </div>
+      < SectionSelect />
     </main>
   );
 }

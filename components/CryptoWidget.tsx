@@ -1,4 +1,6 @@
+//all commented because not implemented actually
 // components/CryptoWidget.tsx
+/*
 "use client";
 
 import { useEffect } from "react";
@@ -28,3 +30,4 @@ const CryptoWidget: React.FC = () => {
 };
 
 export default CryptoWidget;
+*/

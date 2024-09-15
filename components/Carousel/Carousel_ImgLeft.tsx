@@ -3,7 +3,6 @@
 import * as React from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
-import bookBit from "../../public/articles/early-bird.jpg";
 import {
   Carousel,
   CarouselContent,
@@ -14,23 +13,11 @@ import {
 } from "@/components/ui/carousel";
 import { CarouselPagination } from "./CarouselPagination";
 
-interface Article {
-  articleId: string;
-  title: string;
-  description: string;
-  webLink: string;
-  image: string;
-  category: string;
-  author: string;
-  createdAt: string;
-  updatedAt: string;
+interface Carousel_ImgLeftProps {
+  books: Array<any>;
 }
 
-interface CarouselSizeProps {
-  books: Article[];
-}
-
-export function CarouselSize({ books }: CarouselSizeProps) {
+export function Carousel_ImgLeft({ books }: Carousel_ImgLeftProps) {
   const [api, setApi] = React.useState<CarouselApi>();
 
   return (
@@ -44,19 +31,19 @@ export function CarouselSize({ books }: CarouselSizeProps) {
       <CarouselContent className="gap-[8%] max-sm:pl-0">
         {books.map((book) => (
           <CarouselItem
-            key={book.articleId}
+            key={book.id}
             className="max-md:basis-1/1 md:basis-[380px] h-[300px]"
           >
             <div className="w-[100%] h-[100%]">
               <Card className="w-[100%] h-[100%] rounded-none">
                 <CardContent className="flex items-center justify-center w-[100%] h-[100%]">
                   <a
-                    href={book.webLink}
+                    href={book.link}
                     className=" w-[100%] h-[100%] flex  flex-row gap-4"
                   >
                     <div>
                       <Image
-                        src={bookBit}
+                        src={book.imagelink}
                         alt={book.title}
                         layout="cover"
                         width={645}
