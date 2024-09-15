@@ -76,17 +76,14 @@ export default async function Page({ params }: PageProps) {
   const sectionColor = sectionInfo?.color || "#F7931A";  // Couleur par défaut pour Bitcoin
   const whitepaperLink = sectionInfo?.whitepaperLink || "https://bitcoin.org/bitcoin.pdf";  // Lien par défaut si aucun lien dans la BDD
 
-
-  const isBitcoinPage = page === 'Bitcoin';  // Vérifie si la page est Bitcoin
-
   return (
     <main>
       <Header
         design="z-10 w-full items-center p-[20px] justify-between font-mono text-sm lg:flex fixed bg-white"
-        showArrow={isBitcoinPage}  // Affiche le bouton de retour si c'est Bitcoin
+        showArrow={true}  // Affiche le bouton de retour si c'est Bitcoin
       />
       {/* Passer la couleur dynamique au composant Banner */}
-      <Banner color={sectionColor} title={page} whitepaperLink={whitepaperLink}  />
+      <Banner color={sectionColor} title={page} whitepaperLink={whitepaperLink} />
       {
         prisma_res.length > 0 ? (
           prisma_res.map((cat) => (

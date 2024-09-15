@@ -16,9 +16,6 @@ export async function SectionSelect() {
     },
   });
 
-  console.log("Prisma Results:", prisma_res);
-
-
   return (
     <div className="mt-[5%] mb-[5%] flex w-full justify-between p-[50px] max-md:flex-wrap">
       {prisma_res.map((sectionInfo) => (

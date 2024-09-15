@@ -1,29 +1,14 @@
-"use client";
-
-//import { ConnectButton } from "@/components/wallet/ConnectButton";
-//import { useAccount } from "wagmi";
-
 import { AccordionHeader } from "../components/Accordion";
 import { Header } from "@/components/Header";
 import { SectionSelect } from "../components/sectionSelect";
 
-//import CryptoWidget from "../components/CryptoWidget";
-
 export default function Home() {
-  //const { address, isConnected } = useAccount();
   return (
     <main className="flex  flex-col items-center">
       <Header design="z-10 w-full items-center p-[20px] justify-between font-mono text-sm flex" />
       <div className="w-full p-[20px] lg:hidden">
         <AccordionHeader />
       </div>
-
-      {/*<ConnectButton />}
-      {isConnected && (
-        <Button className="bg-[#627EEA] hover:bg-[#627EEA]  rounded-sm">
-          Explore
-        </Button>
-      )*/}
 
       <div className=" w-full  flex flex gap-[150px] pt-[5%] pb-0 pl-[5%] pr-[5%] max-lg:hidden">
         <div className="flex flex-col gap-[25px] ">
