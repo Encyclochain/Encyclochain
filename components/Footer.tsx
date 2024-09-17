@@ -8,7 +8,7 @@ import EC from "@/assets/Icone/EC.png";
 
 export function Footer() {
   return (
-    <footer className="flex w-full justify-between gap-[30px] max-md:flex-col">
+    <footer className="flex w-full justify-between gap-[30px] max-md:flex-col ">
       <div className="px-5 py-4 flex flex-col gap-[30px] w-full flex-1 min-h-[200px]">
         <div className="max-md:w-full max-md:flex max-md:justify-center">
           <Image

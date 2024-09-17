@@ -2,6 +2,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 import { Footer } from "@/components/Footer";
+import  Sidebar  from "@/components/SidebarMenu";
+
 
 export const metadata: Metadata = {
   title: "Encyclochain",
@@ -16,8 +18,11 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body className="h-[100vh]">
+      <Sidebar/>
+      <div className=" flex flex-col">
         {children}
         <Footer />
+        </div>
       </body>
     </html>
   );

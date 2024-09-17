@@ -2,9 +2,10 @@ import { AccordionHeader } from "../components/Accordion";
 import { Header } from "@/components/Header";
 import { SectionSelect } from "../components/sectionSelect";
 
+
 export default function Home() {
   return (
-    <main className="flex  flex-col items-center">
+    <main className="flex  flex-col items-center ">
       <Header design="z-10 w-full items-center p-[20px] justify-between font-mono text-sm flex" />
       <div className="w-full p-[20px] lg:hidden">
         <AccordionHeader />
