@@ -12,60 +12,77 @@ const Sidebar = () => {
       <div
         className={`${
           isOpen ? 'w-64' : 'w-16'
-        } bg-gray-900 h-screen p-4 flex flex-col fixed justify-between transition-width duration-300 ease-in-out`}
+        } bg-[#111213] h-screen p-4 flex flex-col  justify-between transition-width duration-300 ease-in-out z-50`}
       >
-        {/* Toggle Button */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="text-white focus:outline-none"
-        >
-          {isOpen ? '<<' : '>>'}
-        </button>
-
-        <input type="text" className='mt-[10px] br-[40px]'/>
-
+        <p className='font-garamond text-white font-serif text-3xl font-medium normal-case not-italic no-underline leading-tight tracking-tighter'>
+          {isOpen ? 'Encyclochain' : 'EC'}
+        </p>
+        <input type="text" className='mt-[10px] br-[40px] p-[10px] rounded  border-solid border-2 border-[#8f96a3] outline-none '/>
         {/* Navigation Links */}
-        <nav className="flex-grow">
+        <nav className="flex-grow relative">
+          {/* Toggle Button */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="absolute top-1/2 -right-8 transform -translate-y-1/2 text-white focus:outline-none bg-[#111213] rounded-r-full p-2"
+          >
+            {isOpen ? '<<' : '>>'}
+          </button>
           <ul className="mt-4 space-y-4">
+            <div className='border-b pb-[10px]'>
+              {isOpen && <p className='text-white'>Your profile</p>}
+            </div>
             <li>
               <Link href="/dashboard" className="text-white block py-2 px-4 rounded hover:bg-gray-700 transition-colors">
                 {/* Placeholder for icon */}
-                <span>{isOpen && 'home'}</span>
+                <span>{isOpen && 'Home'}</span>
               </Link>
             </li>
             <li>
               <Link href="/explorer" className="text-white block py-2 px-4 rounded hover:bg-gray-700 transition-colors">
                 {/* Placeholder for icon */}
-                <span>{isOpen && 'section'}</span>
+                <span>{isOpen && 'Section'}</span>
               </Link>
             </li>
             <li>
               <Link href="/alerts" className="text-white block py-2 px-4 rounded hover:bg-gray-700 transition-colors">
                 {/* Placeholder for icon */}
-                <span>{isOpen && 'watchlist'}</span>
+                <span>{isOpen && 'Watchlist'}</span>
               </Link>
             </li>
             <li>
               <Link href="/watchlist" className="text-white block py-2 px-4 rounded hover:bg-gray-700 transition-colors">
                 {/* Placeholder for icon */}
-                <span>{isOpen && 'contribution'}</span>
+                <span>{isOpen && 'Contribution'}</span>
               </Link>
             </li>
             <li>
               <Link href="/multicharts" className="text-white block py-2 px-4 rounded hover:bg-gray-700 transition-colors">
                 {/* Placeholder for icon */}
-                <span>{isOpen && 'redacted'}</span>
+                <span>{isOpen && 'Redacted'}</span>
               </Link>
             </li>
           </ul>
         </nav>
 
         {/* Connect Wallet Button */}
-        <div className="mt-auto">
-          <button className="w-full py-2 px-4 bg-purple-600 text-white rounded hover:bg-purple-500 transition-colors">
-            {isOpen ? 'Connect Wallet' : 'Wallet'}
+        <div className={`mt-auto ${isOpen ? 'flex' : 'hidden'} flex-col gap-[10px]`}>
+          <button className="flex-1 py-2 px-2 bg-transparent text-white rounded border-solid border-2 border-[#8f96a3] outline-none text-sm">
+            {isOpen ? 'Login' : 'Log'}
+          </button>
+          <button className="flex-1 py-2 px-2 bg-transparent text-white rounded border-solid border-2 border-[#8f96a3] outline-none text-sm">
+            {isOpen ? 'Signup' : 'Sign'}
           </button>
         </div>
+        {!isOpen && (
+          <div className="flex flex-col mt-auto gap-[10px]">
+            <button className="flex-1 py-2 px-2 bg-transparent text-white rounded border-solid border-2 border-[#8f96a3] outline-none text-sm flex justify-center">
+              Log
+            </button>
+            <button className="flex-1 py-2 px-2 bg-transparent text-white rounded border-solid border-2 border-[#8f96a3] outline-none text-sm flex justify-center">
+              Sign
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

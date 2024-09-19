@@ -17,11 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body className="h-[100vh]">
-      <Sidebar/>
-      <div className=" flex flex-col">
-        {children}
-        <Footer />
+      <body className="h-screen flex overflow-hidden">
+        <Sidebar />
+        <div className="flex-1 flex flex-col overflow-y-auto">
+          {children}
+          <Footer />
         </div>
       </body>
     </html>
