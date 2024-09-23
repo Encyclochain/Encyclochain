@@ -32,7 +32,7 @@ const Sidebar = () => {
               {isOpen && <p className='text-white'>Your profile</p>}
             </div>
             <li>
-              <Link href="/dashboard" className="text-white block py-2 px-4 rounded hover:bg-gray-700 transition-colors">
+              <Link href="http://localhost:3000/" className="text-white block py-2 px-4 rounded hover:bg-gray-700 transition-colors">
                 {/* Placeholder for icon */}
                 <span>{isOpen && 'Home'}</span>
               </Link>

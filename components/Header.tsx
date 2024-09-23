@@ -14,7 +14,7 @@ export function Header({
       <Link href="/">
         <span className="flex items-center font-garamond text-gray-900 font-serif text-3xl font-medium normal-case not-italic no-underline leading-tight tracking-tighter max-lg:text-center">
           {showArrow && <CircleArrowLeft className="mr-2 text-white bg-black rounded-full" />} {/* Affiche la flèche si showArrow est vrai */}
-          Encyclochain
+          
         </span>
       </Link>
       <p className="font-garamond text-gray-900 font-serif text-3xl w-full text-center font-medium normal-case not-italic no-underline leading-tight tracking-tighter max-lg:hidden">

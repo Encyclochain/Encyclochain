@@ -16,14 +16,16 @@ model User {
   contributions Resource[]
 }
 
-model Chain {
-  id          Int          @id @default(autoincrement())
-  createdAt   DateTime     @default(now()) @db.Timestamp(6)
-  title       String       @db.VarChar(255)
-  description String?
-  sectionInfo SectionInfo?
-  Category    Category[]   @relation("CategoryToChain")
-  Resource    Resource[]   @relation("ChainToResource")
+model Section {
+  id            Int          @id @default(autoincrement()) // Anciennement Chain
+  createdAt     DateTime     @default(now()) @db.Timestamp(6)
+  title         String       @db.VarChar(255)
+  description   String?
+  sectionInfo   SectionInfo?
+  sectionTypeId Int          // Nouveau champ pour la relation 1:N
+  sectionType   SectionType  @relation(fields: [sectionTypeId], references: [id]) // Relation avec SectionType
+  categories    Category[]   @relation("CategoryToSection")
+  resources     Resource[]   @relation("SectionToResource")
 }
 
 model SectionInfo {
@@ -34,15 +36,16 @@ model SectionInfo {
   whitepaperLink String?  @db.VarChar(255)
   twitterLink    String?  @db.VarChar(255)
   websiteLink    String?  @db.VarChar(255)
-  chainId        Int      @unique
-  blockchain     Chain    @relation(fields: [chainId], references: [id], onUpdate: NoAction)
+  sectionId      Int      @unique
+  section        Section  @relation(fields: [sectionId], references: [id], onUpdate: NoAction) // Mis à jour de Chain à Section
 }
+
 model Category {
   id          Int        @id @default(autoincrement())
   createdAt   DateTime   @default(now()) @db.Timestamp(6)
   title       String     @db.VarChar(255)
   description String?
-  blockchain  Chain[]    @relation("CategoryToChain")
+  sections    Section[]  @relation("CategoryToSection") // Mis à jour de Chain à Section
   resources   Resource[] @relation("CategoryToResource")
 }
 
@@ -59,11 +62,18 @@ model Resource {
   author      User       @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   Type        Type       @relation(fields: [typeId], references: [id])
   categories  Category[] @relation("CategoryToResource")
-  blockchain  Chain[]    @relation("ChainToResource")
+  sections    Section[]  @relation("SectionToResource") // Mis à jour de Chain à Section
 }
 
 model Type {
   id       Int        @id @default(autoincrement())
   title    String     @db.VarChar(255)
   Resource Resource[]
+}
+
+// Nouvelle table pour le type de Section
+model SectionType {
+  id       Int        @id @default(autoincrement())
+  title    String     @db.VarChar(255)
+  sections Section[]  // Relation avec plusieurs Section
 }

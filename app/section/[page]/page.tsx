@@ -2,7 +2,6 @@ import prisma from "@/lib/db";
 import { Header } from "@/components/Header";
 import { Banner } from "@/components/Blockchains/Banner";
 import { Carousel_ImgTop } from "@/components/Carousel/Carousel_ImgTop";
-import { title } from "process";
 
 interface PageProps {
   params: { page: string };  // Utilise `params` pour récupérer le paramètre dynamique
@@ -13,7 +12,7 @@ async function getBlockchainData(page: string) {
   // Récupérer la couleur et les informations de la section
   const sectionInfo = await prisma.sectionInfo.findFirst({
     where: {
-      blockchain: {
+      section: {
         title: {
           equals: page,
         },
@@ -34,7 +33,7 @@ async function getBlockchainData(page: string) {
       title: true,
       resources: {
         where: {  // Filtrer les ressources liées à la blockchain
-          blockchain: {
+          sections: {
             some: {
               title: {
                 equals: page,  // Filtre les ressources par blockchain
@@ -53,7 +52,7 @@ async function getBlockchainData(page: string) {
       },
     },
     where: {
-      blockchain: {
+      sections: {
         some: {
           title: {
             equals: page,  // Filtre les catégories par blockchain
@@ -78,6 +77,8 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <main>
+
+
       <Header
         design="z-10 w-full items-center p-[20px] justify-between font-mono text-sm lg:flex fixed bg-white"
         showArrow={true}  // Affiche le bouton de retour si c'est Bitcoin
@@ -89,8 +90,8 @@ export default async function Page({ params }: PageProps) {
           prisma_res.map((cat) => (
             cat.resources.length > 0 && (
               <div key={cat.id} className="flex items-center">
-                <div className="flex justify-around items-center my-8 mb-[12%] max-md:flex-col w-full h-[500px]">
-                  <h2 className="font-bold text-xl max-md:mb-[30px] p-[40px] text-[26px] text-center font-garamond">
+                <div className="flex justify-center items-center my-8 mb-[12%] max-md:flex-col w-full h-[500px]">
+                  <h2 className="font-bold text-xl max-md:mb-[30px] mr-[20px] font-garamond">
                     {cat.title}
                   </h2>
                   <Carousel_ImgTop resources={cat.resources} color={sectionColor} />
