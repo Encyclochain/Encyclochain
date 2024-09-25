@@ -1,0 +1,1228 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.12 (Ubuntu 14.12-0ubuntu0.22.04.1)
+-- Dumped by pg_dump version 14.12 (Ubuntu 14.12-0ubuntu0.22.04.1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: Category; Type: TABLE; Schema: public; Owner: yaugourt
+--
+
+CREATE TABLE public."Category" (
+    id integer NOT NULL,
+    "createdAt" timestamp(6) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    title character varying(255) NOT NULL,
+    description text
+);
+
+
+ALTER TABLE public."Category" OWNER TO yaugourt;
+
+--
+-- Name: Category_id_seq; Type: SEQUENCE; Schema: public; Owner: yaugourt
+--
+
+CREATE SEQUENCE public."Category_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Category_id_seq" OWNER TO yaugourt;
+
+--
+-- Name: Category_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yaugourt
+--
+
+ALTER SEQUENCE public."Category_id_seq" OWNED BY public."Category".id;
+
+
+--
+-- Name: Resource; Type: TABLE; Schema: public; Owner: yaugourt
+--
+
+CREATE TABLE public."Resource" (
+    id integer NOT NULL,
+    "createdAt" timestamp(6) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    "updatedAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    title character varying(255),
+    description text,
+    link text NOT NULL,
+    imagelink character varying(255),
+    "authorId" integer NOT NULL,
+    "typeId" integer NOT NULL
+);
+
+
+ALTER TABLE public."Resource" OWNER TO yaugourt;
+
+--
+-- Name: Resource_id_seq; Type: SEQUENCE; Schema: public; Owner: yaugourt
+--
+
+CREATE SEQUENCE public."Resource_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Resource_id_seq" OWNER TO yaugourt;
+
+--
+-- Name: Resource_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yaugourt
+--
+
+ALTER SEQUENCE public."Resource_id_seq" OWNED BY public."Resource".id;
+
+
+--
+-- Name: Section; Type: TABLE; Schema: public; Owner: yaugourt
+--
+
+CREATE TABLE public."Section" (
+    id integer NOT NULL,
+    "createdAt" timestamp(6) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    title character varying(255) NOT NULL,
+    description text,
+    "sectionTypeId" integer NOT NULL
+);
+
+
+ALTER TABLE public."Section" OWNER TO yaugourt;
+
+--
+-- Name: SectionInfo; Type: TABLE; Schema: public; Owner: yaugourt
+--
+
+CREATE TABLE public."SectionInfo" (
+    id integer NOT NULL,
+    "createdAt" timestamp(6) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    color character varying(255) NOT NULL,
+    "imageLink" text NOT NULL,
+    "whitepaperLink" character varying(255),
+    "twitterLink" character varying(255),
+    "websiteLink" character varying(255),
+    "sectionId" integer NOT NULL
+);
+
+
+ALTER TABLE public."SectionInfo" OWNER TO yaugourt;
+
+--
+-- Name: SectionInfo_id_seq; Type: SEQUENCE; Schema: public; Owner: yaugourt
+--
+
+CREATE SEQUENCE public."SectionInfo_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."SectionInfo_id_seq" OWNER TO yaugourt;
+
+--
+-- Name: SectionInfo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yaugourt
+--
+
+ALTER SEQUENCE public."SectionInfo_id_seq" OWNED BY public."SectionInfo".id;
+
+
+--
+-- Name: SectionType; Type: TABLE; Schema: public; Owner: yaugourt
+--
+
+CREATE TABLE public."SectionType" (
+    id integer NOT NULL,
+    title character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."SectionType" OWNER TO yaugourt;
+
+--
+-- Name: SectionType_id_seq; Type: SEQUENCE; Schema: public; Owner: yaugourt
+--
+
+CREATE SEQUENCE public."SectionType_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."SectionType_id_seq" OWNER TO yaugourt;
+
+--
+-- Name: SectionType_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yaugourt
+--
+
+ALTER SEQUENCE public."SectionType_id_seq" OWNED BY public."SectionType".id;
+
+
+--
+-- Name: Section_id_seq; Type: SEQUENCE; Schema: public; Owner: yaugourt
+--
+
+CREATE SEQUENCE public."Section_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Section_id_seq" OWNER TO yaugourt;
+
+--
+-- Name: Section_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yaugourt
+--
+
+ALTER SEQUENCE public."Section_id_seq" OWNED BY public."Section".id;
+
+
+--
+-- Name: Type; Type: TABLE; Schema: public; Owner: yaugourt
+--
+
+CREATE TABLE public."Type" (
+    id integer NOT NULL,
+    title character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."Type" OWNER TO yaugourt;
+
+--
+-- Name: Type_id_seq; Type: SEQUENCE; Schema: public; Owner: yaugourt
+--
+
+CREATE SEQUENCE public."Type_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Type_id_seq" OWNER TO yaugourt;
+
+--
+-- Name: Type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yaugourt
+--
+
+ALTER SEQUENCE public."Type_id_seq" OWNED BY public."Type".id;
+
+
+--
+-- Name: User; Type: TABLE; Schema: public; Owner: yaugourt
+--
+
+CREATE TABLE public."User" (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    wallet character varying(255) NOT NULL,
+    "createdAt" timestamp(6) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    verified boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public."User" OWNER TO yaugourt;
+
+--
+-- Name: User_id_seq; Type: SEQUENCE; Schema: public; Owner: yaugourt
+--
+
+CREATE SEQUENCE public."User_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."User_id_seq" OWNER TO yaugourt;
+
+--
+-- Name: User_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yaugourt
+--
+
+ALTER SEQUENCE public."User_id_seq" OWNED BY public."User".id;
+
+
+--
+-- Name: _CategoryToResource; Type: TABLE; Schema: public; Owner: yaugourt
+--
+
+CREATE TABLE public."_CategoryToResource" (
+    "A" integer NOT NULL,
+    "B" integer NOT NULL
+);
+
+
+ALTER TABLE public."_CategoryToResource" OWNER TO yaugourt;
+
+--
+-- Name: _CategoryToSection; Type: TABLE; Schema: public; Owner: yaugourt
+--
+
+CREATE TABLE public."_CategoryToSection" (
+    "A" integer NOT NULL,
+    "B" integer NOT NULL
+);
+
+
+ALTER TABLE public."_CategoryToSection" OWNER TO yaugourt;
+
+--
+-- Name: _SectionToResource; Type: TABLE; Schema: public; Owner: yaugourt
+--
+
+CREATE TABLE public."_SectionToResource" (
+    "A" integer NOT NULL,
+    "B" integer NOT NULL
+);
+
+
+ALTER TABLE public."_SectionToResource" OWNER TO yaugourt;
+
+--
+-- Name: _prisma_migrations; Type: TABLE; Schema: public; Owner: yaugourt
+--
+
+CREATE TABLE public._prisma_migrations (
+    id character varying(36) NOT NULL,
+    checksum character varying(64) NOT NULL,
+    finished_at timestamp with time zone,
+    migration_name character varying(255) NOT NULL,
+    logs text,
+    rolled_back_at timestamp with time zone,
+    started_at timestamp with time zone DEFAULT now() NOT NULL,
+    applied_steps_count integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public._prisma_migrations OWNER TO yaugourt;
+
+--
+-- Name: Category id; Type: DEFAULT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."Category" ALTER COLUMN id SET DEFAULT nextval('public."Category_id_seq"'::regclass);
+
+
+--
+-- Name: Resource id; Type: DEFAULT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."Resource" ALTER COLUMN id SET DEFAULT nextval('public."Resource_id_seq"'::regclass);
+
+
+--
+-- Name: Section id; Type: DEFAULT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."Section" ALTER COLUMN id SET DEFAULT nextval('public."Section_id_seq"'::regclass);
+
+
+--
+-- Name: SectionInfo id; Type: DEFAULT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."SectionInfo" ALTER COLUMN id SET DEFAULT nextval('public."SectionInfo_id_seq"'::regclass);
+
+
+--
+-- Name: SectionType id; Type: DEFAULT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."SectionType" ALTER COLUMN id SET DEFAULT nextval('public."SectionType_id_seq"'::regclass);
+
+
+--
+-- Name: Type id; Type: DEFAULT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."Type" ALTER COLUMN id SET DEFAULT nextval('public."Type_id_seq"'::regclass);
+
+
+--
+-- Name: User id; Type: DEFAULT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."User" ALTER COLUMN id SET DEFAULT nextval('public."User_id_seq"'::regclass);
+
+
+--
+-- Data for Name: Category; Type: TABLE DATA; Schema: public; Owner: yaugourt
+--
+
+COPY public."Category" (id, "createdAt", title, description) FROM stdin;
+294	2024-09-22 00:44:18.969	Developer core	\N
+295	2024-09-22 00:44:18.969	Medias	\N
+296	2024-09-22 00:44:18.969	Block	\N
+297	2024-09-22 00:44:18.969	Hash	\N
+298	2024-09-22 00:44:18.969	Transaction	\N
+299	2024-09-22 00:44:18.969	Security	\N
+300	2024-09-22 00:44:18.969	Full node	\N
+301	2024-09-22 00:44:18.969	Liquid stacking	\N
+302	2024-09-22 00:44:18.969	Proof of work	\N
+303	2024-09-22 23:40:14.854	Memory pool	\N
+304	2024-09-22 23:41:15.863	Mining	\N
+305	2024-09-22 23:41:53.783	Hard fork	\N
+306	2024-09-22 23:42:27.464	Soft fork	\N
+308	2024-09-22 23:46:02.935	Keys	\N
+309	2024-09-22 23:49:42.345	Merkle root	\N
+310	2024-09-22 23:52:07.234	Fee	\N
+307	2024-09-22 23:42:44.786	51% attack	\N
+311	2024-09-23 00:00:10.008	Light node	\N
+\.
+
+
+--
+-- Data for Name: Resource; Type: TABLE DATA; Schema: public; Owner: yaugourt
+--
+
+COPY public."Resource" (id, "createdAt", "updatedAt", title, description, link, imagelink, "authorId", "typeId") FROM stdin;
+399	2024-09-22 00:47:36.097	2024-09-22 00:47:36.097	\N	\N	https://developer.bitcoin.org/	\N	1	1
+400	2024-09-22 00:47:36.293	2024-09-22 00:47:36.293	\N	\N	https://argoblockchain.com/articles/explaining-the-bitcoin-block-reward	\N	1	1
+401	2024-09-22 00:47:36.29	2024-09-22 00:47:36.29	\N	\N	https://en.bitcoin.it/wiki/Block_hashing_algorithm	\N	1	1
+402	2024-09-22 00:47:36.295	2024-09-22 00:47:36.295	\N	\N	https://learnmeabitcoin.com/technical/mining/target/	\N	1	1
+403	2024-09-22 00:47:36.295	2024-09-22 00:47:36.295	\N	\N	https://bitcoinwiki.org/wiki/hash	\N	1	1
+404	2024-09-22 00:47:36.297	2024-09-22 00:47:36.297	\N	\N	https://bitcoindevs.xyz/bitcoin-core	\N	1	1
+405	2024-09-22 00:47:36.297	2024-09-22 00:47:36.297	\N	\N	https://www.bitstamp.net/learn/crypto-101/what-was-the-blocksize-war/	\N	1	1
+406	2024-09-22 00:47:36.305	2024-09-22 00:47:36.305	\N	\N	https://www.investopedia.com/terms/g/genesis-block.asp	\N	1	1
+408	2024-09-22 00:47:36.305	2024-09-22 00:47:36.305	\N	\N	https://developer.bitcoin.org/	\N	1	1
+407	2024-09-22 00:47:36.304	2024-09-22 00:47:36.304	\N	\N	https://www.deltecbank.com/news-and-insights/bitcoin-transaction-validation-what-exactly-goes-on-under-the-hood/	\N	1	1
+409	2024-09-22 00:47:36.305	2024-09-22 00:47:36.305	\N	\N	https://www.onceinaspecies.com/p/bitcoin-blocks-are-like-container?utm_source=/search/Bitcoin%20blocks&utm_medium=reader2	\N	1	1
+410	2024-09-22 00:47:36.314	2024-09-22 00:47:36.314	\N	\N	https://www.coindesk.com/learn/what-is-the-bitcoin-block-size-debate-and-why-does-it-matter/	\N	1	1
+411	2024-09-22 00:47:36.316	2024-09-22 00:47:36.316	\N	\N	https://www.reddit.com/r/Bitcoin/comments/160ti2c/is_running_a_full_node_helpful_to_the_network/	\N	1	1
+412	2024-09-22 00:47:36.317	2024-09-22 00:47:36.317	\N	\N	https://blog.lopp.net/securing-your-financial-sovereignty/	\N	1	1
+413	2024-09-22 00:47:36.317	2024-09-22 00:47:36.317	\N	\N	https://www.mintlayer.org/en/news/bitcoin-nodes/	\N	1	1
+414	2024-09-22 00:47:36.318	2024-09-22 00:47:36.318	\N	\N	https://bitkan.com/learn/bitcoin-full-node-what-is-the-role-of-a-full-node-2867	\N	1	1
+415	2024-09-22 00:47:36.322	2024-09-22 00:47:36.322	\N	\N	https://jlopp.github.io/bitcoin-core-config-generator/	\N	1	1
+416	2024-09-22 00:47:36.328	2024-09-22 00:47:36.328	\N	\N	https://blog.lopp.net/securing-your-financial-sovereignty/	\N	1	1
+417	2024-09-22 00:47:36.328	2024-09-22 00:47:36.328	\N	\N	https://bitcoin.org/en/full-node	\N	1	1
+418	2024-09-22 00:47:36.327	2024-09-22 00:47:36.327	\N	\N	https://www.lopp.net/bitcoin-information/full-node.html#running	\N	1	1
+419	2024-09-22 00:47:36.328	2024-09-22 00:47:36.328	\N	\N	https://jlopp.github.io/bitcoin-core-config-generator/	\N	1	1
+420	2024-09-22 00:47:36.329	2024-09-22 00:47:36.329	\N	\N	https://bitcoiner.guide/node/	\N	1	1
+421	2024-09-22 00:47:36.33	2024-09-22 00:47:36.33	\N	\N	https://www.lopp.net/bitcoin-information/full-node.html#diy	\N	1	1
+422	2024-09-22 00:47:36.336	2024-09-22 00:47:36.336	\N	\N	https://github.com/BlockchainCommons/GordianServer-macOS	\N	1	1
+423	2024-09-22 00:47:36.338	2024-09-22 00:47:36.338	\N	\N	https://medium.com/@meeDamian/bitcoin-full-node-on-rbp3-revised-88bb7c8ef1d1	\N	1	1
+424	2024-09-22 00:47:36.337	2024-09-22 00:47:36.337	\N	\N	https://github.com/lightning-power-users/node-launcher	\N	1	1
+425	2024-09-22 00:47:36.336	2024-09-22 00:47:36.336	\N	\N	https://github.com/dgarage/hack0-hardware	\N	1	1
+426	2024-09-22 00:47:36.337	2024-09-22 00:47:36.337	\N	\N	https://gildedpleb.github.io/hab-guide/	\N	1	1
+427	2024-09-22 00:47:36.343	2024-09-22 00:47:36.343	\N	\N	https://raspibolt.org/	\N	1	1
+428	2024-09-22 00:47:36.344	2024-09-22 00:47:36.344	\N	\N	https://mynodebtc.com/download	\N	1	1
+429	2024-09-22 00:47:36.344	2024-09-22 00:47:36.344	\N	\N	https://www.lopp.net/bitcoin-information/full-node.html#dashboards	\N	1	1
+430	2024-09-22 00:47:36.344	2024-09-22 00:47:36.344	\N	\N	https://getumbrel.com/	\N	1	1
+431	2024-09-22 00:47:36.35	2024-09-22 00:47:36.35	\N	\N	https://github.com/Mirobit/bitcoin-node-manager	\N	1	1
+432	2024-09-22 00:47:36.352	2024-09-22 00:47:36.352	\N	\N	https://github.com/craigwatson/bitcoind-status	\N	1	1
+433	2024-09-22 00:47:36.354	2024-09-22 00:47:36.354	\N	\N	https://github.com/bitseed-org/bitseed-web-ui-2	\N	1	1
+435	2024-09-22 00:47:36.354	2024-09-22 00:47:36.354	\N	\N	https://github.com/curly60e/pyblock	\N	1	1
+434	2024-09-22 00:47:36.354	2024-09-22 00:47:36.354	\N	\N	https://github.com/wintercooled/NodeMonitor-Python-Django	\N	1	1
+436	2024-09-22 00:47:36.358	2024-09-22 00:47:36.358	\N	\N	https://github.com/pxsocs/warden_terminal	\N	1	1
+437	2024-09-22 00:47:36.358	2024-09-22 00:47:36.358	\N	\N	https://bitcoin.org/en/download	\N	1	1
+438	2024-09-22 00:47:36.358	2024-09-22 00:47:36.358	\N	\N	https://www.lopp.net/bitcoin-information/full-node.html#software	\N	1	1
+439	2024-09-22 00:47:36.364	2024-09-22 00:47:36.364	\N	\N	https://bitcoinknots.org/	\N	1	1
+441	2024-09-22 00:47:36.367	2024-09-22 00:47:36.367	\N	\N	https://github.com/bcoin-org/bcoin/releases	\N	1	1
+440	2024-09-22 00:47:36.368	2024-09-22 00:47:36.368	\N	\N	https://github.com/block-core/blockcore/releases	\N	1	1
+442	2024-09-22 00:47:36.368	2024-09-22 00:47:36.368	\N	\N	https://github.com/btcsuite/btcd	\N	1	1
+443	2024-09-22 00:47:36.37	2024-09-22 00:47:36.37	\N	\N	https://github.com/Davidson-Souza/Floresta	\N	1	1
+444	2024-09-22 00:47:36.37	2024-09-22 00:47:36.37	\N	\N	https://gocoin.pl/	\N	1	1
+445	2024-09-22 00:47:36.371	2024-09-22 00:47:36.371	\N	\N	https://github.com/libbitcoin/libbitcoin-node/releases	\N	1	1
+446	2024-09-22 00:47:36.374	2024-09-22 00:47:36.374	\N	\N	https://github.com/succinctlabs/btc-warp	\N	1	1
+447	2024-09-22 00:47:36.374	2024-09-22 00:47:36.374	\N	\N	https://www.lopp.net/bitcoin-information/full-node.html#alpha	\N	1	1
+448	2024-09-22 00:47:36.373	2024-09-22 00:47:36.373	\N	\N	https://github.com/fort-nix/nix-bitcoin	\N	1	1
+449	2024-09-22 00:47:36.384	2024-09-22 00:47:36.384	\N	\N	https://github.com/chjj/mako	\N	1	1
+450	2024-09-22 00:47:36.384	2024-09-22 00:47:36.384	\N	\N	https://github.com/paritytech/parity-bitcoin	\N	1	1
+451	2024-09-22 00:47:36.385	2024-09-22 00:47:36.385	\N	\N	https://www.lopp.net/bitcoin-information/full-node.html#hardware	\N	1	1
+452	2024-09-22 00:47:36.385	2024-09-22 00:47:36.385	\N	\N	https://github.com/preston-evans98/zebra-btc	\N	1	1
+453	2024-09-22 00:47:36.385	2024-09-22 00:47:36.385	\N	\N	https://thebitcoinhole.com/bitcoin-nodes	\N	1	1
+454	2024-09-22 00:47:36.386	2024-09-22 00:47:36.386	\N	\N	https://thebitcoinmachines.com/	\N	1	1
+455	2024-09-22 00:47:36.385	2024-09-22 00:47:36.385	\N	\N	https://diynodes.com/	\N	1	1
+456	2024-09-22 00:47:36.386	2024-09-22 00:47:36.386	\N	\N	https://mynodebtc.com/order_now	\N	1	1
+457	2024-09-22 00:47:36.396	2024-09-22 00:47:36.396	\N	\N	https://www.santander.com/en/stories/blockchain-consensus	\N	1	1
+458	2024-09-22 00:47:36.397	2024-09-22 00:47:36.397	\N	\N	https://x.com/TheBitcoinLayer	\N	1	1
+459	2024-09-22 00:47:36.399	2024-09-22 00:47:36.399	\N	\N	https://www.coindesk.com/markets/2017/02/19/bitcoin-hash-functions-explained/	\N	1	1
+460	2024-09-22 00:47:36.399	2024-09-22 00:47:36.399	\N	\N	https://academy.bit2me.com/en/how-bitcoin-hashing-works/	\N	1	1
+461	2024-09-22 00:47:36.399	2024-09-22 00:47:36.399	\N	\N	https://medium.com/coinmonks/bitcoin-security-a-negative-exponential-95e78b6b575	\N	1	1
+462	2024-09-22 00:47:36.399	2024-09-22 00:47:36.399	\N	\N	https://bitcoin.org/en/full-node	\N	1	1
+463	2024-09-22 00:47:36.399	2024-09-22 00:47:36.399	\N	\N	https://x.com/BitcoinMagazine	\N	1	1
+464	2024-09-22 00:47:36.402	2024-09-22 00:47:36.402	\N	\N	https://bitpay.com/blog/bitcoin-nodes/	\N	1	1
+468	2024-09-22 00:47:36.412	2024-09-22 00:47:36.412	\N	\N	https://en.bitcoin.it/wiki/Transaction	\N	1	1
+465	2024-09-22 00:47:36.404	2024-09-22 00:47:36.404	\N	\N	https://www.bitcoin.com/get-started/how-bitcoin-transactions-work/	\N	1	1
+473	2024-09-22 00:47:36.418	2024-09-22 00:47:36.418	\N	\N	https://medium.datadriveninvestor.com/a-decomposition-of-the-bitcoin-block-header-data-driven-investor-e094ee3ff03f	\N	1	1
+466	2024-09-22 00:47:36.41	2024-09-22 00:47:36.41	\N	\N	https://learnmeabitcoin.com/technical/cryptography/hash-function/	\N	1	1
+475	2024-09-22 00:47:36.421	2024-09-22 00:47:36.421	\N	\N	https://medium.com/blockchain/using-the-blockchain-api-to-determine-the-time-left-until-the-next-bitcoin-block-halving-10e2a170e75f	\N	1	1
+467	2024-09-22 00:47:36.411	2024-09-22 00:47:36.411	\N	\N	https://river.com/learn/how-does-a-bitcoin-transaction-work/	\N	1	1
+469	2024-09-22 00:47:36.412	2024-09-22 00:47:36.412	\N	\N	https://www.gemini.com/fr-fr/cryptopedia/what-is-block-in-blockchain-bitcoin-block-size	\N	1	1
+470	2024-09-22 00:47:36.412	2024-09-22 00:47:36.412	\N	\N	https://learnmeabitcoin.com/beginners/guide/blocks/	\N	1	1
+471	2024-09-22 00:47:36.412	2024-09-22 00:47:36.412	\N	\N	https://vitalik.eth.limo/general/2024/05/31/blocksize.html	\N	1	1
+472	2024-09-22 00:47:36.413	2024-09-22 00:47:36.413	\N	\N	https://www.bitpanda.com/academy/en/lessons/what-is-a-hash-function-in-a-blockchain-transaction/	\N	1	1
+474	2024-09-22 00:47:36.416	2024-09-22 00:47:36.416	\N	\N	https://medium.com/@johnblocke/the-importance-of-clear-definitions-in-bitcoins-block-size-debate-f8ce550d0919	\N	1	1
+476	2024-09-22 00:47:36.423	2024-09-22 00:47:36.423	\N	\N	https://support.ledger.com/fr/article/360017551659-zd	\N	1	1
+\.
+
+
+--
+-- Data for Name: Section; Type: TABLE DATA; Schema: public; Owner: yaugourt
+--
+
+COPY public."Section" (id, "createdAt", title, description, "sectionTypeId") FROM stdin;
+1	2024-09-22 00:04:11.145	Monero	\N	1
+2	2024-09-22 00:04:11.145	Bsc	\N	1
+3	2024-09-22 00:04:11.145	Ethereum	\N	1
+4	2024-09-22 00:04:11.145	Avalanche	\N	1
+5	2024-09-22 00:04:11.145	Bitcoin	\N	1
+6	2024-09-22 00:04:11.145	Solana	\N	1
+7	2024-09-22 00:49:13.986	Starknet	\N	6
+8	2024-09-22 00:49:13.986	Arbtitrum	\N	6
+9	2024-09-22 00:49:13.986	Optimism	\N	6
+10	2024-09-22 00:49:13.986	Zksync	\N	6
+11	2024-09-22 00:49:13.986	Metis	\N	6
+12	2024-09-22 00:49:13.986	Base	\N	6
+13	2024-09-22 00:51:34.071	Liquid staking	\N	2
+14	2024-09-22 00:51:34.071	Lending	\N	2
+15	2024-09-22 00:51:34.071	Bridge	\N	2
+16	2024-09-22 00:51:34.071	Dexes	\N	2
+17	2024-09-22 00:51:34.071	Restacking	\N	2
+19	2024-09-22 00:51:34.071	CDP	\N	2
+20	2024-09-22 00:51:34.071	RWA	\N	2
+21	2024-09-22 00:51:34.071	Derivatives	\N	2
+22	2024-09-22 00:52:10.477	Mantle	\N	6
+23	2024-09-22 00:52:10.477	Scroll	\N	6
+24	2024-09-22 00:52:10.477	Linea	\N	6
+25	2024-09-22 00:56:43.161	Near	\N	3
+26	2024-09-22 00:56:43.161	Celestia	\N	3
+27	2024-09-22 00:56:43.161	Avail	\N	3
+28	2024-09-22 00:56:43.161	Covalent	\N	3
+18	2024-09-22 00:51:34.071	Liquid restaking	\N	2
+\.
+
+
+--
+-- Data for Name: SectionInfo; Type: TABLE DATA; Schema: public; Owner: yaugourt
+--
+
+COPY public."SectionInfo" (id, "createdAt", color, "imageLink", "whitepaperLink", "twitterLink", "websiteLink", "sectionId") FROM stdin;
+9	2024-09-22 16:18:31.499	#58C8F6	https://res.cloudinary.com/dotdojnco/image/upload/v1727021657/Encyclochain/Section/Data%20availability/ney9v1ajuobmchsdaekd.svg	https://docs.availproject.org/	https://x.com/AvailProject	https://www.availproject.org/	27
+10	2024-09-22 16:18:31.495	#000000	https://res.cloudinary.com/dotdojnco/image/upload/v1727021393/Encyclochain/Section/Layer%202/jychd5slxs0oqm5kwr2q.svg	https://docs.zksync.io/	https://x.com/zksync	https://zksync.io/	10
+7	2024-09-22 16:18:31.499	#0052FF	https://res.cloudinary.com/dotdojnco/image/upload/v1727021392/Encyclochain/Section/Layer%202/fjwduhf3srddazmxx3he.svg	https://docs.base.org/	https://x.com/base	https://www.base.org/	12
+8	2024-09-22 16:18:31.499	#FFEEDA	https://res.cloudinary.com/dotdojnco/image/upload/v1727021392/Encyclochain/Section/Layer%202/hwqnna0gf1adze0tvbof.svg	https://docs.scroll.io/en/home/	https://x.com/Scroll_ZKP	https://scroll.io/	23
+11	2024-09-22 16:18:31.505	#61DFFF	https://res.cloudinary.com/dotdojnco/image/upload/v1727021392/Encyclochain/Section/Layer%202/fsegscaopd6eyeyaklh2.svg	https://docs.linea.build/	https://x.com/LineaBuild	https://linea.build/	24
+12	2024-09-22 16:18:31.507	#000000	https://res.cloudinary.com/dotdojnco/image/upload/v1727020864/Encyclochain/Section/DeFi/ek8pxmvzcaofeiamrxwi.svg	\N	\N	\N	14
+13	2024-09-22 16:18:31.507	#000000	https://res.cloudinary.com/dotdojnco/image/upload/v1727021436/Encyclochain/Section/DeFi/xlrldgn1ehv1jgvtgefj.svg	\N	\N	\N	13
+14	2024-09-22 16:18:31.513	#00ec97	https://res.cloudinary.com/dotdojnco/image/upload/v1727021657/Encyclochain/Section/Data%20availability/r94tmupqmovjtvnyrtb2.svg	https://docs.near.org/build/chain-abstraction/data-availability	https://x.com/NEARProtocol	https://near.org/data-availability	25
+15	2024-09-22 16:18:31.517	#000000	https://res.cloudinary.com/dotdojnco/image/upload/v1727021437/Encyclochain/Section/DeFi/q7whglszjgp0eavvbdc4.svg	\N	\N	\N	20
+16	2024-09-22 16:18:31.518	#000000	https://res.cloudinary.com/dotdojnco/image/upload/v1727021436/Encyclochain/Section/DeFi/dmieyrr5ekxuzwf57dbw.svg	\N	\N	\N	18
+17	2024-09-22 16:18:31.516	#000000	https://res.cloudinary.com/dotdojnco/image/upload/v1727021435/Encyclochain/Section/DeFi/stc7e3obhldvtxvqsqht.svg	\N	\N	\N	19
+18	2024-09-22 16:18:31.518	#0C0C4F	https://res.cloudinary.com/dotdojnco/image/upload/v1727021594/Encyclochain/Section/Layer%202/is7i5ovpxc7rpbayvf8t.svg	https://docs.starknet.io/	https://x.com/Starknet	https://www.starknet.io/	7
+19	2024-09-22 16:18:31.518	#ff0420	https://res.cloudinary.com/dotdojnco/image/upload/v1727021392/Encyclochain/Section/Layer%202/y7yfn9v9mfatgyjicxca.svg	https://community.optimism.io/	https://x.com/Optimism	https://optimism.io/	9
+20	2024-09-22 16:18:31.52	#000000	https://res.cloudinary.com/dotdojnco/image/upload/v1727021594/Encyclochain/Section/Layer%202/scjs79qfwwhiqrh3a1yf.svg	https://docs-v2.mantle.xyz/	https://x.com/0xMantle	https://www.mantle.xyz/	22
+21	2024-09-22 16:18:31.52	#54FE6D	https://res.cloudinary.com/dotdojnco/image/upload/v1727021657/Encyclochain/Section/Data%20availability/amzk3ur5gbit3j620wrt.svg	https://www.covalenthq.com/docs/resources/covalent-network-whitepaper	https://x.com/Covalent_HQ	https://www.covalenthq.com/	28
+22	2024-09-22 16:18:31.519	#7b2bf9	https://res.cloudinary.com/dotdojnco/image/upload/v1727021657/Encyclochain/Section/Data%20availability/iw54vlftt0g9ixfgouti.svg	https://docs.celestia.org/	https://x.com/CelestiaOrg	https://celestia.org/	26
+23	2024-09-22 16:18:31.53	#00CFF	https://res.cloudinary.com/dotdojnco/image/upload/v1727021392/Encyclochain/Section/Layer%202/mki2mll7reerzyr2yzdz.svg	https://docs.metis.io/dev	https://x.com/MetisL2	https://www.metis.io/	11
+1	2024-09-22 01:09:55.326	#F7931A	https://res.cloudinary.com/dotdojnco/image/upload/v1726967095/Encyclochain/Section/Layer%201/rzsjqqqiqfmqlnphy8uz.svg	https://bitcoin.org/bitcoin.pdf	https://x.com/Bitcoin	https://bitcoin.org/fr/	5
+4	2024-09-22 01:09:55.455	#627EEA	https://res.cloudinary.com/dotdojnco/image/upload/v1726967095/Encyclochain/Section/Layer%201/ob8ozm287zdyl736dant.svg	https://ethereum.org/en/whitepaper/	https://x.com/ethereum	https://ethereum.org/	3
+5	2024-09-22 01:09:55.455	#f0b90b	https://res.cloudinary.com/dotdojnco/image/upload/v1726967095/Encyclochain/Section/Layer%201/aoihmsbogqmoeq34jiyk.svg	https://github.com/bnb-chain/whitepaper/blob/master/assets/cross-chain.png	https://x.com/BNBChain	https://www.bnbchain.org/	2
+3	2024-09-22 01:09:55.449	#4c4c4c	https://res.cloudinary.com/dotdojnco/image/upload/v1726967095/Encyclochain/Section/Layer%201/uacpzpjbbfc6rbjujpkh.svg	https://github.com/monero-project/research-lab/blob/master/whitepaper/whitepaper.pdf	https://x.com/monero	https://www.getmonero.org/	1
+6	2024-09-22 01:09:55.455	#FF394A	https://res.cloudinary.com/dotdojnco/image/upload/v1727024879/Encyclochain/Section/Layer%201/kekuugu4tm4uims47vko.svg	https://www.avalabs.org/whitepapers	https://x.com/avax	https://www.avax.network/	4
+2	2024-09-22 01:09:55.443	#00000	https://res.cloudinary.com/dotdojnco/image/upload/v1727024884/Encyclochain/Section/Layer%201/csv6epvqanc9glnt8sfk.svg	https://solana.com/solana-whitepaper.pdf	https://x.com/solana	https://x.com/solana	6
+\.
+
+
+--
+-- Data for Name: SectionType; Type: TABLE DATA; Schema: public; Owner: yaugourt
+--
+
+COPY public."SectionType" (id, title) FROM stdin;
+1	Layer 1
+2	DeFi
+4	Zero knowledge
+5	IA
+6	Layer 2
+3	Data availability
+\.
+
+
+--
+-- Data for Name: Type; Type: TABLE DATA; Schema: public; Owner: yaugourt
+--
+
+COPY public."Type" (id, title) FROM stdin;
+1	imgTop
+2	imgLeft
+\.
+
+
+--
+-- Data for Name: User; Type: TABLE DATA; Schema: public; Owner: yaugourt
+--
+
+COPY public."User" (id, name, wallet, "createdAt", verified) FROM stdin;
+1	yaugourt		2024-09-22 00:24:20.444	f
+\.
+
+
+--
+-- Data for Name: _CategoryToResource; Type: TABLE DATA; Schema: public; Owner: yaugourt
+--
+
+COPY public."_CategoryToResource" ("A", "B") FROM stdin;
+294	399
+296	400
+297	401
+296	402
+294	404
+296	405
+297	403
+296	406
+294	408
+298	407
+296	409
+296	410
+300	412
+300	411
+300	413
+300	414
+300	415
+300	416
+300	417
+300	418
+300	420
+300	419
+300	421
+300	423
+300	424
+300	425
+300	426
+300	422
+300	427
+300	428
+300	429
+300	430
+300	431
+300	432
+300	433
+300	435
+300	434
+300	436
+300	437
+300	438
+300	439
+300	440
+300	442
+300	444
+300	441
+300	443
+300	445
+300	448
+300	446
+300	447
+300	449
+300	450
+300	451
+300	452
+300	453
+300	456
+300	455
+300	454
+302	457
+295	458
+297	459
+297	460
+299	461
+300	462
+295	463
+300	464
+298	465
+297	466
+298	467
+298	468
+296	469
+296	470
+296	471
+297	472
+296	473
+296	474
+296	475
+300	476
+\.
+
+
+--
+-- Data for Name: _CategoryToSection; Type: TABLE DATA; Schema: public; Owner: yaugourt
+--
+
+COPY public."_CategoryToSection" ("A", "B") FROM stdin;
+294	5
+295	1
+295	2
+295	3
+295	4
+295	5
+295	6
+296	1
+296	2
+296	3
+296	4
+296	5
+296	6
+297	1
+297	2
+297	3
+297	4
+297	5
+297	6
+298	1
+298	2
+298	3
+298	4
+298	5
+298	6
+299	1
+299	2
+299	3
+299	4
+299	5
+299	6
+300	1
+300	2
+300	3
+300	4
+300	5
+300	6
+301	1
+301	2
+301	3
+301	4
+301	5
+301	6
+302	5
+303	1
+303	2
+303	3
+303	4
+303	5
+303	6
+303	7
+303	8
+303	9
+303	10
+303	11
+303	12
+303	22
+303	23
+303	24
+303	25
+303	26
+303	27
+303	28
+304	1
+304	5
+305	1
+305	2
+305	3
+305	4
+305	5
+305	6
+305	7
+305	8
+305	9
+305	10
+305	11
+305	12
+305	22
+305	23
+305	24
+305	25
+305	26
+305	27
+305	28
+306	1
+306	2
+306	3
+306	4
+306	5
+306	6
+306	7
+306	8
+306	9
+306	10
+306	11
+306	12
+306	22
+306	23
+306	24
+306	25
+306	26
+306	27
+306	28
+307	1
+307	2
+307	3
+307	4
+307	5
+307	6
+307	7
+307	8
+307	9
+307	10
+307	11
+307	12
+307	22
+307	23
+307	24
+307	25
+307	26
+307	27
+307	28
+308	1
+308	2
+308	3
+308	4
+308	5
+308	6
+308	7
+308	8
+308	9
+308	10
+308	11
+308	12
+308	22
+308	23
+308	24
+308	25
+308	26
+308	27
+308	28
+309	1
+309	2
+309	3
+309	4
+309	5
+309	6
+309	7
+309	8
+309	9
+309	10
+309	11
+309	12
+309	22
+309	23
+309	24
+309	25
+309	26
+309	27
+309	28
+310	1
+310	2
+310	3
+310	4
+310	5
+310	6
+310	7
+310	8
+310	9
+310	10
+310	11
+310	12
+310	22
+310	23
+310	24
+310	25
+310	26
+310	27
+310	28
+311	1
+311	2
+311	3
+311	4
+311	5
+311	6
+311	7
+311	8
+311	9
+311	10
+311	11
+311	12
+311	22
+311	23
+311	24
+311	25
+311	26
+311	27
+311	28
+\.
+
+
+--
+-- Data for Name: _SectionToResource; Type: TABLE DATA; Schema: public; Owner: yaugourt
+--
+
+COPY public."_SectionToResource" ("A", "B") FROM stdin;
+399	5
+400	5
+401	5
+402	5
+403	5
+404	5
+406	5
+405	5
+408	5
+407	5
+410	5
+409	5
+411	5
+412	5
+413	5
+414	5
+415	5
+416	5
+417	5
+418	5
+420	5
+419	5
+421	5
+423	5
+424	5
+426	5
+425	5
+422	5
+427	5
+428	5
+429	5
+430	5
+431	5
+433	5
+432	5
+435	5
+434	5
+436	5
+437	5
+438	5
+439	5
+440	5
+442	5
+444	5
+445	5
+443	5
+441	5
+448	5
+446	5
+447	5
+449	5
+450	5
+452	5
+451	5
+453	5
+456	5
+455	5
+454	5
+458	5
+457	5
+459	5
+460	5
+461	5
+462	5
+463	5
+464	5
+465	5
+466	5
+467	5
+468	5
+469	5
+470	5
+471	5
+472	5
+473	5
+474	5
+475	5
+476	5
+\.
+
+
+--
+-- Data for Name: _prisma_migrations; Type: TABLE DATA; Schema: public; Owner: yaugourt
+--
+
+COPY public._prisma_migrations (id, checksum, finished_at, migration_name, logs, rolled_back_at, started_at, applied_steps_count) FROM stdin;
+\.
+
+
+--
+-- Name: Category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yaugourt
+--
+
+SELECT pg_catalog.setval('public."Category_id_seq"', 311, true);
+
+
+--
+-- Name: Resource_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yaugourt
+--
+
+SELECT pg_catalog.setval('public."Resource_id_seq"', 476, true);
+
+
+--
+-- Name: SectionInfo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yaugourt
+--
+
+SELECT pg_catalog.setval('public."SectionInfo_id_seq"', 23, true);
+
+
+--
+-- Name: SectionType_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yaugourt
+--
+
+SELECT pg_catalog.setval('public."SectionType_id_seq"', 6, true);
+
+
+--
+-- Name: Section_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yaugourt
+--
+
+SELECT pg_catalog.setval('public."Section_id_seq"', 29, true);
+
+
+--
+-- Name: Type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yaugourt
+--
+
+SELECT pg_catalog.setval('public."Type_id_seq"', 2, true);
+
+
+--
+-- Name: User_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yaugourt
+--
+
+SELECT pg_catalog.setval('public."User_id_seq"', 1, true);
+
+
+--
+-- Name: Category Category_pkey; Type: CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."Category"
+    ADD CONSTRAINT "Category_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: Resource Resource_pkey; Type: CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."Resource"
+    ADD CONSTRAINT "Resource_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: SectionInfo SectionInfo_pkey; Type: CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."SectionInfo"
+    ADD CONSTRAINT "SectionInfo_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: SectionType SectionType_pkey; Type: CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."SectionType"
+    ADD CONSTRAINT "SectionType_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: Section Section_pkey; Type: CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."Section"
+    ADD CONSTRAINT "Section_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: Type Type_pkey; Type: CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."Type"
+    ADD CONSTRAINT "Type_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: User User_pkey; Type: CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."User"
+    ADD CONSTRAINT "User_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: _prisma_migrations _prisma_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public._prisma_migrations
+    ADD CONSTRAINT _prisma_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: SectionInfo_sectionId_key; Type: INDEX; Schema: public; Owner: yaugourt
+--
+
+CREATE UNIQUE INDEX "SectionInfo_sectionId_key" ON public."SectionInfo" USING btree ("sectionId");
+
+
+--
+-- Name: _CategoryToResource_AB_unique; Type: INDEX; Schema: public; Owner: yaugourt
+--
+
+CREATE UNIQUE INDEX "_CategoryToResource_AB_unique" ON public."_CategoryToResource" USING btree ("A", "B");
+
+
+--
+-- Name: _CategoryToResource_B_index; Type: INDEX; Schema: public; Owner: yaugourt
+--
+
+CREATE INDEX "_CategoryToResource_B_index" ON public."_CategoryToResource" USING btree ("B");
+
+
+--
+-- Name: _CategoryToSection_AB_unique; Type: INDEX; Schema: public; Owner: yaugourt
+--
+
+CREATE UNIQUE INDEX "_CategoryToSection_AB_unique" ON public."_CategoryToSection" USING btree ("A", "B");
+
+
+--
+-- Name: _CategoryToSection_B_index; Type: INDEX; Schema: public; Owner: yaugourt
+--
+
+CREATE INDEX "_CategoryToSection_B_index" ON public."_CategoryToSection" USING btree ("B");
+
+
+--
+-- Name: _SectionToResource_AB_unique; Type: INDEX; Schema: public; Owner: yaugourt
+--
+
+CREATE UNIQUE INDEX "_SectionToResource_AB_unique" ON public."_SectionToResource" USING btree ("A", "B");
+
+
+--
+-- Name: _SectionToResource_B_index; Type: INDEX; Schema: public; Owner: yaugourt
+--
+
+CREATE INDEX "_SectionToResource_B_index" ON public."_SectionToResource" USING btree ("B");
+
+
+--
+-- Name: Resource Resource_authorId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."Resource"
+    ADD CONSTRAINT "Resource_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES public."User"(id);
+
+
+--
+-- Name: Resource Resource_typeId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."Resource"
+    ADD CONSTRAINT "Resource_typeId_fkey" FOREIGN KEY ("typeId") REFERENCES public."Type"(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: SectionInfo SectionInfo_sectionId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."SectionInfo"
+    ADD CONSTRAINT "SectionInfo_sectionId_fkey" FOREIGN KEY ("sectionId") REFERENCES public."Section"(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: Section Section_sectionTypeId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."Section"
+    ADD CONSTRAINT "Section_sectionTypeId_fkey" FOREIGN KEY ("sectionTypeId") REFERENCES public."SectionType"(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: _CategoryToResource _CategoryToResource_A_fkey; Type: FK CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."_CategoryToResource"
+    ADD CONSTRAINT "_CategoryToResource_A_fkey" FOREIGN KEY ("A") REFERENCES public."Category"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: _CategoryToResource _CategoryToResource_B_fkey; Type: FK CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."_CategoryToResource"
+    ADD CONSTRAINT "_CategoryToResource_B_fkey" FOREIGN KEY ("B") REFERENCES public."Resource"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: _CategoryToSection _CategoryToSection_A_fkey; Type: FK CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."_CategoryToSection"
+    ADD CONSTRAINT "_CategoryToSection_A_fkey" FOREIGN KEY ("A") REFERENCES public."Category"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: _CategoryToSection _CategoryToSection_B_fkey; Type: FK CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."_CategoryToSection"
+    ADD CONSTRAINT "_CategoryToSection_B_fkey" FOREIGN KEY ("B") REFERENCES public."Section"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: _SectionToResource _SectionToResource_A_fkey; Type: FK CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."_SectionToResource"
+    ADD CONSTRAINT "_SectionToResource_A_fkey" FOREIGN KEY ("A") REFERENCES public."Resource"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: _SectionToResource _SectionToResource_B_fkey; Type: FK CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."_SectionToResource"
+    ADD CONSTRAINT "_SectionToResource_B_fkey" FOREIGN KEY ("B") REFERENCES public."Section"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
