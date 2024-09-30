@@ -1,10 +1,13 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "./ui/button";
-import { Badge } from "@/components/ui/badge"
-import star from "../assets/Icone/Star.svg"
-import Image from "next/image";
+"use client"
 
-//interface contenant les données nécessaires
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { StarRating } from "./starRating";  // Import du nouveau composant de notation
+import { RxExternalLink } from "react-icons/rx";
+import { VscBookmark } from "react-icons/vsc"; // Import de l'icône
+
+
+// Interface contenant les données nécessaires
 export interface PreviewData {
   title: string;
   description: string;
@@ -20,10 +23,10 @@ export function LinkPreview({ data, color }: { data: PreviewData; color: string 
   return (
     <div className="h-[100%] w-[100%]">
       <Card className="w-[100%] h-[500px]">
-        <CardContent className="flex items-center justify-between w-[100%] h-[404px] md:h-[350px]">
+        <CardContent className="relative flex items-center w-[100%] h-[404px] md:h-[350px]"> {/* Ajout de la classe relative */}
           <a
             href={data.url}
-            className="w-[100%] flex flex-col h-[500px] justify-between mt-[158px] max-md:mt-[90px]"
+            className="w-[100%] flex flex-col h-[500px] justify-between mt-[150px] max-md:mt-[90px]"
             target="blank"
           >
             <img
@@ -33,37 +36,37 @@ export function LinkPreview({ data, color }: { data: PreviewData; color: string 
               className="w-[100%] h-[226px]"
             />
             <div className="px-3 pb-3">
-              <div className="flex gap-[10px] mb-[10px]">
-              <Badge variant="secondary" >Blockchain</Badge>
-              <p className="text-sm ">5 min read</p>
+              <div className="flex items-center gap-2 mb-[10px]">
+                <Badge variant="secondary">Blockchain</Badge>
+                <p className="text-sm">5 min read</p>
               </div>
               <h3 className="font-semibold pb-2">{data.title}</h3>
               <p>{data.description}</p>
             </div>
-            <div className="flex ml-[10px]">
-            <Image src={star} alt=""width={24}
-            height={24} />
-            <Image src={star} alt=""width={24}
-            height={24} />
-            <Image src={star} alt=""width={24}
-            height={24} />
-            <Image src={star} alt=""width={24}
-            height={24} />
-            <Image src={star} alt=""width={24}
-            height={24} />
-            </div>
-            {/* Appliquer la couleur dynamique au bouton */}
-            <Button
-              className={`rounded-none w-max p-[20px] max-md:w-full max-md:rounded-[5px] top-5 ml-[10px]`}
-              style={{ backgroundColor: color }}  // Utiliser la couleur dynamique ici
-            >
-              Explore
-            </Button>
-            <div className="flex justify-end w-full gap-[20px] pb-[20px] pr-[20px]">
-            <p>Author: John Doe</p>
-            <p>Date: Oct 1, 2023</p>
+
+            {/* Intégration du composant StarRating */}
+            <StarRating initialRating={3} />  {/* Exemple avec une note initiale à 3 */}
+
+            <div className="flex flex-col w-full pr-[20px] ml-[10px]">
+              <div className="flex justify-start gap-[10px]">
+                <p>Author: John Doe</p>
+                <p>Date: Oct 1, 2023</p>
+              </div>
+              <div className="flex justify-end pb-[10px] w-[100%]">
+                <RxExternalLink width={24} height={24} />
+              </div>
             </div>
           </a>
+          {/* Bouton placé en dehors de la balise a */}
+          <button
+            className="absolute top-[240px] right-3 cursor-pointer z-10"
+            onClick={(e) => {
+              e.preventDefault();
+              // Ajoutez ici la logique pour ajouter à la watchlist
+            }}
+          >
+            <VscBookmark size={24} />
+          </button>
         </CardContent>
       </Card>
     </div>

@@ -89,9 +89,9 @@ export default async function Page({ params }: PageProps) {
         prisma_res.length > 0 ? (
           prisma_res.map((cat) => (
             cat.resources.length > 0 && (
-              <div key={cat.id} className="flex items-center">
-                <div className="flex justify-center items-center my-8 mb-[12%] max-md:flex-col w-full h-[500px]">
-                  <h2 className="font-bold text-xl max-md:mb-[30px] mr-[20px] font-garamond">
+              <div key={cat.id} className="flex items-center mt-[30px]">
+                <div className="flex justify-center items-center my-8 mb-[12%] flex-col w-full h-[500px]">
+                  <h2 className="w-[74%] font-bold text-3xl pb-[30px] mr-[20px] font-garamond">
                     {cat.title}
                   </h2>
                   <Carousel_ImgTop resources={cat.resources} color={sectionColor} />

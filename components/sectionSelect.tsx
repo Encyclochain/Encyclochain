@@ -2,13 +2,15 @@ import { Button } from "@/components/ui/button";
 import prisma from "@/lib/db";
 import Link from "next/link";
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import Image from "next/image";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // Fonction pour récupérer les sections groupées par type de section
 export async function getSectionsGroupedByType() {
@@ -32,56 +34,64 @@ export async function getSectionsGroupedByType() {
   });
 }
 
-  export async function SectionSelect() {
-    const sectionTypes = await getSectionsGroupedByType();
-  
-   
-    return (
-      <div className="mt-[5%] mb-[5%] p-[50px] w-full">
+export async function SectionSelect() {
+  const sectionTypes = await getSectionsGroupedByType();
+
+  return (
+    <div className="mt-[5%] mb-[5%] p-[50px] w-full">
+      <Tabs defaultValue={sectionTypes[0]?.id.toString()}>
+        <TabsList className="mb-4">
+          {sectionTypes.map((sectionType) => (
+            <TabsTrigger key={sectionType.id} value={sectionType.id.toString()}>
+              {sectionType.title}
+            </TabsTrigger>
+          ))}
+        </TabsList>
         {sectionTypes.map((sectionType) => (
-          // Vérifier si le sectionType a des sections associées avant de l'afficher
-          sectionType.sections.length > 0 && (
-            <div key={sectionType.id} className="mb-[250px] flex flex-row">
-              {/* Titre du type de section (ex: "Layer 1") */}
-              <h2 className="text-2xl font-bold text-gray-900 mb-6 lg:text-center text-center items-center justify-center flex">
-                {/* Utilisation de lg:text-left pour l'alignement à gauche sur grands écrans et text-center pour mobile */}
-                {sectionType.title} {/* Afficher le titre du sectionType */}
-              </h2>
-  
-              {/* Carrousel pour les sections de ce type */}
-              <Carousel  className="w-[80%] max-sm:w-[90%] mx-auto">
-                <CarouselContent className="flex gap-6">
-                  {sectionType.sections.map((section) => (
-                    <CarouselItem key={section.id} className="flex flex-col items-center w-[30%] basis-[30%] ">
-                      {/* Image de la section */}
-                      <img
-                        src={section.sectionInfo?.imageLink || ""}
-                        alt={`Logo ${section.title}`}
-                        className="dark:invert h-auto rounded-[50%]"
-                        width={150}
-                        height={24}
-                      />
-  
-                      {/* Bouton pour explorer la section */}
-                      <Button
-                        className="mt-4 px-4 py-2 text-white rounded-md font-bold"
-                        style={{
-                          backgroundColor: section.sectionInfo?.color || "#000", // Couleur dynamique
-                        }}
-                      >
-                        <Link href={`/section/${section.title}`}>
-                          Explore {section.title}
-                        </Link>
-                      </Button>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
-            </div>
-          )
+          <TabsContent key={sectionType.id} value={sectionType.id.toString()}>
+            <h2 className="text-3xl font-bold text-black mb-6 lg:text-left text-center">
+              {sectionType.title}
+            </h2>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="py-2">Image</TableHead>
+                  <TableHead className="py-2">Titre</TableHead>
+                  <TableHead className="py-2">Colonne 3</TableHead>
+                  <TableHead className="py-2">Colonne 4</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {sectionType.sections.map((section) => (
+                  <TableRow key={section.id}>
+                    <Link
+                      href={`/section/${section.title}`}
+                      className="contents text-black hover:bg-gray-100"
+                    >
+                      <TableCell className="py-2">
+                        <div className="w-[60px] h-[60px] relative">
+                          <Image
+                            src={section.sectionInfo?.imageLink || ""}
+                            alt={`Logo ${section.title}`}
+                            layout="fill"
+                            objectFit="contain"
+                            className="dark:invert"
+                          />
+                        </div>
+                      </TableCell>
+                      <TableCell className="py-2">
+                        <span className="text-base font-semibold">{section.title}</span>
+                      </TableCell>
+                      <TableCell className="py-2">À définir</TableCell>
+                      <TableCell className="py-2">À définir</TableCell>
+                    </Link>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TabsContent>
         ))}
-      </div>
-    );
-  }
+      </Tabs>
+    </div>
+  );
+}

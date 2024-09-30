@@ -1,0 +1,80 @@
+Lien (resources),Category,Section
+https://developer.bitcoin.org/,Developer core,Bitcoin
+https://argoblockchain.com/articles/explaining-the-bitcoin-block-reward,Block,Bitcoin
+https://en.bitcoin.it/wiki/Block_hashing_algorithm,Hash,Bitcoin
+https://learnmeabitcoin.com/technical/mining/target/,Block,Bitcoin
+https://bitcoinwiki.org/wiki/hash,Hash,Bitcoin
+https://bitcoindevs.xyz/bitcoin-core,Developer core,Bitcoin
+https://www.bitstamp.net/learn/crypto-101/what-was-the-blocksize-war/,Block,Bitcoin
+https://www.investopedia.com/terms/g/genesis-block.asp,Block,Bitcoin
+https://developer.bitcoin.org/,Developer core,Bitcoin
+https://www.deltecbank.com/news-and-insights/bitcoin-transaction-validation-what-exactly-goes-on-under-the-hood/,Transaction,Bitcoin
+https://www.onceinaspecies.com/p/bitcoin-blocks-are-like-container?utm_source=/search/Bitcoin%20blocks&utm_medium=reader2,Block,Bitcoin
+https://www.coindesk.com/learn/what-is-the-bitcoin-block-size-debate-and-why-does-it-matter/,Block,Bitcoin
+https://www.reddit.com/r/Bitcoin/comments/160ti2c/is_running_a_full_node_helpful_to_the_network/,Full node,Bitcoin
+https://blog.lopp.net/securing-your-financial-sovereignty/,Full node,Bitcoin
+https://www.mintlayer.org/en/news/bitcoin-nodes/,Full node,Bitcoin
+https://bitkan.com/learn/bitcoin-full-node-what-is-the-role-of-a-full-node-2867,Full node,Bitcoin
+https://jlopp.github.io/bitcoin-core-config-generator/,Full node,Bitcoin
+https://blog.lopp.net/securing-your-financial-sovereignty/,Full node,Bitcoin
+https://bitcoin.org/en/full-node,Full node,Bitcoin
+https://www.lopp.net/bitcoin-information/full-node.html#running,Full node,Bitcoin
+https://jlopp.github.io/bitcoin-core-config-generator/,Full node,Bitcoin
+https://bitcoiner.guide/node/,Full node,Bitcoin
+https://www.lopp.net/bitcoin-information/full-node.html#diy,Full node,Bitcoin
+https://github.com/BlockchainCommons/GordianServer-macOS,Full node,Bitcoin
+https://medium.com/@meeDamian/bitcoin-full-node-on-rbp3-revised-88bb7c8ef1d1,Full node,Bitcoin
+https://github.com/lightning-power-users/node-launcher,Full node,Bitcoin
+https://github.com/dgarage/hack0-hardware,Full node,Bitcoin
+https://gildedpleb.github.io/hab-guide/,Full node,Bitcoin
+https://raspibolt.org/,Full node,Bitcoin
+https://mynodebtc.com/download,Full node,Bitcoin
+https://www.lopp.net/bitcoin-information/full-node.html#dashboards,Full node,Bitcoin
+https://getumbrel.com/,Full node,Bitcoin
+https://github.com/Mirobit/bitcoin-node-manager,Full node,Bitcoin
+https://github.com/craigwatson/bitcoind-status,Full node,Bitcoin
+https://github.com/bitseed-org/bitseed-web-ui-2,Full node,Bitcoin
+https://github.com/curly60e/pyblock,Full node,Bitcoin
+https://github.com/wintercooled/NodeMonitor-Python-Django,Full node,Bitcoin
+https://github.com/pxsocs/warden_terminal,Full node,Bitcoin
+https://bitcoin.org/en/download,Full node,Bitcoin
+https://www.lopp.net/bitcoin-information/full-node.html#software,Full node,Bitcoin
+https://bitcoinknots.org/,Full node,Bitcoin
+https://github.com/bcoin-org/bcoin/releases,Full node,Bitcoin
+https://github.com/block-core/blockcore/releases,Full node,Bitcoin
+https://github.com/btcsuite/btcd,Full node,Bitcoin
+https://github.com/Davidson-Souza/Floresta,Full node,Bitcoin
+https://gocoin.pl/,Full node,Bitcoin
+https://github.com/libbitcoin/libbitcoin-node/releases,Full node,Bitcoin
+https://github.com/succinctlabs/btc-warp,Full node,Bitcoin
+https://www.lopp.net/bitcoin-information/full-node.html#alpha,Full node,Bitcoin
+https://github.com/fort-nix/nix-bitcoin,Full node,Bitcoin
+https://github.com/chjj/mako,Full node,Bitcoin
+https://github.com/paritytech/parity-bitcoin,Full node,Bitcoin
+https://www.lopp.net/bitcoin-information/full-node.html#hardware,Full node,Bitcoin
+https://github.com/preston-evans98/zebra-btc,Full node,Bitcoin
+https://thebitcoinhole.com/bitcoin-nodes,Full node,Bitcoin
+https://thebitcoinmachines.com/,Full node,Bitcoin
+https://diynodes.com/,Full node,Bitcoin
+https://mynodebtc.com/order_now,Full node,Bitcoin
+https://www.santander.com/en/stories/blockchain-consensus,Proof-of-work,Bitcoin
+https://x.com/TheBitcoinLayer,Medias,Bitcoin
+https://www.coindesk.com/markets/2017/02/19/bitcoin-hash-functions-explained/,Hash,Bitcoin
+https://academy.bit2me.com/en/how-bitcoin-hashing-works/,Hash,Bitcoin
+https://medium.com/coinmonks/bitcoin-security-a-negative-exponential-95e78b6b575,Security,Bitcoin
+https://bitcoin.org/en/full-node,Full node,Bitcoin
+https://x.com/BitcoinMagazine,Medias,Bitcoin
+https://bitpay.com/blog/bitcoin-nodes/,Full node,Bitcoin
+https://en.bitcoin.it/wiki/Transaction,Transaction,Bitcoin
+https://www.bitcoin.com/get-started/how-bitcoin-transactions-work/,Transaction,Bitcoin
+https://medium.datadriveninvestor.com/a-decomposition-of-the-bitcoin-block-header-data-driven-investor-e094ee3ff03f,Block,Bitcoin
+https://learnmeabitcoin.com/technical/cryptography/hash-function/,Hash,Bitcoin
+https://medium.com/blockchain/using-the-blockchain-api-to-determine-the-time-left-until-the-next-bitcoin-block-halving-10e2a170e75f,Block,Bitcoin
+https://river.com/learn/how-does-a-bitcoin-transaction-work/,Transaction,Bitcoin
+https://www.gemini.com/fr-fr/cryptopedia/what-is-block-in-blockchain-bitcoin-block-size,Block,Bitcoin
+https://learnmeabitcoin.com/beginners/guide/blocks/,Block,Bitcoin
+https://vitalik.eth.limo/general/2024/05/31/blocksize.html,Block,Bitcoin
+https://vitalik.eth.limo/general/2024/05/31/blocksize.html,Vitalik article,Bitcoin
+https://www.bitpanda.com/academy/en/lessons/what-is-a-hash-function-in-a-blockchain-transaction/,Hash,Bitcoin
+https://medium.com/@johnblocke/the-importance-of-clear-definitions-in-bitcoins-block-size-debate-f8ce550d0919,Block,Bitcoin
+https://support.ledger.com/fr/article/360017551659-zd,Full node,Bitcoin
