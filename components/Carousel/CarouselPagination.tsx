@@ -1,7 +1,7 @@
 "use client"; // Ajoutez cette directive en haut du fichier
 
 import * as React from "react";
-import { type CarouselApi } from "@/components/ui/carousel";
+import { type CarouselApi } from "@/components/ui/Carousel";
 
 interface CarouselPaginationProps {
   api: CarouselApi | undefined;

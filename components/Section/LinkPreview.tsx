@@ -1,8 +1,8 @@
 "use client"
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { StarRating } from "./starRating";  // Import du nouveau composant de notation
+import { Card, CardContent } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
+import { StarRating } from "./StarRating";  // Import du nouveau composant de notation
 import { RxExternalLink } from "react-icons/rx";
 import { VscBookmark } from "react-icons/vsc"; // Import de l'icône
 

@@ -1,8 +1,8 @@
 'use client';  // Notez bien la syntaxe exacte et placez cela sans commentaire
 
 import React, { useState, useCallback } from 'react';
-import { Button } from "@/components/ui/button";
-import { LinkPreview, PreviewData } from "@/components/LinkPreview";
+import { Button } from "@/components/ui/Button";
+import { LinkPreview, PreviewData } from "@/components/Section/LinkPreview";
 import { VscBellDot, VscShare } from "react-icons/vsc";
 import { Header } from "@/components/Header";
 

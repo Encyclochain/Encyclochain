@@ -3,7 +3,7 @@
 import * as React from "react";
 import Image from 'next/image';
 
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/Card";
 import { CarouselPagination } from "./CarouselPagination";
 import {
   Carousel,
@@ -12,7 +12,7 @@ import {
   CarouselNext,
   CarouselPrevious,
   type CarouselApi,
-} from "@/components/ui/carousel";
+} from "@/components/ui/Carousel";
 
 interface CarouselSizeProps {
   medias: Array<any>;
