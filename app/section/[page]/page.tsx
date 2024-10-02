@@ -1,7 +1,7 @@
 import prisma from "@/lib/db";
 import { Header } from "@/components/Header";
-import { Banner } from "@/components/Blockchains/Banner";
-import { Carousel_ImgTop } from "@/components/Carousel/Carousel_ImgTop";
+import { Banner } from "@/components/Section/Banner";
+import { Carousel_ImgTop } from "@/components/Carousel/CarouselImgTop";
 
 interface PageProps {
   params: { page: string };  // Utilise `params` pour récupérer le paramètre dynamique
@@ -66,7 +66,8 @@ async function getBlockchainData(page: string) {
 }
 
 export default async function Page({ params }: PageProps) {
-  const { page } = params;  // Récupère le paramètre `page` de l'URL
+  const page = decodeURIComponent(params.page);
+
 
   // Appelle la fonction pour obtenir les données de la blockchain
   const { sectionInfo, prisma_res } = await getBlockchainData(page);
