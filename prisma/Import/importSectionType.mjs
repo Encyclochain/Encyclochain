@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 
 // Fonction pour importer les topic depuis un CSV
 async function importtopicsFromCSV() {
-  const csvFilePath = './topics.csv'; // Chemin vers le fichier CSV
+  const csvFilePath = '../topics.csv'; // Chemin vers le fichier CSV
 
   const topics = []; // Tableau pour stocker les données du CSV
 

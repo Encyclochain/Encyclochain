@@ -65,8 +65,8 @@ export async function Carousel_ImgTop({ resources, color }: Carousel_ImgTopProps
           }))} {/* End of Promise.all */}
       </CarouselContent>
       {/* Carousel navigation buttons */}
-      <CarouselPrevious direction="prev" /> {/* Previous button */}
-      <CarouselNext direction="next" /> {/* Next button */}
+      <CarouselPrevious /> {/* Previous button */}
+      <CarouselNext  /> {/* Next button */}
     </Carousel>
   );
 }

@@ -22,7 +22,7 @@ model Section {
   title       String       @db.VarChar(255)
   description String?
   topicId     Int
-  topic       topic        @relation(fields: [topicId], references: [id])
+  topic       Topic        @relation(fields: [topicId], references: [id])
   sectionInfo SectionInfo?
   categories  Category[]   @relation("CategoryToSection")
   resources   Resource[]   @relation("SectionToResource")
@@ -43,7 +43,7 @@ model SectionInfo {
 model Category {
   id          Int        @id @default(autoincrement())
   createdAt   DateTime   @default(now()) @db.Timestamp(6)
-  title       String     @db.VarChar(255)
+  title       String     @unique @db.VarChar(255)
   description String?
   resources   Resource[] @relation("CategoryToResource")
   sections    Section[]  @relation("CategoryToSection")
@@ -71,7 +71,7 @@ model Type {
   Resource Resource[]
 }
 
-model topic {
+model Topic {
   id       Int       @id @default(autoincrement())
   title    String    @db.VarChar(255)
   sections Section[]

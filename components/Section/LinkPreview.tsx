@@ -9,6 +9,8 @@ import { VscBookmark } from "react-icons/vsc"; // Importing an unfilled bookmark
 import { PiBookmarkSimpleFill } from "react-icons/pi"; // Importing a filled bookmark icon
 import Image from "next/image"; // Importing Image from Next.js for optimized image handling
 
+
+
 // Defining the structure for the data that will be passed into the component
 export interface PreviewData {
   id: string;

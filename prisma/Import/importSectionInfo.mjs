@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 
 // Fonction pour importer les SectionInfo depuis un CSV
 async function importSectionInfoFromCSV() {
-  const csvFilePath = './sectionInfo.csv'; // Chemin vers le fichier CSV
+  const csvFilePath = '../sectionInfo.csv'; // Chemin vers le fichier CSV
 
   const sectionInfos = []; // Tableau pour stocker les données du CSV
 
@@ -32,9 +32,9 @@ async function importSectionInfoFromCSV() {
       try {
         // Pour chaque SectionInfo, on recherche la section correspondante et on crée le SectionInfo
         for (const { sectionTitle, color, imageLink, whitepaperLink, twitterLink, websiteLink } of sectionInfos) {
-          // Recherche de la section par son titre
-          const section = await prisma.section.findUnique({
-            where: { title: sectionTitle },
+          // Recherche de la section par son titre avec findFirst au lieu de findUnique
+          const section = await prisma.section.findFirst({
+            where: { title: sectionTitle }, // findFirst permet de rechercher par critère non unique
           });
 
           // Si la section existe, on crée le SectionInfo lié

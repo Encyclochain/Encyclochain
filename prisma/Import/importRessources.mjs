@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 
 // Fonction pour importer les ressources depuis un CSV
 async function importResourcesFromCSV() {
-  const csvFilePath = './resources.csv'; // Chemin vers le fichier CSV
+  const csvFilePath = '../resources.csv'; // Chemin vers le fichier CSV
 
   const resources = []; // Tableau pour stocker les données du CSV
 
@@ -16,25 +16,34 @@ async function importResourcesFromCSV() {
   fs.createReadStream(csvFilePath)
     .pipe(parse({ headers: true })) // Lecture du CSV avec en-tête
     .on('data', (row) => {
-      resources.push({
-        link: row.Link,
-        categoryTitle: row.Category,
-        sectionTitle: row.Section,
-      });
+      const link = row.Link?.trim();  // Vérifie que la colonne Link existe et est propre
+      const categoryTitle = row.Category?.trim();  // Vérifie que la colonne Category existe et est propre
+      const sectionTitle = row.Section?.trim();  // Vérifie que la colonne Section existe et est propre
+
+      // Ajout uniquement si toutes les données sont présentes
+      if (link && categoryTitle && sectionTitle) {
+        resources.push({
+          link,
+          categoryTitle,
+          sectionTitle,
+        });
+      } else {
+        console.warn(`Données manquantes ou invalides pour la ressource : Link="${link}", Category="${categoryTitle}", Section="${sectionTitle}"`);
+      }
     })
     .on('end', async () => {
-      console.log(`Import de ${resources.length} ressources depuis ${csvFilePath}`);
+      console.log(`Import de ${resources.length} ressources valides depuis ${csvFilePath}`);
 
       try {
         // Pour chaque ressource, on recherche la section et la catégorie correspondantes et on crée la ressource
         for (const { link, categoryTitle, sectionTitle } of resources) {
           // Recherche de la section par son titre
-          const section = await prisma.section.findUnique({
+          const section = await prisma.section.findFirst({
             where: { title: sectionTitle },
           });
 
           // Recherche de la catégorie par son titre
-          const category = await prisma.category.findUnique({
+          const category = await prisma.category.findFirst({
             where: { title: categoryTitle },
           });
 
@@ -73,4 +82,3 @@ async function importResourcesFromCSV() {
 
 // Exécution du programme
 importResourcesFromCSV();
-

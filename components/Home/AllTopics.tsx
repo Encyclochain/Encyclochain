@@ -12,7 +12,7 @@ import Image from "next/image";  // Import Image component from Next.js
 
 // Function to retrieve sections grouped by their type from the database using Prisma
 export async function getSectionsGroupedByType() {
-  return await prisma.topic.findMany({
+  return await prisma.Topic.findMany({
     select: {
       id: true,  // Retrieve section type ID
       title: true,  // Retrieve section type title (e.g., "Layer 1")

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 async function gettopics() {
   try {
     // Fetching topics from the database
-    const topics = await prisma.topic.findMany({
+    const topics = await prisma.Topic.findMany({
       select: {
         id: true, // Selecting the 'id' field
         title: true, // Selecting the 'title' field

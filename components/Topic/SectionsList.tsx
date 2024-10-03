@@ -26,7 +26,7 @@ interface Section {
 // Typing for topic, which groups sections
 interface topic {
   id: number;  // topic ID
-  title: string;  // Title of the section type
+  title: string;  // Title of the topic
   sections: Section[];  // Array of sections under this type
 }
 
@@ -37,12 +37,12 @@ interface SectionSelectProps {
 
 // Function to retrieve sections grouped by type using Prisma
 async function getSectionsGroupedByType(page: string): Promise<topic | null> {
-  const topic = await prisma.topic.findFirst({
+  const topic = await prisma.Topic.findFirst({
     where: { title: page }, // Filter by the page title
     select: {
-      id: true,  // Select section type ID
-      title: true,  // Select section type title
-      sections: {  // Select sections within this section type
+      id: true,  // Select topic ID
+      title: true,  // Select topic title
+      sections: {  // Select sections within this topic
         select: {
           id: true,  // Select section ID
           title: true,  // Select section title
@@ -71,7 +71,7 @@ export default async function SectionSelect({ page }: SectionSelectProps) {
 
   return (
     <div className="mt-[5%] mb-[5%] p-[50px] w-full">
-      {/* Display the title of the section type */}
+      {/* Display the title of the topic */}
       <h2 className="text-3xl font-bold text-black mb-6 lg:text-left text-center">
         {topic.title}
       </h2>
