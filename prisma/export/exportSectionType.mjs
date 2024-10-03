@@ -6,29 +6,29 @@ import { format } from '@fast-csv/format';
 // Initialisation de Prisma Client
 const prisma = new PrismaClient();
 
-// Fonction principale pour exporter les SectionType dans un CSV
-async function exportSectionTypeToCSV() {
+// Fonction principale pour exporter les topic dans un CSV
+async function exporttopicToCSV() {
   try {
-    // Récupération des noms des SectionType depuis la base de données
-    const sectionTypes = await prisma.sectionType.findMany({
+    // Récupération des noms des topic depuis la base de données
+    const topics = await prisma.topic.findMany({
       select: {
-        title: true, // On ne sélectionne que les titres des SectionType
+        title: true, // On ne sélectionne que les titres des topic
       },
     });
 
     // Chemin du fichier CSV
-    const csvFilePath = './sectionTypes.csv';
+    const csvFilePath = './topics.csv';
 
     // Création d'un flux d'écriture vers le fichier CSV
-    const csvStream = format({ headers: ['SectionType'] }); // Ajout d'en-tête "SectionType"
+    const csvStream = format({ headers: ['topic'] }); // Ajout d'en-tête "topic"
     const writableStream = fs.createWriteStream(csvFilePath);
 
     // Connexion du flux au fichier
     csvStream.pipe(writableStream).on('end', () => process.exit());
 
-    // Ajout de chaque titre de SectionType au fichier CSV
-    sectionTypes.forEach((sectionType) => {
-      csvStream.write([sectionType.title]);
+    // Ajout de chaque titre de topic au fichier CSV
+    topics.forEach((topic) => {
+      csvStream.write([topic.title]);
     });
 
     // Fin du flux
@@ -36,7 +36,7 @@ async function exportSectionTypeToCSV() {
 
     console.log(`Export réussi. Fichier CSV créé : ${csvFilePath}`);
   } catch (error) {
-    console.error('Erreur lors de l\'exportation des SectionType :', error);
+    console.error('Erreur lors de l\'exportation des topic :', error);
   } finally {
     // Fermeture du client Prisma
     await prisma.$disconnect();
@@ -44,4 +44,4 @@ async function exportSectionTypeToCSV() {
 }
 
 // Exécution du programme
-exportSectionTypeToCSV();
+exporttopicToCSV();

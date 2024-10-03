@@ -6,63 +6,67 @@ import {
   CarouselPrevious,
 } from "@/components/ui/Carousel";
 
-// Imports pour l'utilisation de link preview
-import { LinkPreview, PreviewData } from "../Section/LinkPreview";
-import { extractMetaTags } from "@/lib/extractMeta";
+// Imports for link preview usage
+import { LinkPreview, PreviewData } from "../Section/LinkPreview"; // Import the LinkPreview component for rendering previews
+import { extractMetaTags } from "@/lib/extractMeta"; // Import function to extract metadata from links
 
 interface Carousel_ImgTopProps {
-  resources: Array<any>;
-  color: string;  // Ajout de la couleur comme prop
+  resources: Array<any>; // The array of resources to be displayed in the carousel
+  color: string;  // Adding a color prop to style the link preview components
 }
 
+// Carousel_ImgTop component that renders the media previews in a carousel
 export async function Carousel_ImgTop({ resources, color }: Carousel_ImgTopProps) {
   return (
     <Carousel
       opts={{
-        align: "start",
+        align: "start", // Align carousel items to the start
       }}
-      className="w-[80%] max-sm:w-[90%]"
+      className="w-[80%] max-sm:w-[90%]" // Responsive width adjustments for different screen sizes
     >
-      <CarouselContent className="gap-[8%] max-sm:pl-0">
-        {// Async map pour demander des données de preview pour chaque lien
+      <CarouselContent className="gap-[8%] max-sm:pl-0"> {/* Carousel content container with spacing */}
+        {// Using async map to fetch preview data for each link
           await Promise.all(resources.map(async (res) => {
             var data = null;
 
-            // Données par défaut si aucune donnée valide n'est trouvée
+            // Default data in case no valid preview data is found
             var formatData: PreviewData = {
-              title: "No title",
-              description: "No description",
-              image: "nopic",
+              title: "No title", // Default title if none is found
+              description: "No description", // Default description
+              image: "nopic", // Default image placeholder
               url: "",
               id: ""
             };
 
             try {
+              // Fetch the metadata from the link
               data = await extractMetaTags(res.link);
               if (!data || data === null) {
-                return null;
+                return null; // Skip rendering if no data is found
               }
 
-              // Si les données reçues sont correctes, copie-les dans formatData
+              // Copy the extracted data into the formatData object
               formatData.title = data.title;
               formatData.description = data.description;
               formatData.image = data.image;
               formatData.url = res.link;
             } catch (e) {
-              console.error("Carousel error : ", e);
+              console.error("Carousel error : ", e); // Handle errors during metadata extraction
               return null;
             }
 
+            // Render each resource in a CarouselItem
             return (
               <CarouselItem key={res.id} className="md:basis-1/2 lg:basis-1/3 h-[100%] pr-[5%] flex items-center font-poppins">
-                {/* Passer la couleur au composant LinkPreview */}
+                {/* Pass the preview data and color to the LinkPreview component */}
                 <LinkPreview data={formatData} color={color} />
               </CarouselItem>
             );
-          }))} {/* Fermeture du Promise.all */}
+          }))} {/* End of Promise.all */}
       </CarouselContent>
-      <CarouselPrevious direction="prev" />
-      <CarouselNext direction="next" />
+      {/* Carousel navigation buttons */}
+      <CarouselPrevious direction="prev" /> {/* Previous button */}
+      <CarouselNext direction="next" /> {/* Next button */}
     </Carousel>
   );
 }

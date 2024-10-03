@@ -6,27 +6,27 @@ import { format } from '@fast-csv/format';
 // Initialisation de Prisma Client
 const prisma = new PrismaClient();
 
-// Fonction principale pour exporter les Sections et leurs SectionTypes dans un CSV
+// Fonction principale pour exporter les Sections et leurs topics dans un CSV
 async function exportSectionsToCSV() {
   try {
-    // Récupération des sections avec leur sectionType associé
+    // Récupération des sections avec leur topic associé
     const sections = await prisma.section.findMany({
       select: {
         title: true,         // Titre de la section
-        sectionType: {       // Type de la section
+        topic: {       // Type de la section
           select: {
-            title: true,     // Titre du SectionType
+            title: true,     // Titre du topic
           },
         },
       },
     });
 
     // Chemin du fichier CSV
-    const csvFilePath = './sections_with_sectionType.csv';
+    const csvFilePath = './sections_with_topic.csv';
 
     // Création d'un flux d'écriture vers le fichier CSV
     const csvStream = format({
-      headers: ['SectionTitle', 'SectionTypeTitle'], // En-têtes du fichier CSV
+      headers: ['SectionTitle', 'topicTitle'], // En-têtes du fichier CSV
     });
     const writableStream = fs.createWriteStream(csvFilePath);
 
@@ -37,7 +37,7 @@ async function exportSectionsToCSV() {
     sections.forEach((section) => {
       csvStream.write([
         section.title,                // Titre de la section
-        section.sectionType.title,    // Titre du SectionType lié
+        section.topic.title,    // Titre du topic lié
       ]);
     });
 

@@ -6,26 +6,26 @@ import { parse } from '@fast-csv/parse';
 // Initialisation de Prisma Client
 const prisma = new PrismaClient();
 
-// Fonction pour importer les SectionType depuis un CSV
-async function importSectionTypesFromCSV() {
-  const csvFilePath = './sectionTypes.csv'; // Chemin vers le fichier CSV
+// Fonction pour importer les topic depuis un CSV
+async function importtopicsFromCSV() {
+  const csvFilePath = './topics.csv'; // Chemin vers le fichier CSV
 
-  const sectionTypes = []; // Tableau pour stocker les données du CSV
+  const topics = []; // Tableau pour stocker les données du CSV
 
   // Lire et parser le fichier CSV
   fs.createReadStream(csvFilePath)
     .pipe(parse({ headers: true })) // Lecture du CSV avec en-tête
     .on('data', (row) => {
-      // Ajoute chaque SectionType à la liste
-      sectionTypes.push(row.SectionType);
+      // Ajoute chaque topic à la liste
+      topics.push(row.topic);
     })
     .on('end', async () => {
-      console.log(`Import de ${sectionTypes.length} SectionTypes depuis ${csvFilePath}`);
+      console.log(`Import de ${topics.length} topics depuis ${csvFilePath}`);
 
       // Insertion dans la base de données
       try {
-        for (const title of sectionTypes) {
-          await prisma.sectionType.create({
+        for (const title of topics) {
+          await prisma.topic.create({
             data: {
               title, // Ajout du titre à la base de données
             },
@@ -34,7 +34,7 @@ async function importSectionTypesFromCSV() {
         }
         console.log('Import réussi.');
       } catch (error) {
-        console.error('Erreur lors de l\'importation des SectionTypes :', error);
+        console.error('Erreur lors de l\'importation des topics :', error);
       } finally {
         await prisma.$disconnect();
       }
@@ -45,4 +45,4 @@ async function importSectionTypesFromCSV() {
 }
 
 // Exécution du programme
-importSectionTypesFromCSV();
+importtopicsFromCSV();

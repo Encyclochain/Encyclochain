@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 
 // Fonction pour importer les Sections depuis un CSV
 async function importSectionsFromCSV() {
-  const csvFilePath = './sections_with_sectionType.csv'; // Chemin vers le fichier CSV
+  const csvFilePath = './sections_with_topic.csv'; // Chemin vers le fichier CSV
 
   const sections = []; // Tableau pour stocker les données du CSV
 
@@ -18,31 +18,31 @@ async function importSectionsFromCSV() {
     .on('data', (row) => {
       sections.push({
         sectionTitle: row.SectionTitle,       // Titre de la section
-        sectionTypeTitle: row.SectionTypeTitle, // Titre du SectionType lié
+        topicTitle: row.topicTitle, // Titre du topic lié
       });
     })
     .on('end', async () => {
       console.log(`Import de ${sections.length} Sections depuis ${csvFilePath}`);
 
       try {
-        // Pour chaque section, recherche du SectionType et création de la Section
-        for (const { sectionTitle, sectionTypeTitle } of sections) {
-          // Recherche du SectionType par son titre
-          const sectionType = await prisma.sectionType.findUnique({
-            where: { title: sectionTypeTitle },
+        // Pour chaque section, recherche du topic et création de la Section
+        for (const { sectionTitle, topicTitle } of sections) {
+          // Recherche du topic par son titre
+          const topic = await prisma.topic.findUnique({
+            where: { title: topicTitle },
           });
 
-          // Si le SectionType existe, on crée la section
-          if (sectionType) {
+          // Si le topic existe, on crée la section
+          if (topic) {
             await prisma.section.create({
               data: {
                 title: sectionTitle,            // Titre de la section
-                sectionTypeId: sectionType.id,  // Lien avec le SectionType
+                topicId: topic.id,  // Lien avec le topic
               },
             });
-            console.log(`Ajouté : Section "${sectionTitle}" liée à SectionType "${sectionTypeTitle}"`);
+            console.log(`Ajouté : Section "${sectionTitle}" liée à topic "${topicTitle}"`);
           } else {
-            console.warn(`SectionType "${sectionTypeTitle}" introuvable pour la section "${sectionTitle}"`);
+            console.warn(`topic "${topicTitle}" introuvable pour la section "${sectionTitle}"`);
           }
         }
 
