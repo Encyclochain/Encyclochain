@@ -1,8 +1,9 @@
+// app/layout.tsx
 import "./globals.css"; // Global CSS file
 import type { Metadata } from "next"; // Import Metadata type for Next.js
 
-import Sidebar from "@/components/Layout/SidebarMenu"; // Sidebar component for layout
 import prisma from "@/lib/db"; // Importing Prisma client to fetch data
+import Providers from "@/components/Providers"; // Import the Providers component
 
 // Metadata configuration for the page
 export const metadata: Metadata = {
@@ -36,15 +37,11 @@ export default async function RootLayout({
   const topics = await gettopics(); // Fetch topics data from Prisma
 
   return (
-    <html lang="fr"> {/* Set the language of the page to French */}
-      <body className="h-screen flex overflow-hidden"> {/* Full height layout, flexbox for Sidebar and content */}
-        {/* Sidebar always visible, passing fetched topics as props */}
-        <Sidebar topics={topics} /> 
-        
-        <div className="flex-1 flex flex-col overflow-y-auto"> {/* Main content area, scrollable */}
-          {/* Render child components */}
+    <html lang="fr">
+      <body className="h-screen flex overflow-hidden">
+        <Providers topics={topics}>
           {children}
-        </div>
+        </Providers>
       </body>
     </html>
   );

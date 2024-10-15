@@ -46,18 +46,17 @@ export async function Alltopics() {
           <h2 className="text-3xl font-bold text-black mb-6 lg:text-left text-center">
             {topic.title}
           </h2>
-          
+
           {/* Render a table for each section type */}
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="py-2">Image</TableHead>  {/* Header for image column */}
-                <TableHead className="py-2">Titre</TableHead>  {/* Header for title column */}
-                <TableHead className="py-2">Colonne 3</TableHead>  {/* Placeholder column 3 */}
-                <TableHead className="py-2">Colonne 4</TableHead>  {/* Placeholder column 4 */}
+                <TableHead className="py-2">Section</TableHead>  {/* En-tête pour la colonne combinée */}
+                <TableHead className="py-2">Colonne 2</TableHead>  {/* Colonne de remplacement 2 */}
+                <TableHead className="py-2">Colonne 3</TableHead>  {/* Colonne de remplacement 3 */}
               </TableRow>
             </TableHeader>
-            
+
             {/* Loop through sections of the current section type */}
             <TableBody>
               {topic.sections.map((section) => (
@@ -66,25 +65,23 @@ export async function Alltopics() {
                     href={`/section/${section.title}`}  // Link to section page
                     className="contents text-black hover:bg-gray-100"
                   >
-                    {/* Image cell */}
+                    {/* Cellule combinée pour l'image et le titre */}
                     <TableCell className="py-2">
-                      <div className="w-[60px] h-[60px] relative">
-                        <Image
-                          src={section.sectionInfo?.imageLink || ""}  // Fallback to an empty string if imageLink is missing
-                          alt={`Logo ${section.title}`}  // Alt text for the image
-                          layout="fill"
-                          objectFit="contain"
-                          className="dark:invert"  // Invert the image colors in dark mode
-                        />
+                      <div className="flex items-center">
+                        <div className="w-[60px] h-[60px] relative mr-4">
+                          <Image
+                            src={section.sectionInfo?.imageLink || ""}  // Fallback to an empty string if imageLink is missing
+                            alt={`Logo ${section.title}`}  // Alt text for the image
+                            layout="fill"
+                            objectFit="contain"
+                            className="dark:invert"  // Invert the image colors in dark mode
+                          />
+                        </div>
+                        <span className="text-base font-semibold">{section.title}</span>
                       </div>
                     </TableCell>
 
-                    {/* Section title cell */}
-                    <TableCell className="py-2">
-                      <span className="text-base font-semibold">{section.title}</span>
-                    </TableCell>
-
-                    {/* Placeholder cells for future data */}
+                    {/* Cellules de remplacement pour les futures données */}
                     <TableCell className="py-2">À définir</TableCell>  {/* Placeholder for third column */}
                     <TableCell className="py-2">À définir</TableCell>  {/* Placeholder for fourth column */}
                   </Link>
