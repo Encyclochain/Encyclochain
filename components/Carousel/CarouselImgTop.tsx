@@ -1,22 +1,13 @@
-// components/Carousel/Carousel_ImgTop.tsx
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@/components/ui/Carousel';
-
-import LinkPreview from '../Section/LinkPreview';
 import { PreviewData } from '@/types';
 import { extractMetaTags } from '@/lib/extractMeta';
+import LinkPreview from '../Section/LinkPreview';
 
-interface Carousel_ImgTopProps {
+interface ResourceTableProps {
   resources: Array<any>;
   color: string;
 }
 
-export default async function Carousel_ImgTop({ resources, color }: Carousel_ImgTopProps) {
+export default async function ResourceTable({ resources, color }: ResourceTableProps) {
   const formattedDataList: PreviewData[] = [];
 
   await Promise.all(
@@ -45,30 +36,20 @@ export default async function Carousel_ImgTop({ resources, color }: Carousel_Img
 
         formattedDataList.push(formatData);
       } catch (e) {
-        console.error('Carousel error : ', e);
+        console.error('Resource Table error : ', e);
       }
     })
   );
 
   return (
-    <Carousel
-      opts={{
-        align: 'start',
-      }}
-      className="w-[80%] max-sm:w-[90%]"
-    >
-      <CarouselContent className="gap-[8%] max-sm:pl-0">
+    <div className="w-[100%] max-sm:w-[70%]">
+      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 list-none p-0">
         {formattedDataList.map((formatData) => (
-          <CarouselItem
-            key={formatData.id}
-            className="lg:basis-1/2 xl:basis-1/3 h-[100%] pr-[5%] flex items-center font-poppins"
-          >
+          <li key={formatData.id} className="font-poppins">
             <LinkPreview data={formatData} color={color} />
-          </CarouselItem>
+          </li>
         ))}
-      </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
-    </Carousel>
+      </ul>
+    </div>
   );
 }
