@@ -67,8 +67,8 @@ export function Carousel_ImgLeft({ books }: Carousel_ImgLeftProps) {
         ))}
       </CarouselContent>
       {/* Carousel navigation buttons */}
-      <CarouselPrevious /> {/* Previous button */}
-      <CarouselNext /> {/* Next button */}
+      <CarouselPrevious /> {/* Previous Button */}
+      <CarouselNext /> {/* Next Button */}
       <CarouselPagination api={api} /> {/* Pagination component */}
     </Carousel>
   );

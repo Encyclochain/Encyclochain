@@ -44,12 +44,12 @@ function SidebarMenu({ topics }: SidebarMenuProps) {
         {/* Sidebar navigation */}
         <nav className="flex-grow relative">
           {/* Button to toggle the sidebar open/close */}
-          <button
+          <Button
             onClick={() => setIsOpen(!isOpen)}  // Toggle sidebar state on click
             className="absolute top-1/2 -right-8 transform -translate-y-1/2 text-white focus:outline-none bg-[#111213] rounded-r-full p-2"
           >
             {isOpen ? <AiOutlineLeft size={24} /> : <AiOutlineRight size={24} />}  {/* Icon changes based on state */}
-          </button>
+          </Button>
 
           <ul className="mt-4 space-y-4 mb-[20px]">
             {/* User profile section */}
@@ -105,9 +105,9 @@ function SidebarMenu({ topics }: SidebarMenuProps) {
           </ul>
         </nav>
 
-        {/* Bottom button */}
+        {/* Bottom Button */}
         <div className={`mt-2 ${isOpen ? "flex-row" : "flex-col"} flex gap-1 w-full`}>
-          {/* Home button in footer */}
+          {/* Home Button in footer */}
           <Button className="flex-1 py-1 px-1 bg-transparent hover:bg-gray-700">
             <AiOutlineHome size={18} className="text-white" />
           </Button>

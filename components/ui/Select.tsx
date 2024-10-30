@@ -36,7 +36,7 @@ const SelectTrigger = React.forwardRef<
 ))
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName
 
-// Scroll up button for long lists inside the dropdown
+// Scroll up Button for long lists inside the dropdown
 const SelectScrollUpButton = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.ScrollUpButton>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollUpButton>
@@ -44,7 +44,7 @@ const SelectScrollUpButton = React.forwardRef<
   <SelectPrimitive.ScrollUpButton
     ref={ref}
     className={cn(
-      "flex cursor-default items-center justify-center py-1", // Basic styling for the scroll up button
+      "flex cursor-default items-center justify-center py-1", // Basic styling for the scroll up Button
       className
     )}
     {...props}
@@ -54,7 +54,7 @@ const SelectScrollUpButton = React.forwardRef<
 ))
 SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName
 
-// Scroll down button for long lists inside the dropdown
+// Scroll down Button for long lists inside the dropdown
 const SelectScrollDownButton = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.ScrollDownButton>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollDownButton>
@@ -62,7 +62,7 @@ const SelectScrollDownButton = React.forwardRef<
   <SelectPrimitive.ScrollDownButton
     ref={ref}
     className={cn(
-      "flex cursor-default items-center justify-center py-1", // Basic styling for the scroll down button
+      "flex cursor-default items-center justify-center py-1", // Basic styling for the scroll down Button
       className
     )}
     {...props}
@@ -90,7 +90,7 @@ const SelectContent = React.forwardRef<
       position={position}
       {...props}
     >
-      <SelectScrollUpButton /> {/* Include scroll up button */}
+      <SelectScrollUpButton /> {/* Include scroll up Button */}
       <SelectPrimitive.Viewport
         className={cn(
           "p-1",
@@ -100,7 +100,7 @@ const SelectContent = React.forwardRef<
       >
         {children} {/* Render the dropdown items */}
       </SelectPrimitive.Viewport>
-      <SelectScrollDownButton /> {/* Include scroll down button */}
+      <SelectScrollDownButton /> {/* Include scroll down Button */}
     </SelectPrimitive.Content>
   </SelectPrimitive.Portal>
 ))

@@ -1,3 +1,4 @@
+
 import prisma from "@/lib/db";  // Import the Prisma client for database access
 import Link from "next/link";  // Import Link component for navigation
 import {
@@ -40,14 +41,12 @@ export async function Alltopics() {
   return (
     <div className="mt-[5%] mb-[5%] p-[50px] w-full">
       {/* Loop through each section type */}
-      {topics.map((topic) => (
-        <div key={topic.id} className="mb-8">
+      {topics.map((Topic) => (
+        <div key={Topic.id} className="mb-8">
           {/* Display the section type title */}
           <h2 className="text-3xl font-bold text-black mb-6 lg:text-left text-center">
-            {topic.title}
+            {Topic.title}
           </h2>
-
-          {/* Render a table for each section type */}
           <Table>
             <TableHeader>
               <TableRow>
@@ -56,35 +55,30 @@ export async function Alltopics() {
                 <TableHead className="py-2">Colonne 3</TableHead>  {/* Colonne de remplacement 3 */}
               </TableRow>
             </TableHeader>
-
-            {/* Loop through sections of the current section type */}
             <TableBody>
-              {topic.sections.map((section) => (
-                <TableRow key={section.id}>
-                  <Link
-                    href={`/section/${section.title}`}  // Link to section page
+              {Topic.sections.map((Section) => (
+                <TableRow key={Section.id}>
+                  <TableCell className="py-2">
+                    <Link
+                    href={`/section/${Section.title}`}  // Link to section page
                     className="contents text-black hover:bg-gray-100"
-                  >
-                    {/* Cellule combinée pour l'image et le titre */}
-                    <TableCell className="py-2">
+                  >  
                       <div className="flex items-center">
                         <div className="w-[60px] h-[60px] relative mr-4">
                           <Image
-                            src={section.sectionInfo?.imageLink || ""}  // Fallback to an empty string if imageLink is missing
-                            alt={`Logo ${section.title}`}  // Alt text for the image
-                            layout="fill"
-                            objectFit="contain"
-                            className="dark:invert"  // Invert the image colors in dark mode
+                            src={Section.sectionInfo?.imageLink || ""}  // Fallback to an empty string if imageLink is missing
+                            alt={`Logo ${Section.title}`}  // Alt text for the image
+                            width={60}
+                            height={60}
+                            style={{ objectFit: 'cover' }} // Invert the image colors in dark mode
                           />
                         </div>
-                        <span className="text-base font-semibold">{section.title}</span>
+                        <div className="text-base font-semibold">{Section.title}</div>
                       </div>
+                      </Link>
                     </TableCell>
-
-                    {/* Cellules de remplacement pour les futures données */}
                     <TableCell className="py-2">À définir</TableCell>  {/* Placeholder for third column */}
                     <TableCell className="py-2">À définir</TableCell>  {/* Placeholder for fourth column */}
-                  </Link>
                 </TableRow>
               ))}
             </TableBody>

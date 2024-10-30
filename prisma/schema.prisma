@@ -7,21 +7,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id            Int        @id @default(autoincrement())
-  name          String     @db.VarChar(255)
-  wallet        String     @db.VarChar(255)
-  createdAt     DateTime   @default(now()) @db.Timestamp(6)
-  verified      Boolean    @default(false)
-  contributions Resource[]
+model Topic {
+  id        Int        @id @default(autoincrement())
+  title     String     @db.VarChar(255)
+  chapters  Chapter[]
+  sections  Section[]
+  topicInfo TopicInfo?
+}
+
+model TopicInfo {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now()) @db.Timestamp(6)
+  relevance   String?  @db.VarChar(255)
+  websiteLink String?  @db.VarChar(255)
+  topicId     Int      @unique
+  topic       Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
 }
 
 model Section {
   id          Int          @id @default(autoincrement())
   createdAt   DateTime     @default(now()) @db.Timestamp(6)
   title       String       @db.VarChar(255)
-  description String?
   topicId     Int
+  chapters    Chapter[]
   topic       Topic        @relation(fields: [topicId], references: [id])
   sectionInfo SectionInfo?
   categories  Category[]   @relation("CategoryToSection")
@@ -31,32 +39,33 @@ model Section {
 model SectionInfo {
   id             Int      @id @default(autoincrement())
   createdAt      DateTime @default(now()) @db.Timestamp(6)
-  color          String   @db.VarChar(255)
-  imageLink      String
+  color          String?  @db.VarChar(255)
+  imageLink      String?
   whitepaperLink String?  @db.VarChar(255)
   twitterLink    String?  @db.VarChar(255)
   websiteLink    String?  @db.VarChar(255)
+  consensus      String?  @db.VarChar(255)
+  creator        String?  @db.VarChar(255)
+  tvl            String?  @db.VarChar(255)
+  blockTime      String?  @db.VarChar(255)
+  creationDate   String?  @db.VarChar(255)
   sectionId      Int      @unique
   section        Section  @relation(fields: [sectionId], references: [id], onUpdate: NoAction)
 }
 
 model Category {
-  id          Int        @id @default(autoincrement())
-  createdAt   DateTime   @default(now()) @db.Timestamp(6)
-  title       String     @unique @db.VarChar(255)
-  description String?
-  resources   Resource[] @relation("CategoryToResource")
-  sections    Section[]  @relation("CategoryToSection")
+  id        Int        @id @default(autoincrement())
+  createdAt DateTime   @default(now()) @db.Timestamp(6)
+  title     String     @unique @db.VarChar(255)
+  resources Resource[] @relation("CategoryToResource")
+  sections  Section[]  @relation("CategoryToSection")
 }
 
 model Resource {
   id            Int             @id @default(autoincrement())
   createdAt     DateTime        @default(now()) @db.Timestamp(6)
-  updatedAt     DateTime        @default(now())
-  title         String?         @db.VarChar(255)
-  description   String?
+  updatedAt     DateTime        @updatedAt
   link          String
-  imagelink     String?         @db.VarChar(255)
   authorId      Int
   typeId        Int
   author        User            @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -66,16 +75,19 @@ model Resource {
   sections      Section[]       @relation("SectionToResource")
 }
 
+model User {
+  id            Int        @id @default(autoincrement())
+  name          String     @db.VarChar(255)
+  wallet        String     @db.VarChar(255)
+  createdAt     DateTime   @default(now()) @db.Timestamp(6)
+  verified      Boolean    @default(false)
+  contributions Resource[]
+}
+
 model Type {
   id       Int        @id @default(autoincrement())
   title    String     @db.VarChar(255)
   Resource Resource[]
-}
-
-model Topic {
-  id       Int       @id @default(autoincrement())
-  title    String    @db.VarChar(255)
-  sections Section[]
 }
 
 model Watchlist {
@@ -92,4 +104,14 @@ model WatchlistItem {
   watchlistId Int
   Resource    Resource  @relation(fields: [resourceId], references: [id], onDelete: Cascade)
   Watchlist   Watchlist @relation(fields: [watchlistId], references: [id], onDelete: Cascade)
+}
+
+model Chapter {
+  id          Int     @id @default(autoincrement())
+  title       String  @db.VarChar(255)
+  description String?
+  sectionId   Int
+  topicId     Int?
+  section     Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  topic       Topic?  @relation(fields: [topicId], references: [id])
 }

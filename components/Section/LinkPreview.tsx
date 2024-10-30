@@ -12,7 +12,7 @@ import { PreviewData } from '../../types';
 // import Image from 'next/image'; // Supprimé
 
 // Importation du contexte des watchlists
-import { useWatchlist } from '../../contexts/WatchlistContext';
+import { useWatchlist } from '@/components/Watchlist/WatchlistContext';
 
 // Importation de la modale pour créer une nouvelle watchlist
 import WatchlistModal from '@/components/Watchlist/NewWatchlistModal';
@@ -83,7 +83,7 @@ export default function LinkPreview({
                   <p className="text-xs text-gray-500">5 min read</p>
                 </div>
                 {/* Bouton Watchlist */}
-                <button
+                <Button
                   className="text-gray-700 hover:text-gray-900 focus:outline-none"
                   onClick={(e) => {
                     e.preventDefault();
@@ -95,7 +95,7 @@ export default function LinkPreview({
                   ) : (
                     <VscBookmark size={20} color={color} />
                   )}
-                </button>
+                </Button>
               </div>
 
               {/* Titre et Description */}

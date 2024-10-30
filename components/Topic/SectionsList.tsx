@@ -75,7 +75,6 @@ export default async function SectionSelect({ page }: SectionSelectProps) {
       <h2 className="text-3xl font-bold text-black mb-6 lg:text-left text-center">
         {topic.title}
       </h2>
-      {/* Table structure for displaying sections */}
       <Table>
         <TableHeader>
           <TableRow>
@@ -86,15 +85,13 @@ export default async function SectionSelect({ page }: SectionSelectProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {/* Mapping through the sections and rendering a row for each */}
           {topic.sections.map((section: Section) => (
             <TableRow key={section.id}>
-              <Link
+              <TableCell className="py-2">
+                <Link
                 href={`/section/${section.title}`}  // Link to the section's page
                 className="contents text-black hover:bg-gray-100"  // Styling for the link
               >
-                {/* Section image (if available), otherwise an empty string */}
-                <TableCell className="py-2">
                   <div className="w-[60px] h-[60px] relative">
                     <Image
                       src={section.sectionInfo?.imageLink || ""}  // Fallback to an empty string if no imageLink
@@ -104,6 +101,7 @@ export default async function SectionSelect({ page }: SectionSelectProps) {
                       className="dark:invert"  // Invert colors in dark mode
                     />
                   </div>
+                  </Link>
                 </TableCell>
                 {/* Section title */}
                 <TableCell className="py-2">
@@ -112,7 +110,6 @@ export default async function SectionSelect({ page }: SectionSelectProps) {
                 {/* Placeholder columns for future content */}
                 <TableCell className="py-2">À définir</TableCell>
                 <TableCell className="py-2">À définir</TableCell>
-              </Link>
             </TableRow>
           ))}
         </TableBody>

@@ -2,13 +2,16 @@ import { Social } from "./Social"; // Importing the Social component to display 
 import Link from "next/link"; // Importing Link component from Next.js for client-side navigation
 import { CircleArrowLeft } from "lucide-react"; // Importing an icon from lucide-react
 
+
 // Header component with dynamic styling (design) and optional back arrow (showArrow)
 export function Header({
   design, // Custom design/styles passed as a string for the container
   showArrow = false, // Optional prop to show a back arrow, defaults to false
+  pageTitle,
 }: {
   design: string; // Type for design is a string
   showArrow?: boolean; // showArrow is optional and defaults to false
+  pageTitle: string; 
 }) {
   return (
     // Apply dynamic styles using the design prop
@@ -26,7 +29,7 @@ export function Header({
 
       {/* Title displayed in the center of the header, hidden on small screens */}
       <p className="font-garamond text-gray-900 font-serif text-3xl w-full text-center font-medium normal-case not-italic no-underline leading-tight tracking-tighter max-lg:hidden">
-        Blockchains encyclopedia
+      {pageTitle}
       </p>
 
       {/* Social media icons section using the Social component */}

@@ -2,7 +2,7 @@
 'use client';
 
 import React from 'react';
-import { WatchlistProvider } from '../contexts/WatchlistContext'; // Ajustez le chemin si nécessaire
+import { WatchlistProvider } from '@/components/Watchlist/WatchlistContext'; // Ajustez le chemin si nécessaire
 import SidebarMenu from './Layout/SidebarMenu'; // Ajustez le chemin si nécessaire
 
 interface ProvidersProps {

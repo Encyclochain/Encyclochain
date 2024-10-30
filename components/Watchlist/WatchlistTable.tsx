@@ -19,12 +19,12 @@ const WatchlistTable = ({ previewData, onRemove }: WatchlistTableProps) => {
                     {previewData.map(article => (
                         <div key={article.id} className="relative">
                             <LinkPreview data={article} color="#F7931A" />
-                            <button
+                            <Button
                                 onClick={() => onRemove(article.id)}
                                 className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded"
                             >
                                 Retirer
-                            </button>
+                            </Button>
                         </div>
                     ))}
                 </div>
