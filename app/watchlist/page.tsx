@@ -6,8 +6,10 @@ import { Header } from '@/components/Header';
 import WatchlistModal from '@/components/Watchlist/NewWatchlistModal';
 import ShareModal from '@/components/Watchlist/ShareModal';
 import WatchlistTable from '@/components/Watchlist/WatchlistTable';
-import { PreviewData } from '../../types';
+import { PreviewData } from '@/type';
 import { useWatchlist } from '@/components/Watchlist/WatchlistContext';
+import { button } from "@/components/ui/button";
+
 
 export default function Watchlist() {
     const { watchlists, addWatchlist, getWatchlistItems, removeFromWatchlist } = useWatchlist();
@@ -51,9 +53,9 @@ export default function Watchlist() {
                                 </option>
                             ))}
                         </select>
-                        <Button onClick={() => setIsNewWatchlistModalOpen(true)}>New Watchlist</Button>
-                        <Button>Add alert</Button>
-                        <Button onClick={() => setIsShareModalOpen(true)}>Share</Button>
+                        <button onClick={() => setIsNewWatchlistModalOpen(true)}>New Watchlist</button>
+                        <button>Add alert</button>
+                        <button onClick={() => setIsShareModalOpen(true)}>Share</button>
                     </div>
                     <WatchlistTable
                         previewData={previewData}

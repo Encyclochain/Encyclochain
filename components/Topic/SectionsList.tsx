@@ -12,7 +12,7 @@ import {
 
 // Explicit typing for SectionInfo interface (allows null for imageLink)
 interface SectionInfo {
-  color: string;  // Color associated with the section
+  color: string| null;  // Color associated with the section
   imageLink: string | null;  // Image link (nullable)
 }
 
@@ -55,6 +55,8 @@ async function getSectionsGroupedByType(page: string): Promise<topic | null> {
         },
       },
     },
+
+    
   });
 
   return topic;  // Return the topic or null if not found
@@ -92,7 +94,7 @@ export default async function SectionSelect({ page }: SectionSelectProps) {
                 href={`/section/${section.title}`}  // Link to the section's page
                 className="contents text-black hover:bg-gray-100"  // Styling for the link
               >
-                  <div className="w-[60px] h-[60px] relative">
+                  <div className="w-[30px] h-[30px] relative">
                     <Image
                       src={section.sectionInfo?.imageLink || ""}  // Fallback to an empty string if no imageLink
                       alt={`Logo ${section.title}`}  // Alt text for the image

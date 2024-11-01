@@ -2,7 +2,7 @@ import { Header } from '@/components/Header';
 import SectionContent from '@/components/Section/SectionContent';
 import Carousel_ImgTop from '@/components/Carousel/CarouselImgTop';
 import CategoryTitles from '@/components/Section/CategoryTitles';
-import SectionInfo from '@/components/Section/generalInformation';
+import SectionInfo from '@/components/Section/SectionInformation';
 import prisma from '@/lib/db';
 
 interface PageProps {

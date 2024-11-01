@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import * as DialogPrimitive from "@radix-ui/react-dialog" // Import Radix UI Dialog components
-import { X } from "lucide-react" // Import 'X' icon for close Button
+import { X } from "lucide-react" // Import 'X' icon for close button
 import { cn } from "@/lib/utils" // Utility function to conditionally join classNames
 
 // Root Dialog component, wrapping the Radix Dialog Root
@@ -14,7 +14,7 @@ const DialogTrigger = DialogPrimitive.Trigger
 // Portal to render dialog content outside of the DOM hierarchy
 const DialogPortal = DialogPrimitive.Portal
 
-// Close Button for the dialog
+// Close button for the dialog
 const DialogClose = DialogPrimitive.Close
 
 // DialogOverlay component for the background overlay
@@ -51,7 +51,7 @@ const DialogContent = React.forwardRef<
       {...props} // Spread additional props
     >
       {children} {/* Render dialog content */}
-      {/* Close Button inside the dialog */}
+      {/* Close button inside the dialog */}
       <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
         <X className="h-4 w-4" /> {/* 'X' icon for close */}
         <span className="sr-only">Close</span> {/* Screen reader text */}

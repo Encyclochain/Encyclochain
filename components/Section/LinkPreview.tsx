@@ -4,11 +4,13 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
-import star from '@/assets/Icone/Star.svg';
 import { RxExternalLink } from 'react-icons/rx';
 import { VscBookmark } from 'react-icons/vsc';
 import { PiBookmarkSimpleFill } from 'react-icons/pi';
-import { PreviewData } from '../../types';
+import { PreviewData } from '@/type';
+import { button } from "@/components/ui/button";
+
+
 // import Image from 'next/image'; // Supprimé
 
 // Importation du contexte des watchlists
@@ -83,7 +85,7 @@ export default function LinkPreview({
                   <p className="text-xs text-gray-500">5 min read</p>
                 </div>
                 {/* Bouton Watchlist */}
-                <Button
+                <button
                   className="text-gray-700 hover:text-gray-900 focus:outline-none"
                   onClick={(e) => {
                     e.preventDefault();
@@ -95,7 +97,7 @@ export default function LinkPreview({
                   ) : (
                     <VscBookmark size={20} color={color} />
                   )}
-                </Button>
+                </button>
               </div>
 
               {/* Titre et Description */}

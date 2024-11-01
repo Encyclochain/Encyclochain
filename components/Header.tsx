@@ -11,7 +11,7 @@ export function Header({
 }: {
   design: string; // Type for design is a string
   showArrow?: boolean; // showArrow is optional and defaults to false
-  pageTitle: string; 
+  pageTitle?: string; 
 }) {
   return (
     // Apply dynamic styles using the design prop

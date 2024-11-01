@@ -1,4 +1,4 @@
-import { PreviewData } from '@/types';
+import { PreviewData } from '@/type';
 import { extractMetaTags } from '@/lib/extractMeta';
 import LinkPreview from '../Section/LinkPreview';
 

@@ -44,27 +44,28 @@ export async function Alltopics() {
       {topics.map((Topic) => (
         <div key={Topic.id} className="mb-8">
           {/* Display the section type title */}
-          <h2 className="text-3xl font-bold text-black mb-6 lg:text-left text-center">
+          <h2 className="text-3xl font-bold font-garamond text-black mb-6 lg:text-left text-center">
             {Topic.title}
           </h2>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="py-2">Section</TableHead>  {/* En-tête pour la colonne combinée */}
-                <TableHead className="py-2">Colonne 2</TableHead>  {/* Colonne de remplacement 2 */}
-                <TableHead className="py-2">Colonne 3</TableHead>  {/* Colonne de remplacement 3 */}
+                <TableHead className="py-2 ">Section</TableHead>  {/* En-tête pour la colonne combinée */}
+                <TableHead className="py-2 ">Category</TableHead>  {/* Colonne de remplacement 2 */}
+                <TableHead className="py-2 ">Contribution</TableHead>  {/* Colonne de remplacement 3 */}
+                <TableHead className="py-2 ">Price</TableHead>  {/* Colonne de remplacement 3 */}
               </TableRow>
             </TableHeader>
             <TableBody>
               {Topic.sections.map((Section) => (
                 <TableRow key={Section.id}>
-                  <TableCell className="py-2">
+                  <TableCell className="py-2 w-[200px]">
                     <Link
                     href={`/section/${Section.title}`}  // Link to section page
                     className="contents text-black hover:bg-gray-100"
                   >  
                       <div className="flex items-center">
-                        <div className="w-[60px] h-[60px] relative mr-4">
+                        <div className="w-[30px] h-[30px] relative mr-4">
                           <Image
                             src={Section.sectionInfo?.imageLink || ""}  // Fallback to an empty string if imageLink is missing
                             alt={`Logo ${Section.title}`}  // Alt text for the image
@@ -77,8 +78,9 @@ export async function Alltopics() {
                       </div>
                       </Link>
                     </TableCell>
-                    <TableCell className="py-2">À définir</TableCell>  {/* Placeholder for third column */}
-                    <TableCell className="py-2">À définir</TableCell>  {/* Placeholder for fourth column */}
+                    <TableCell className="py-2 w-[200px]">À définir</TableCell>  {/* Placeholder for third column */}
+                    <TableCell className="py-2 w-[200px]">À définir</TableCell>  {/* Placeholder for fourth column */}
+                    <TableCell className="py-2 w-[200px]">À définir</TableCell>  {/* Placeholder for fourth column */}
                 </TableRow>
               ))}
             </TableBody>

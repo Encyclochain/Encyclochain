@@ -60,8 +60,8 @@ export function CarouselMedia({ medias }: CarouselSizeProps) {
         ))}
       </CarouselContent>
       {/* Carousel navigation buttons */}
-      <CarouselPrevious  /> {/* Button to scroll to the previous item */}
-      <CarouselNext /> {/* Button to scroll to the next item */}
+      <CarouselPrevious  /> {/* button to scroll to the previous item */}
+      <CarouselNext /> {/* button to scroll to the next item */}
       <CarouselPagination api={api} /> {/* Pagination component to display the current slide and total */}
     </Carousel>
   );

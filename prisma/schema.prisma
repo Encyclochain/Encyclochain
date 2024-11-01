@@ -110,8 +110,8 @@ model Chapter {
   id          Int     @id @default(autoincrement())
   title       String  @db.VarChar(255)
   description String?
-  sectionId   Int
+  sectionId   Int?
   topicId     Int?
-  section     Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  section     Section? @relation(fields: [sectionId], references: [id], onDelete: Cascade)
   topic       Topic?  @relation(fields: [topicId], references: [id])
 }
