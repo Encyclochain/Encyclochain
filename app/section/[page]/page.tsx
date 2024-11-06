@@ -10,73 +10,55 @@ interface PageProps {
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
+interface Resource {
+  id: number;
+  link: string;
+  typeId: number;
+}
 
+interface Category {
+  id: number;
+  title: string;
+  resources: Resource[];
+}
+
+interface SectionInfo {
+  color: string;
+}
+
+interface Chapter {
+  id: number;
+  title: string;
+  description: string;
+}
 
 async function getBlockchainData(page: string) {
-  const chapters = await prisma.chapter.findMany({
-    where: {
-      section: {
-        title: page,
-      },
-    },
+  const sectionData = await prisma.section.findFirst({
+    where: { title: page },
     select: {
-      id: true,
       title: true,
-      description: true,
-    },
-  });
-
-  const sectionInfo = await prisma.sectionInfo.findFirst({
-    where: {
-      section: {
-        title: {
-          equals: page,
-        },
-      },
-    },
-    select: {
-      color: true, // Récupère la couleur
-    },
-  });
-
-  const prisma_res = await prisma.category.findMany({
-    select: {
-      id: true,
-      title: true,
-      resources: {
-        where: {
-          sections: {
-            some: {
-              title: {
-                equals: page,
-              },
-            },
-          },
-        },
+      chapters: { select: { id: true, title: true, description: true } },
+      sectionInfo: { select: { color: true } },
+      categories: {
         select: {
           id: true,
-          link: true,
-          typeId: true,
-        },
-      },
-    },
-    where: {
-      sections: {
-        some: {
-          title: {
-            equals: page,
-          },
+          title: true,
+          resources: { select: { id: true, link: true, typeId: true } },
         },
       },
     },
   });
 
-  return { sectionInfo, prisma_res, chapters };
+  return {
+    chapters: sectionData?.chapters || [],
+    sectionInfo: sectionData?.sectionInfo || null,
+    categories: sectionData?.categories || [],
+  };
 }
 
 export default async function Page({ params, searchParams }: PageProps) {
   const page = decodeURIComponent(params.page);
-  const { sectionInfo, prisma_res, chapters } = await getBlockchainData(page);
+  const { chapters, sectionInfo, categories } = await getBlockchainData(page);
   const sectionColor = sectionInfo?.color || '#F7931A';
 
   const selectedCategoriesParam = searchParams.categoryIds;
@@ -84,11 +66,9 @@ export default async function Page({ params, searchParams }: PageProps) {
     ? (selectedCategoriesParam as string).split(',').map((id) => parseInt(id))
     : [];
 
-  const categories = prisma_res;
-
-  const filteredCategories =
+  const filteredCategories: Category[] =
     selectedCategoryIds.length > 0
-      ? categories.filter((cat) => selectedCategoryIds.includes(cat.id))
+      ? categories.filter((cat: Category) => selectedCategoryIds.includes(cat.id))
       : categories;
 
   return (
@@ -102,12 +82,11 @@ export default async function Page({ params, searchParams }: PageProps) {
         <div className="w-full lg:w-[70%]">
           <SectionContent page={page} chapters={chapters} />
         </div>
-        {/* Le composant SectionInfo fait maintenant son propre appel Prisma */}
         <SectionInfo page={page} />
       </div>
       <CategoryTitles categories={filteredCategories} />
       {filteredCategories.length > 0 ? (
-        filteredCategories.map((cat) =>
+        filteredCategories.map((cat: Category) =>
           cat.resources.length > 0 ? (
             <div key={cat.id} className="mt-12">
               <h2 className="text-2xl font-bold mb-4">{cat.title}</h2>

@@ -39,15 +39,15 @@ export async function Alltopics() {
   const topics = await getSectionsGroupedByType();
 
   return (
-    <div className="mt-[5%] mb-[5%] p-[50px] w-full">
+    <div className="mt-[5%] mb-[5%] p-[50px] w-full ">
       {/* Loop through each section type */}
       {topics.map((Topic) => (
-        <div key={Topic.id} className="mb-8">
+        <div key={Topic.id} className="mb-8 ">
           {/* Display the section type title */}
           <h2 className="text-3xl font-bold font-garamond text-black mb-6 lg:text-left text-center">
             {Topic.title}
           </h2>
-          <Table>
+          <Table className="rounded-md border">
             <TableHeader>
               <TableRow>
                 <TableHead className="py-2 ">Section</TableHead>  {/* En-tête pour la colonne combinée */}

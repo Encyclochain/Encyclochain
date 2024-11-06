@@ -96,7 +96,7 @@ export function AppSidebar({ topics }: SidebarMenuProps) {
           </SidebarMenu>
           </SidebarGroup >
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className=" items-center">
       <div className={` flex-col gap-1 space-x-10 `}>
           {/* Home Button in footer */}
           <button className="flex-1 py-1 px-1 bg-transparent hover:bg-gray-700">

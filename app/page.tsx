@@ -1,23 +1,44 @@
-import { Header } from "@/components/Header"; // Importing the Header component
-import { Alltopics } from "@/components/Home/AllTopics"; // Importing the Alltopics component
+import { Header } from "@/components/Header";
+import { Alltopics } from "@/components/Home/AllTopics";
+import EncyclochainInfo from "@/components/Home/EncyclochainInfo";
+import EncyclochainContent from "@/components/Home/EncyclochainContent";
+import prisma from "@/lib/db";
 
-// The Home component
-export default function Home() {
+async function getEncyclochainContent() {
+  // Requête Prisma pour récupérer uniquement les chapitres du topic "Encyclochain"
+  const chapters = await prisma.chapter.findMany({
+    where: {
+      topic: {
+        title: "Encyclochain", // Filtrage pour le topic "Encyclochain"
+      },
+    },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+    },
+  });
+  return chapters;
+}
+
+export default async function Home() {
+  const chapters = await getEncyclochainContent();
+
   return (
-    <main className="flex flex-col items-center "> {/* Main container for layout, flexbox column */}
+    <main className=" container mx-auto px-4 py-8">
+      <Header design="z-10 w-full items-center p-[20px] justify-between font-mono text-sm flex" />
 
-      <Header
-        design="z-10 w-full items-center p-[20px] justify-between font-mono text-sm flex"
-      /> {/* Header component with custom design and layout */}
+      <div className="w-full p-[20px] lg:hidden"></div>
 
-      <div className="w-full p-[20px] lg:hidden"> {/* Empty div for spacing on smaller screens */}
+      <div className="flex flex-col lg:flex-row gap-8">
+        <div className="w-full lg:w-[70%]">
+          {/* Passer les chapitres en tant que props à EncyclochainContent */}
+          <EncyclochainContent chapters={chapters} />
+        </div>
+        <EncyclochainInfo />
       </div>
 
-      <p className="text-gray-900 font-serif text-3xl font-medium normal-case not-italic no-underline mt-[20px] leading-tight tracking-tighter lg:hidden">
-        Blockchains encyclopedia
-      </p> {/* A title that's visible only on small screens (lg:hidden) */}
-
-      <Alltopics /> {/* Alltopics component to render the list of topics */}
+      <Alltopics />
     </main>
   );
 }
