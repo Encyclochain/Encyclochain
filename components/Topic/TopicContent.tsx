@@ -55,9 +55,9 @@ export default function TopicContent({ page, chapters }: SectionContentProps) {
                     {sortedChapters.map((chapter) => (
                         <TabsContent key={chapter.id} value={chapter.title}>
                             <div className="space-y-4">
-                                <h2 className="text-xl md:text-2xl font-bold">{chapter.title}</h2>
+                                <h2 className="text-xl md:text-2xl font-bold font-garamond">{chapter.title}</h2>
                                 {/* Corriger les échappements de \n et afficher avec des <br> */}
-                                <p className="text-sm md:text-base">
+                                <p className="text-sm md:text-base font-poppins">
                                     {chapter.description ? formatTextWithLineBreaks(chapter.description) : "Description non disponible"}
                                 </p>
                             </div>

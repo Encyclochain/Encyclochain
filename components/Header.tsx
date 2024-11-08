@@ -1,4 +1,3 @@
-import { Social } from "./Social"; // Importing the Social component to display social media icons
 import Link from "next/link"; // Importing Link component from Next.js for client-side navigation
 import { CircleArrowLeft } from "lucide-react"; // Importing an icon from lucide-react
 
@@ -33,7 +32,7 @@ export function Header({
       </p>
 
       {/* Social media icons section using the Social component */}
-      <Social design="flex gap-[15px] max-md:w-full max-lg:flex max-lg:justify-center" />
+   
     </div>
   );
 }

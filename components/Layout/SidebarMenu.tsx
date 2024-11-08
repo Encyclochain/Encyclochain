@@ -9,8 +9,8 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar"
-import { AiOutlineSearch, AiOutlineHome, AiOutlineFolder, AiOutlineEye, AiOutlineRight, AiOutlineLeft } from "react-icons/ai";  // Import icons
-import { button } from "../ui/button";  // Custom Button component
+import { AiOutlineSearch, AiOutlineHome, AiOutlineFolder, AiOutlineEye, AiOutlineDiscord ,AiOutlineX ,AiFillGithub ,AiOutlineHeart ,  AiOutlineRight, AiOutlineLeft } from "react-icons/ai";  // Import icons
+import { Button } from "../ui/button";  // Custom button component
 
 
 const items = [
@@ -27,7 +27,7 @@ const items = [
   {
     title: "Contribution",
     url: "#",
-    icon: AiOutlineEye,
+    icon: AiOutlineHeart,
   },
 ]
 
@@ -60,7 +60,7 @@ export function AppSidebar({ topics }: SidebarMenuProps) {
       </SidebarHeader>
         <SidebarContent>
           <SidebarGroup>
-          <SidebarGroupLabel><p className="pb-[10px] mt-4 space-y-4 mb-[20px] text-black font-poppins ">
+          <SidebarGroupLabel><p className="pb-[10px] mt-4 space-y-4 mb-[20px] text-black font-garamond font-semibold">
           Main
         </p>
         </SidebarGroupLabel>
@@ -68,7 +68,7 @@ export function AppSidebar({ topics }: SidebarMenuProps) {
           {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <a href={item.url} className="font-poppins">
                       <item.icon />
                       <span>{item.title}</span>
                     </a>
@@ -78,15 +78,15 @@ export function AppSidebar({ topics }: SidebarMenuProps) {
           </SidebarMenu>
           </SidebarGroup >
           <SidebarGroup >
-          <SidebarGroupLabel><p className="pb-[10px] mt-4 space-y-4 mb-[20px] text-black font-poppins ">
-          Main
+          <SidebarGroupLabel><p className="pb-[10px] mt-4 space-y-4 mb-[20px] text-black font-garamond font-bold">
+          Topics
         </p>
         </SidebarGroupLabel>
           <SidebarMenu>
           {topics.map((topic) => (
                 <SidebarMenuItem key={topic.id}>
                   <SidebarMenuButton asChild>
-                    <a href={`/topic/${topic.title}`}>
+                    <a href={`/topic/${topic.title}`} className="font-poppins">
                     <AiOutlineFolder size={24} />
                       <span>{topic.title}</span>
                     </a>
@@ -98,16 +98,16 @@ export function AppSidebar({ topics }: SidebarMenuProps) {
       </SidebarContent>
       <SidebarFooter className=" items-center">
       <div className={` flex-col gap-1 space-x-10 `}>
-          {/* Home Button in footer */}
-          <button className="flex-1 py-1 px-1 bg-transparent hover:bg-gray-700">
-            <AiOutlineHome size={18} className="text-black" />
-          </button>
-          <button className="flex-1 py-1 px-1 bg-transparent hover:bg-gray-700">
-            <AiOutlineHome size={18} className="text-black" />
-          </button>
-          <button className="flex-1 py-1 px-1 bg-transparent hover:bg-gray-700">
-            <AiOutlineHome size={18} className="text-black" />
-          </button>
+          {/* Home button in footer */}
+          <Button className="flex-1 py-1 px-1 bg-transparent hover:bg-gray-700">
+            <AiOutlineDiscord size={18} className="text-black" />
+          </Button>
+          <Button className="flex-1 py-1 px-1 bg-transparent hover:bg-gray-700">
+            <AiOutlineX  size={18} className="text-black" />
+          </Button>
+          <Button className="flex-1 py-1 px-1 bg-transparent hover:bg-gray-700">
+            <AiFillGithub size={18} className="text-black" />
+          </Button>
         </div>
       </SidebarFooter>
     </Sidebar>

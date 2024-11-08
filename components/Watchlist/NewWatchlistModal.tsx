@@ -2,7 +2,7 @@
 "use client"
 
 import React, { useState } from 'react';
-import { button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/Input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/Dialog";
 
@@ -19,18 +19,18 @@ const WatchlistModal = ({ isOpen, onClose, onSubmit }: WatchlistModalProps) => {
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Créer une nouvelle Watchlist</DialogTitle>
+                    <DialogTitle className='font-garamond'>Créer une nouvelle Watchlist</DialogTitle>
                 </DialogHeader>
                 <Input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Nom de la Watchlist"
-                    className="w-full mb-4"
+                    className="w-full mb-4 font-poppins"
                 />
                 <DialogFooter>
-                    <button onClick={onClose} variant="outline">Annuler</button>
-                    <button onClick={() => onSubmit(name)}>Créer</button>
+                    <Button onClick={onClose} variant="outline" className='font-poppins'>Annuler</Button>
+                    <Button onClick={() => onSubmit(name)} className='font-poppins'>Créer</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

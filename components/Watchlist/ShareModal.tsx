@@ -2,7 +2,7 @@
 "use client"
 
 import React, { useState } from 'react';
-import { button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/Input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/Dialog";
 import { FaTwitter, FaFacebook, FaLinkedin } from "react-icons/fa";
@@ -45,10 +45,10 @@ const ShareModal = ({ isOpen, onClose, watchlistName }: ShareModalProps) => {
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Partager "{watchlistName}"</DialogTitle>
+                    <DialogTitle className="font-poppins">Partager "{watchlistName}"</DialogTitle>
                 </DialogHeader>
                 <div className="mb-4">
-                    <p className="text-sm text-gray-600 mb-2">Lien de partage :</p>
+                    <p className="text-sm text-gray-600 mb-2 font-poppins">Lien de partage :</p>
                     <div className="flex">
                         <Input
                             type="text"
@@ -56,26 +56,26 @@ const ShareModal = ({ isOpen, onClose, watchlistName }: ShareModalProps) => {
                             readOnly
                             className="flex-grow rounded-r-none"
                         />
-                        <button onClick={copyToClipboard} className="rounded-l-none">
+                        <Button onClick={copyToClipboard} className="rounded-l-none">
                             {copied ? 'Copié !' : <VscCopy className="h-4 w-4" />}
-                        </button>
+                        </Button>
                     </div>
                 </div>
                 <div>
                     <p className="text-sm text-gray-600 mb-2">Partager sur les réseaux sociaux :</p>
                     <div className="flex justify-center space-x-4">
-                        <button onClick={() => shareOnSocialMedia('twitter')} variant="outline">
+                        <Button onClick={() => shareOnSocialMedia('twitter')} variant="outline">
                             <FaTwitter className="h-5 w-5 text-blue-400" />
-                            <span className="sr-only">Partager sur Twitter</span>
-                        </button>
-                        <button onClick={() => shareOnSocialMedia('facebook')} variant="outline">
+                            <span className="sr-only font-poppins">Partager sur Twitter</span>
+                        </Button>
+                        <Button onClick={() => shareOnSocialMedia('facebook')} variant="outline">
                             <FaFacebook className="h-5 w-5 text-blue-600" />
-                            <span className="sr-only">Partager sur Facebook</span>
-                        </button>
-                        <button onClick={() => shareOnSocialMedia('linkedin')} variant="outline">
+                            <span className="sr-only font-poppins">Partager sur Facebook</span>
+                        </Button>
+                        <Button onClick={() => shareOnSocialMedia('linkedin')} variant="outline">
                             <FaLinkedin className="h-5 w-5 text-blue-700" />
-                            <span className="sr-only">Partager sur LinkedIn</span>
-                        </button>
+                            <span className="sr-only font-poppins">Partager sur LinkedIn</span>
+                        </Button>
                     </div>
                 </div>
             </DialogContent>

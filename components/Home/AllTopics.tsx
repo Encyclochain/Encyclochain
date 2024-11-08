@@ -52,7 +52,8 @@ export async function Alltopics() {
               <TableRow>
                 <TableHead className="py-2 ">Section</TableHead>  {/* En-tête pour la colonne combinée */}
                 <TableHead className="py-2 ">Category</TableHead>  {/* Colonne de remplacement 2 */}
-                <TableHead className="py-2 ">Contribution</TableHead>  {/* Colonne de remplacement 3 */}
+                <TableHead className="py-2 ">Ressources</TableHead>  {/* Colonne de remplacement 3 */}
+                <TableHead className="py-2 ">Contribution</TableHead> 
                 <TableHead className="py-2 ">Price</TableHead>  {/* Colonne de remplacement 3 */}
               </TableRow>
             </TableHeader>
@@ -62,7 +63,7 @@ export async function Alltopics() {
                   <TableCell className="py-2 w-[200px]">
                     <Link
                     href={`/section/${Section.title}`}  // Link to section page
-                    className="contents text-black hover:bg-gray-100"
+                    className="contents text-black hover:bg-gray-100 font-poppins"
                   >  
                       <div className="flex items-center">
                         <div className="w-[30px] h-[30px] relative mr-4">
@@ -74,13 +75,14 @@ export async function Alltopics() {
                             style={{ objectFit: 'cover' }} // Invert the image colors in dark mode
                           />
                         </div>
-                        <div className="text-base font-semibold">{Section.title}</div>
+                        <div className="text-base font-poppins">{Section.title}</div>
                       </div>
                       </Link>
                     </TableCell>
-                    <TableCell className="py-2 w-[200px]">À définir</TableCell>  {/* Placeholder for third column */}
-                    <TableCell className="py-2 w-[200px]">À définir</TableCell>  {/* Placeholder for fourth column */}
-                    <TableCell className="py-2 w-[200px]">À définir</TableCell>  {/* Placeholder for fourth column */}
+                    <TableCell className="py-2 w-[200px] font-poppins">À définir</TableCell>  {/* Placeholder for third column */}
+                    <TableCell className="py-2 w-[200px] font-poppins">À définir</TableCell>  {/* Placeholder for fourth column */}
+                    <TableCell className="py-2 w-[200px] font-poppins">À définir</TableCell> 
+                    <TableCell className="py-2 w-[200px] font-poppins">À définir</TableCell>  {/* Placeholder for fourth column */}
                 </TableRow>
               ))}
             </TableBody>

@@ -68,22 +68,22 @@ export default async function SectionSelect({ page }: SectionSelectProps) {
 
   // If no topic is found, display a message
   if (!topic) {
-    return <p className="text-center">Aucune section trouvée pour ce type.</p>;
+    return <p className="text-center font-poppins">Aucune section trouvée pour ce type.</p>;
   }
 
   return (
     <div className="mt-[5%] mb-[5%] p-[50px] w-full">
       {/* Display the title of the topic */}
-      <h2 className="text-3xl font-bold text-black mb-6 lg:text-left text-center">
+      <h2 className="text-3xl font-bold text-black mb-6 lg:text-left text-center font-garamond">
         {topic.title}
       </h2>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="py-2">Image</TableHead> {/* Image header */}
-            <TableHead className="py-2">Titre</TableHead> {/* Title header */}
-            <TableHead className="py-2">Colonne 3</TableHead> {/* Placeholder for column 3 */}
-            <TableHead className="py-2">Colonne 4</TableHead> {/* Placeholder for column 4 */}
+            <TableHead className="py-2 font-poppins">Image</TableHead> {/* Image header */}
+            <TableHead className="py-2 font-poppins">Titre</TableHead> {/* Title header */}
+            <TableHead className="py-2 font-poppins">Colonne 3</TableHead> {/* Placeholder for column 3 */}
+            <TableHead className="py-2 font-poppins">Colonne 4</TableHead> {/* Placeholder for column 4 */}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -92,7 +92,7 @@ export default async function SectionSelect({ page }: SectionSelectProps) {
               <TableCell className="py-2">
                 <Link
                 href={`/section/${section.title}`}  // Link to the section's page
-                className="contents text-black hover:bg-gray-100"  // Styling for the link
+                className="contents text-black hover:bg-gray-100 font-poppins"  // Styling for the link
               >
                   <div className="w-[30px] h-[30px] relative">
                     <Image
@@ -107,11 +107,11 @@ export default async function SectionSelect({ page }: SectionSelectProps) {
                 </TableCell>
                 {/* Section title */}
                 <TableCell className="py-2">
-                  <span className="text-base font-semibold">{section.title}</span>
+                  <span className="text-base font-semibold font-garamond">{section.title}</span>
                 </TableCell>
                 {/* Placeholder columns for future content */}
-                <TableCell className="py-2">À définir</TableCell>
-                <TableCell className="py-2">À définir</TableCell>
+                <TableCell className="py-2 font-poppins">À définir</TableCell>
+                <TableCell className="py-2 font-poppins">À définir</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -78,7 +78,7 @@ const CategoryTitles: React.FC<CategoryTitlesProps> = ({ categories }) => {
                         }}
                         onChange={handleSelectAll}
                     />
-                    <label className="ml-2">Tout voir</label>
+                    <label className="ml-2 font-poppins">Tout voir</label>
                 </div>
                 <components.MenuList {...props}>{children}</components.MenuList>
             </>
@@ -93,7 +93,7 @@ const CategoryTitles: React.FC<CategoryTitlesProps> = ({ categories }) => {
                 onChange={handleChange}
                 isMulti
                 placeholder="Sélectionnez des catégories..."
-                className="w-full"
+                className="w-full font-poppins"
                 closeMenuOnSelect={false}
                 components={{ MenuList }}
             />

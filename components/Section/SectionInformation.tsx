@@ -39,8 +39,8 @@ export default async function SectionInfo({ page }: SectionInfoProps) {
 
   return (
     <aside className="w-full lg:w-[30%] bg-gray-100 border border-gray-200 rounded-lg p-6 shadow-sm">
-      <h2 className="text-xl font-bold mb-4">Informations sur la Blockchain</h2>
-      <ul className="space-y-2">
+      <h2 className="text-xl font-bold mb-4 font-garamond">Informations sur la Blockchain</h2>
+      <ul className="space-y-2 font-poppins">
         {creator && (
           <li>
             <strong>Créateur</strong> : {creator}

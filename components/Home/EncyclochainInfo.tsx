@@ -22,7 +22,7 @@ export default async function EncyclochainInfo() {
   });
 
   if (!sectionInfo) {
-    return <div>Informations indisponibles pour cette section.</div>;
+    return <div className='font-poppins'>Informations indisponibles pour cette section.</div>;
   }
 
   const {
@@ -36,7 +36,6 @@ export default async function EncyclochainInfo() {
 
   return (
     <aside className="w-full lg:w-[30%] bg-gray-100 border border-gray-200 rounded-lg p-6 shadow-sm">
-      <h2 className="text-xl font-bold mb-4">Informations sur la Blockchain</h2>
       <ul className="space-y-2">
         {creator && (
           <li>

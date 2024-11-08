@@ -7,7 +7,7 @@ import useEmblaCarousel, {
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -196,12 +196,12 @@ CarouselItem.displayName = "CarouselItem";
 
 const CarouselPrevious = React.forwardRef<
   HTMLButtonElement,
-  React.ComponentProps<typeof button>
+  React.ComponentProps<typeof Button>
 >(({ className, variant = "outline", size = "icon", ...props }, ref) => {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
   return (
-    <button
+    <Button
       ref={ref}
       variant={variant}
       size={size}
@@ -218,19 +218,19 @@ const CarouselPrevious = React.forwardRef<
     >
       <ChevronLeft className="h-[70px] w-[70px] text-[#F7931A]" />
       <span className="sr-only">Previous slide</span>
-    </button>
+    </Button>
   );
 });
 CarouselPrevious.displayName = "CarouselPrevious";
 
 const CarouselNext = React.forwardRef<
   HTMLButtonElement,
-  React.ComponentProps<typeof button>
+  React.ComponentProps<typeof Button>
 >(({ className, variant = "outline", size = "icon", ...props }, ref) => {
   const { orientation, scrollNext, canScrollNext } = useCarousel();
 
   return (
-    <button
+    <Button
       ref={ref}
       variant={variant}
       size={size}
@@ -247,7 +247,7 @@ const CarouselNext = React.forwardRef<
     >
       <ChevronRight className="h-[70px] w-[70px] text-[#F7931A]" />
       <span className="sr-only">Next slide</span>
-    </button>
+    </Button>
   );
 });
 CarouselNext.displayName = "CarouselNext";

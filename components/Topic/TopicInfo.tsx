@@ -22,7 +22,7 @@ export default async function TopicInfo({ page }: SectionInfoProps) {
   });
 
   if (!topicInfo) {
-    return <div>Informations indisponibles pour ce Topic.</div>;
+    return <div  className="text-xl font-bold mb-4 font-garamaond">Informations indisponibles pour ce Topic.</div>;
   }
 
   const {
@@ -32,11 +32,11 @@ export default async function TopicInfo({ page }: SectionInfoProps) {
 
   return (
     <aside className="w-full lg:w-[30%] bg-gray-100 border border-gray-200 rounded-lg p-6 shadow-sm">
-      <h2 className="text-xl font-bold mb-4">Informations sur la Blockchain</h2>
+      <h2 className="text-xl font-bold mb-4 font-garamaond">Informations sur la Blockchain</h2>
       <ul className="space-y-2">
      
         {websiteLink && (
-          <li>
+          <li  className="font-poppins">
             <strong>Site officiel</strong> :{' '}
             <a href={websiteLink} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
               Visiter le site

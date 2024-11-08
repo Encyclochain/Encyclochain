@@ -43,7 +43,7 @@ export interface ButtonProps
 }
 
 // button component definition using forwardRef to support ref forwarding
-const button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"; // If `asChild` is true, use Radix Slot. Otherwise, render a <button>.
     return (
@@ -55,6 +55,6 @@ const button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     );
   }
 );
-button.displayName = "button"; // Set the display name for debugging purposes
+Button.displayName = "button"; // Set the display name for debugging purposes
 
-export { button, buttonVariants }; // Export the button component and the buttonVariants function
+export { Button, buttonVariants }; // Export the button component and the buttonVariants function

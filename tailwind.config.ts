@@ -11,7 +11,7 @@ const config = {
   prefix: "",
   theme: {
   	container: {
-  		center: 'true',
+  		center: true,
   		padding: '2rem',
   		screens: {
   			'2xl': '1400px',
@@ -28,8 +28,9 @@ const config = {
   			'4xl': '1980px'
   		},
   		fontFamily: {
-  			garamond: ["EB Garamond", "serif"],
-  			poppins: ["Poppins", "serif"]
+  			garamond: ["Cormorant Garamond"],
+  			sans: ['-apple-system', 'BlinkMacSystemFont', 'San Francisco', 'SF Pro Text', 'SF Pro Display', 'SF UI Text', 'SF UI Display', 'sans-serif'],
+			poppins: ["Poppins", "sans-serif"]
   		},
   		colors: {
   			border: 'hsl(var(--border))',

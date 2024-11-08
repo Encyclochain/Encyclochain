@@ -8,7 +8,7 @@ import { RxExternalLink } from 'react-icons/rx';
 import { VscBookmark } from 'react-icons/vsc';
 import { PiBookmarkSimpleFill } from 'react-icons/pi';
 import { PreviewData } from '@/type';
-import { button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 
 
 // import Image from 'next/image'; // Supprimé
@@ -82,10 +82,9 @@ export default function LinkPreview({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Badge variant="secondary">Blockchain</Badge>
-                  <p className="text-xs text-gray-500">5 min read</p>
                 </div>
                 {/* Bouton Watchlist */}
-                <button
+                <Button
                   className="text-gray-700 hover:text-gray-900 focus:outline-none"
                   onClick={(e) => {
                     e.preventDefault();
@@ -97,13 +96,13 @@ export default function LinkPreview({
                   ) : (
                     <VscBookmark size={20} color={color} />
                   )}
-                </button>
+                </Button>
               </div>
 
               {/* Titre et Description */}
               <div>
-                <h3 className="font-semibold text-sm text-gray-800 mb-1">{data.title}</h3>
-                <p className="text-xs text-gray-700">{data.description}</p>
+                <h3 className="text-sm text-gray-800 mb-1 font-poppins">{data.title}</h3>
+                <p className="text-xs text-gray-700 font-poppins">{data.description}</p>
               </div>
 
               {/* Espace Vide en Bas de la Description */}
@@ -124,8 +123,8 @@ export default function LinkPreview({
             {/* Author & Date */}
             <div className="flex justify-between items-center px-3 pb-2">
               <div className="flex gap-2">
-                <p className="text-xs text-gray-600">Author: John Doe</p>
-                <p className="text-xs text-gray-600">Date: Oct 1, 2023</p>
+                <p className="text-xs text-gray-600 font-poppins">Author: John Doe</p>
+                <p className="text-xs text-gray-600 font-poppins">Date: Oct 1, 2023</p>
               </div>
               <RxExternalLink size={16} className="text-gray-600" />
             </div>
