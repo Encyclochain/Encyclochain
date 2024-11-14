@@ -1,3 +1,6 @@
+"use client"
+
+import { useState } from 'react'
 import {
   Sidebar,
   SidebarContent,
@@ -8,26 +11,29 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+  SidebarMenuSubButton,
 } from "@/components/ui/sidebar"
-import { AiOutlineSearch, AiOutlineHome, AiOutlineFolder, AiOutlineEye, AiOutlineDiscord ,AiOutlineX ,AiFillGithub ,AiOutlineHeart ,  AiOutlineRight, AiOutlineLeft } from "react-icons/ai";  // Import icons
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+import { AiOutlineSearch, AiOutlineHome, AiOutlineFolder, AiOutlineEye, AiOutlineDiscord ,AiOutlineX ,AiFillGithub ,AiOutlineHeart ,  AiOutlineRight, AiOutlineLeft, AiOutlineDown } from "react-icons/ai";  // Import icons
 import { Button } from "../ui/button";  // Custom button component
 
 
 const items = [
   {
     title: "Home",
-    url: "#",
+    url: "/",
     icon: AiOutlineHome,
   },
   {
     title: "Watchlist",
     url: "/watchlist",
     icon: AiOutlineEye,
-  },
-  {
-    title: "Contribution",
-    url: "#",
-    icon: AiOutlineHeart,
   },
 ]
 
@@ -45,6 +51,13 @@ interface SidebarMenuProps {
 
 
 export function AppSidebar({ topics }: SidebarMenuProps) {
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleSubMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <Sidebar>
       <SidebarHeader>
@@ -60,25 +73,53 @@ export function AppSidebar({ topics }: SidebarMenuProps) {
       </SidebarHeader>
         <SidebarContent>
           <SidebarGroup>
-          <SidebarGroupLabel><p className="pb-[10px] mt-4 space-y-4 mb-[20px] text-black font-garamond font-semibold">
-          Main
-        </p>
-        </SidebarGroupLabel>
           <SidebarMenu>
           {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url} className="font-poppins">
+                    <a href={item.url} className="flex items-center space-x-1 font-poppins text-base">
                       <item.icon />
-                      <span>{item.title}</span>
+                      <span >{item.title}</span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+              
+              <SidebarMenuItem className='p-2'>
+                <button onClick={toggleSubMenu} className="flex items-center space-x-1">
+                  <AiOutlineHeart />
+                  <span className="font-poppins text-sm">Contribution</span>
+                  {isOpen ? (
+            <AiOutlineDown />
+          ) : (
+            <AiOutlineRight />
+          )}
+                </button>
+
+                {isOpen && (
+                  <div className="ml-2">
+                    <SidebarMenuSub>
+                      <SidebarMenuSubItem />
+                      <a href={`/contribution`}  className="flex items-center space-x-1 font-poppins text-sm mt-2" >
+                        <AiOutlineFolder  />
+                        <span>Contribute</span>
+                      </a>
+                    </SidebarMenuSub>
+                    <SidebarMenuSub>
+                      <SidebarMenuSubItem />
+                      <a href={`/contribution`}  className="flex items-center space-x-1 font-poppins text-sm mt-2" >
+                        <AiOutlineFolder />
+                        <span>History</span>
+                      </a>
+                    </SidebarMenuSub>
+                  </div>
+                  
+                )}
+              </SidebarMenuItem>
           </SidebarMenu>
           </SidebarGroup >
           <SidebarGroup >
-          <SidebarGroupLabel><p className="pb-[10px] mt-4 space-y-4 mb-[20px] text-black font-garamond font-bold">
+          <SidebarGroupLabel><p className="pb-[10px] mt-4 space-y-4 mb-[20px] text-black font-garamond text-lg">
           Topics
         </p>
         </SidebarGroupLabel>
@@ -93,6 +134,7 @@ export function AppSidebar({ topics }: SidebarMenuProps) {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+
           </SidebarMenu>
           </SidebarGroup >
       </SidebarContent>

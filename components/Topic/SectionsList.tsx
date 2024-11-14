@@ -12,7 +12,7 @@ import {
 
 // Explicit typing for SectionInfo interface (allows null for imageLink)
 interface SectionInfo {
-  color: string| null;  // Color associated with the section
+  color: string | null;  // Color associated with the section
   imageLink: string | null;  // Image link (nullable)
 }
 
@@ -21,6 +21,8 @@ interface Section {
   id: number;  // Section ID
   title: string;  // Section title
   sectionInfo: SectionInfo | null;  // Section information (nullable)
+  resourcesCount: number; // Count of resources in the section
+  categoriesCount: number; // Count of categories in the section
 }
 
 // Typing for topic, which groups sections
@@ -52,14 +54,28 @@ async function getSectionsGroupedByType(page: string): Promise<topic | null> {
               imageLink: true,
             },
           },
+          _count: {  // Count related resources and categories
+            select: {
+              resources: true,
+              categories: true,
+            },
+          },
         },
       },
     },
-
-    
   });
 
-  return topic;  // Return the topic or null if not found
+  // Format the topic data to include resources and categories count
+  return topic
+    ? {
+        ...topic,
+        sections: topic.sections.map((section) => ({
+          ...section,
+          resourcesCount: section._count.resources, // Number of resources
+          categoriesCount: section._count.categories, // Number of categories
+        })),
+      }
+    : null;
 }
 
 // React component to display sections grouped by type
@@ -80,10 +96,10 @@ export default async function SectionSelect({ page }: SectionSelectProps) {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="py-2 font-poppins">Image</TableHead> {/* Image header */}
-            <TableHead className="py-2 font-poppins">Titre</TableHead> {/* Title header */}
-            <TableHead className="py-2 font-poppins">Colonne 3</TableHead> {/* Placeholder for column 3 */}
-            <TableHead className="py-2 font-poppins">Colonne 4</TableHead> {/* Placeholder for column 4 */}
+            <TableHead className="py-2 font-poppins">Section</TableHead> {/* Section header */}
+            <TableHead className="py-2 font-poppins">Ressources</TableHead> {/* Ressources header */}
+            <TableHead className="py-2 font-poppins">Category</TableHead> {/* Category header */}
+            <TableHead className="py-2 font-poppins">Price</TableHead> {/* Placeholder for Price */}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -91,27 +107,27 @@ export default async function SectionSelect({ page }: SectionSelectProps) {
             <TableRow key={section.id}>
               <TableCell className="py-2">
                 <Link
-                href={`/section/${section.title}`}  // Link to the section's page
-                className="contents text-black hover:bg-gray-100 font-poppins"  // Styling for the link
-              >
-                  <div className="w-[30px] h-[30px] relative">
-                    <Image
-                      src={section.sectionInfo?.imageLink || ""}  // Fallback to an empty string if no imageLink
-                      alt={`Logo ${section.title}`}  // Alt text for the image
-                      layout="fill"  // Make the image fill its container
-                      objectFit="contain"  // Ensure image fits within the container
-                      className="dark:invert"  // Invert colors in dark mode
-                    />
+                  href={`/section/${section.title}`}  // Link to the section's page
+                  className="contents text-black hover:bg-gray-100 font-poppins"  // Styling for the link
+                >
+                  <div className="flex items-center">
+                    <div className="w-[30px] h-[30px] relative mr-4">
+                      <Image
+                        src={section.sectionInfo?.imageLink || ""} // Fallback to an empty string if imageLink is missing
+                        alt={`Logo ${section.title}`} // Alt text for the image
+                        width={60}
+                        height={60}
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </div>
+                    <div className="text-base font-poppins">{section.title}</div>
                   </div>
-                  </Link>
-                </TableCell>
-                {/* Section title */}
-                <TableCell className="py-2">
-                  <span className="text-base font-semibold font-garamond">{section.title}</span>
-                </TableCell>
-                {/* Placeholder columns for future content */}
-                <TableCell className="py-2 font-poppins">À définir</TableCell>
-                <TableCell className="py-2 font-poppins">À définir</TableCell>
+                </Link>
+              </TableCell>
+              {/* Display the number of resources and categories for each section */}
+              <TableCell className="py-2 font-poppins">{section.resourcesCount} </TableCell>
+              <TableCell className="py-2 font-poppins">{section.categoriesCount} </TableCell>
+              <TableCell className="py-2 font-poppins">À définir</TableCell> {/* Placeholder for Price */}
             </TableRow>
           ))}
         </TableBody>

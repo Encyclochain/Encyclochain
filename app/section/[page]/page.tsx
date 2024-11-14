@@ -57,15 +57,20 @@ async function getBlockchainData(page: string) {
 }
 
 export default async function Page({ params, searchParams }: PageProps) {
+  // Décodage de `params.page` sans `await`
   const page = decodeURIComponent(params.page);
+
+  // Récupération des données blockchain
   const { chapters, sectionInfo, categories } = await getBlockchainData(page);
   const sectionColor = sectionInfo?.color || '#F7931A';
 
+  // Gestion des catégories sélectionnées sans `await`
   const selectedCategoriesParam = searchParams.categoryIds;
   const selectedCategoryIds = selectedCategoriesParam
     ? (selectedCategoriesParam as string).split(',').map((id) => parseInt(id))
     : [];
 
+  // Filtrage des catégories selon la sélection
   const filteredCategories: Category[] =
     selectedCategoryIds.length > 0
       ? categories.filter((cat: Category) => selectedCategoryIds.includes(cat.id))

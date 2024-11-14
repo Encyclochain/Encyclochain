@@ -8,12 +8,9 @@ interface ResourceTableProps {
 }
 
 export default async function ResourceTable({ resources, color }: ResourceTableProps) {
-  const formattedDataList: PreviewData[] = [];
-
-  await Promise.all(
+  // Utiliser Promise.allSettled pour gérer les erreurs individuellement
+  const results = await Promise.allSettled(
     resources.map(async (res) => {
-      let data = null;
-
       let formatData: PreviewData = {
         title: 'No title',
         description: 'No description',
@@ -23,23 +20,28 @@ export default async function ResourceTable({ resources, color }: ResourceTableP
       };
 
       try {
-        data = await extractMetaTags(res.link);
-        if (!data) {
-          return;
-        }
+        const data = await extractMetaTags(res.link);
+        if (!data) return null;
 
-        formatData.title = data.title || 'No title';
-        formatData.description = data.description || 'No description';
-        formatData.image = data.image || 'nopic';
-        formatData.url = res.link;
-        formatData.id = res.id || res.link;
-
-        formattedDataList.push(formatData);
+        formatData = {
+          title: data.title || 'No title',
+          description: data.description || 'No description',
+          image: data.image || 'nopic',
+          url: res.link,
+          id: res.id || res.link,
+        };
       } catch (e) {
-        console.error('Resource Table error : ', e);
+        console.error('Resource Table error:', e);
       }
+
+      return formatData;
     })
   );
+
+  // Filtrer uniquement les promesses résolues avec des données valides
+  const formattedDataList = results
+    .filter((result) => result.status === 'fulfilled' && result.value !== null)
+    .map((result) => (result as PromiseFulfilledResult<PreviewData>).value);
 
   return (
     <div className="w-[100%] max-sm:w-[70%]">

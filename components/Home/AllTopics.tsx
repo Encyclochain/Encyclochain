@@ -1,6 +1,5 @@
-
-import prisma from "@/lib/db";  // Import the Prisma client for database access
-import Link from "next/link";  // Import Link component for navigation
+import prisma from "@/lib/db"; // Import the Prisma client for database access
+import Link from "next/link"; // Import Link component for navigation
 import {
   Table,
   TableBody,
@@ -8,23 +7,29 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/Table";  // Import Table components
-import Image from "next/image";  // Import Image component from Next.js
+} from "@/components/ui/Table"; // Import Table components
+import Image from "next/image"; // Import Image component from Next.js
 
-// Function to retrieve sections grouped by their type from the database using Prisma
+// Function to retrieve sections grouped by their type with additional counts of resources and categories
 export async function getSectionsGroupedByType() {
   return await prisma.Topic.findMany({
     select: {
-      id: true,  // Retrieve section type ID
-      title: true,  // Retrieve section type title (e.g., "Layer 1")
+      id: true, // Retrieve section type ID
+      title: true, // Retrieve section type title (e.g., "Layer 1")
       sections: {
         select: {
-          id: true,  // Retrieve section ID
-          title: true,  // Retrieve section title
-          sectionInfo: {  // Retrieve section information such as color and image link
+          id: true, // Retrieve section ID
+          title: true, // Retrieve section title
+          _count: {
             select: {
-              color: true,  // Retrieve color information
-              imageLink: true,  // Retrieve image link
+              resources: true, // Count the number of resources in each section
+              categories: true, // Count the number of categories in each section
+            },
+          },
+          sectionInfo: { // Retrieve section information such as color and image link
+            select: {
+              color: true, // Retrieve color information
+              imageLink: true, // Retrieve image link
             },
           },
         },
@@ -35,7 +40,7 @@ export async function getSectionsGroupedByType() {
 
 // Main function to display all topics grouped by section type
 export async function Alltopics() {
-  // Fetch section types with their sections
+  // Fetch section types with their sections, including counts for resources and categories
   const topics = await getSectionsGroupedByType();
 
   return (
@@ -50,11 +55,10 @@ export async function Alltopics() {
           <Table className="rounded-md border">
             <TableHeader>
               <TableRow>
-                <TableHead className="py-2 ">Section</TableHead>  {/* En-tête pour la colonne combinée */}
-                <TableHead className="py-2 ">Category</TableHead>  {/* Colonne de remplacement 2 */}
-                <TableHead className="py-2 ">Ressources</TableHead>  {/* Colonne de remplacement 3 */}
-                <TableHead className="py-2 ">Contribution</TableHead> 
-                <TableHead className="py-2 ">Price</TableHead>  {/* Colonne de remplacement 3 */}
+                <TableHead className="py-2 ">Section</TableHead>
+                <TableHead className="py-2 ">Ressources</TableHead>
+                <TableHead className="py-2 ">Category</TableHead>
+                <TableHead className="py-2 ">Price</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -62,27 +66,31 @@ export async function Alltopics() {
                 <TableRow key={Section.id}>
                   <TableCell className="py-2 w-[200px]">
                     <Link
-                    href={`/section/${Section.title}`}  // Link to section page
-                    className="contents text-black hover:bg-gray-100 font-poppins"
-                  >  
+                      href={`/section/${Section.title}`} // Link to section page
+                      className="contents text-black hover:bg-gray-100 font-poppins"
+                    >
                       <div className="flex items-center">
                         <div className="w-[30px] h-[30px] relative mr-4">
                           <Image
-                            src={Section.sectionInfo?.imageLink || ""}  // Fallback to an empty string if imageLink is missing
-                            alt={`Logo ${Section.title}`}  // Alt text for the image
+                            src={Section.sectionInfo?.imageLink || ""} // Fallback to an empty string if imageLink is missing
+                            alt={`Logo ${Section.title}`} // Alt text for the image
                             width={60}
                             height={60}
-                            style={{ objectFit: 'cover' }} // Invert the image colors in dark mode
+                            style={{ objectFit: 'cover' }}
                           />
                         </div>
                         <div className="text-base font-poppins">{Section.title}</div>
                       </div>
-                      </Link>
-                    </TableCell>
-                    <TableCell className="py-2 w-[200px] font-poppins">À définir</TableCell>  {/* Placeholder for third column */}
-                    <TableCell className="py-2 w-[200px] font-poppins">À définir</TableCell>  {/* Placeholder for fourth column */}
-                    <TableCell className="py-2 w-[200px] font-poppins">À définir</TableCell> 
-                    <TableCell className="py-2 w-[200px] font-poppins">À définir</TableCell>  {/* Placeholder for fourth column */}
+                    </Link>
+                  </TableCell>
+                  {/* Display count of resources and categories */}
+                  <TableCell className="py-2 w-[200px] font-poppins">
+                    {Section._count.resources} 
+                  </TableCell>
+                  <TableCell className="py-2 w-[200px] font-poppins">
+                    {Section._count.categories} 
+                  </TableCell>
+                  <TableCell className="py-2 w-[200px] font-poppins">Soon</TableCell>
                 </TableRow>
               ))}
             </TableBody>

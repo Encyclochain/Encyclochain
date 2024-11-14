@@ -42,7 +42,7 @@ export default function Watchlist() {
             />
             <main className="flex-grow pt-20">
                 <div className="container mx-auto p-4">
-                    <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
+                    <div className="flex flex-wrap justify-between items-center mb-6 gap-4 font-sans">
                         <select
                             value={selectedWatchlist}
                             onChange={(e) => setSelectedWatchlist(e.target.value)}
@@ -53,9 +53,9 @@ export default function Watchlist() {
                                 </option>
                             ))}
                         </select>
-                        <Button onClick={() => setIsNewWatchlistModalOpen(true)}>New Watchlist</Button>
-                        <Button>Add alert</Button>
-                        <Button onClick={() => setIsShareModalOpen(true)}>Share</Button>
+                        <Button onClick={() => setIsNewWatchlistModalOpen(true)} className='font-poppins'>New Watchlist</Button>
+                        <Button className='font-poppins'>Add alert</Button>
+                        <Button onClick={() => setIsShareModalOpen(true)} className='font-poppins'>Share</Button>
                     </div>
                     <WatchlistTable
                         previewData={previewData}
