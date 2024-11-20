@@ -69,15 +69,20 @@ export async function Alltopics() {
                       href={`/section/${Section.title}`} // Link to section page
                       className="contents text-black hover:bg-gray-100 font-poppins"
                     >
-                      <div className="flex items-center">
+                      <div className="flex items-center ">
                         <div className="w-[30px] h-[30px] relative mr-4">
-                          <Image
-                            src={Section.sectionInfo?.imageLink || ""} // Fallback to an empty string if imageLink is missing
-                            alt={`Logo ${Section.title}`} // Alt text for the image
-                            width={60}
-                            height={60}
-                            style={{ objectFit: 'cover' }}
-                          />
+                          {Section.sectionInfo?.imageLink ? (
+                            <Image
+                              src={Section.sectionInfo.imageLink}
+                              alt={`Logo ${Section.title}`}
+                              width={60}
+                              height={60}
+                              style={{ objectFit: 'cover' }}
+                            />
+                          ) : (
+                            // Vous pouvez choisir de rendre un élément alternatif ou rien du tout
+                            <div>No image</div>
+                          )}
                         </div>
                         <div className="text-base font-poppins">{Section.title}</div>
                       </div>

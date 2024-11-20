@@ -50,7 +50,7 @@ model SectionInfo {
   blockTime      String?  @db.VarChar(255)
   creationDate   String?  @db.VarChar(255)
   sectionId      Int      @unique
-  section        Section  @relation(fields: [sectionId], references: [id], onUpdate: NoAction)
+  section        Section @relation(fields: [sectionId], references: [id], onUpdate: NoAction)
 }
 
 model Category {
@@ -77,12 +77,13 @@ model Resource {
 
 model User {
   id            Int        @id @default(autoincrement())
-  name          String     @db.VarChar(255)
-  wallet        String     @db.VarChar(255)
+  privyUserId   String     @unique
+  name          String?    @db.VarChar(255)
   createdAt     DateTime   @default(now()) @db.Timestamp(6)
   verified      Boolean    @default(false)
   contributions Resource[]
 }
+
 
 model Type {
   id       Int        @id @default(autoincrement())

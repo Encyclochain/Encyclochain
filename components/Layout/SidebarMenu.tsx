@@ -13,16 +13,12 @@ import {
   SidebarMenuButton,
   SidebarMenuSub,
   SidebarMenuSubItem,
-  SidebarMenuSubButton,
-} from "@/components/ui/sidebar"
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+} from "@/components/ui/sidebar";
 import { AiOutlineSearch, AiOutlineHome, AiOutlineFolder, AiOutlineEye, AiOutlineDiscord, AiOutlineX, AiFillGithub, AiOutlineHeart, AiOutlineRight, AiOutlineLeft, AiOutlineDown } from "react-icons/ai";  // Import icons
 import { Button } from "../ui/button";  // Custom button component
 import { usePrivy } from '@privy-io/react-auth';
+import Image from "next/image"; // Import Image component from Next.js
+
 
 
 const items = [
@@ -54,7 +50,7 @@ interface SidebarMenuProps {
 export function AppSidebar({ topics }: SidebarMenuProps) {
 
   const [isOpen, setIsOpen] = useState(false);
-  const { login, authenticated } = usePrivy();
+  const { login, logout, user, authenticated } = usePrivy();
 
   const toggleSubMenu = () => {
     setIsOpen(!isOpen);
@@ -140,13 +136,29 @@ export function AppSidebar({ topics }: SidebarMenuProps) {
           </SidebarMenu>
         </SidebarGroup >
       </SidebarContent>
+
+      {authenticated && user && (
+          <div className="flex items-center p-2 ">
+          <div className="w-[30px] h-[30px] relative mr-4">
+            <Image
+              src={user.twitter?.profilePictureUrl || user.farcaster?.pfp || "" } // Fallback to an empty string if imageLink is missing
+              alt={`Logo`} // Alt text for the image
+              width={100}
+              height={100}
+              style={{  objectFit: 'cover', borderRadius: '50%'  }}
+            />
+          </div>
+          <div className="text-base font-poppins"> {user.farcaster?.username || user.github?.username || user.twitter?.username}</div>
+        </div>
+      )}
+      
       <div className="px-4 py-2">
         <Button
-          onClick={login}
+        onClick={authenticated ? logout : login}
           className="w-full flex items-center justify-center gap-2 bg-transparent border-2 border-[#8f96a3] hover:bg-gray-100 text-black"
         >
           <span className="font-poppins text-sm">
-            {authenticated ? 'Connecté' : 'Se connecter'}
+          {authenticated ? 'Logout' : 'Login'}
           </span>
         </Button>
       </div>

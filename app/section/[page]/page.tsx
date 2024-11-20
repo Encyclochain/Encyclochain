@@ -43,7 +43,14 @@ async function getBlockchainData(page: string) {
         select: {
           id: true,
           title: true,
-          resources: { select: { id: true, link: true, typeId: true } },
+          resources: {
+            where: { sections: { some: { title: page } } }, // Filtre ici
+            select: {
+              id: true,
+              link: true,
+              typeId: true,
+            },
+          },
         },
       },
     },
@@ -55,6 +62,7 @@ async function getBlockchainData(page: string) {
     categories: sectionData?.categories || [],
   };
 }
+
 
 export default async function Page({ params, searchParams }: PageProps) {
   // Décodage de `params.page` sans `await`

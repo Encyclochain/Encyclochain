@@ -1,11 +1,10 @@
-// components/Providers.tsx
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { WatchlistProvider } from '@/components/Watchlist/WatchlistContext';
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
-import { AppSidebar } from "@/components/Layout/SidebarMenu"
-import { PrivyProvider } from '@privy-io/react-auth';
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/Layout/SidebarMenu";
+import { PrivyProvider, usePrivy } from '@privy-io/react-auth';
 
 interface ProvidersProps {
     children: React.ReactNode;
@@ -13,6 +12,36 @@ interface ProvidersProps {
 }
 
 export default function Providers({ children, topics }: ProvidersProps) {
+    const { authenticated, getAccessToken } = usePrivy();
+
+    useEffect(() => {
+        const authenticateUser = async () => {
+            if (authenticated) {
+                try {
+                    const token = await getAccessToken();
+                    const response = await fetch('@/app/api/authenticate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ token }),
+                    });
+                    const data = await response.json();
+                    if (!response.ok) {
+                        console.error('Erreur lors de l\'authentification de l\'utilisateur:', data.message);
+                    } else {
+                        console.log('Utilisateur authentifié:', data.user);
+                        // Vous pouvez stocker les informations utilisateur si nécessaire
+                    }
+                } catch (error) {
+                    console.error('Erreur lors de l\'appel à l\'API d\'authentification:', error);
+                }
+            }
+        };
+
+        authenticateUser();
+    }, [authenticated, getAccessToken]);
+
     return (
         <PrivyProvider
             appId="cm3hg23jk075g94fpypzmp6g9"
@@ -26,10 +55,10 @@ export default function Providers({ children, topics }: ProvidersProps) {
                     walletList: ["detected_ethereum_wallets"]
                 },
                 loginMethods: [
-                    "email",
+                    "farcaster",
                     "google",
                     "github",
-                    "discord"
+                    "twitter"
                 ],
                 fundingMethodConfig: {
                     moonpay: {

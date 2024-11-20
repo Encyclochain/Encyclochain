@@ -25,7 +25,7 @@ export default async function SectionInfo({ page }: SectionInfoProps) {
   });
 
   if (!sectionInfo) {
-    return <div>Informations indisponibles pour cette section.</div>;
+    return <div>Information not available for this section.</div>;
   }
 
   const {
@@ -43,24 +43,24 @@ export default async function SectionInfo({ page }: SectionInfoProps) {
       <ul className="space-y-2 font-poppins">
         {creator && (
           <li>
-            <strong>Créateur</strong> : {creator}
+            <strong>Creator</strong> : {creator}
           </li>
         )}
         {consensus && (
           <li>
-            <strong>Type de consensus</strong> : {consensus}
+            <strong>Consensus</strong> : {consensus}
           </li>
         )}
         {color && (
           <li>
-            <strong>Couleur associée</strong> : <span style={{ color }}>{color}</span>
+            <strong>Color</strong> : <span style={{ color }}>{color}</span>
           </li>
         )}
         {whitepaperLink && (
           <li>
             <strong>Whitepaper</strong> :{' '}
             <a href={whitepaperLink} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
-              Voir le whitepaper
+              Click here
             </a>
           </li>
         )}
@@ -68,7 +68,7 @@ export default async function SectionInfo({ page }: SectionInfoProps) {
           <li>
             <strong>Twitter</strong> :{' '}
             <a href={twitterLink} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
-              Compte Twitter
+              Click here
             </a>
           </li>
         )}
@@ -76,7 +76,7 @@ export default async function SectionInfo({ page }: SectionInfoProps) {
           <li>
             <strong>Site officiel</strong> :{' '}
             <a href={websiteLink} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
-              Visiter le site
+              Visit the website
             </a>
           </li>
         )}
