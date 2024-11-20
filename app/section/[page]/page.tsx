@@ -4,6 +4,8 @@ import Carousel_ImgTop from '@/components/Carousel/CarouselImgTop';
 import CategoryTitles from '@/components/Section/CategoryTitles';
 import SectionInfo from '@/components/Section/SectionInformation';
 import prisma from '@/lib/db';
+import { Button } from "@/components/ui/button";
+import SubmitResourceModal from '@/components/Contribution/SubmitResourceModal';
 
 interface PageProps {
   params: { page: string };
@@ -89,7 +91,7 @@ export default async function Page({ params, searchParams }: PageProps) {
       <Header
         design="z-10 w-full items-center p-5 justify-between font-mono text-sm flex mb-8"
         showArrow={true}
-        pageTitle={page} 
+        pageTitle={page}
       />
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="w-full lg:w-[70%]">
@@ -102,7 +104,19 @@ export default async function Page({ params, searchParams }: PageProps) {
         filteredCategories.map((cat: Category) =>
           cat.resources.length > 0 ? (
             <div key={cat.id} className="mt-12">
-              <h2 className="text-2xl font-bold mb-4">{cat.title}</h2>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <h2 className="text-2xl font-bold">{cat.title}</h2>
+                  <span className="px-2 py-1 bg-gray-100 rounded-full text-sm font-medium">
+                    {cat.resources.length} resources
+                  </span>
+                </div>
+                <SubmitResourceModal
+                  categoryId={cat.id}
+                  categoryTitle={cat.title}
+                  sectionTitle={page}
+                />
+              </div>
               <Carousel_ImgTop resources={cat.resources} color={sectionColor} />
             </div>
           ) : null

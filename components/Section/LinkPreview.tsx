@@ -1,7 +1,7 @@
 // components/Section/LinkPreview.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { RxExternalLink } from 'react-icons/rx';
@@ -9,6 +9,7 @@ import { VscBookmark } from 'react-icons/vsc';
 import { PiBookmarkSimpleFill } from 'react-icons/pi';
 import { PreviewData } from '@/type';
 import { Button } from "@/components/ui/button";
+import { useClickOutside } from '@/hooks/useClickOutside';
 
 
 // import Image from 'next/image'; // Supprimé
@@ -31,6 +32,12 @@ export default function LinkPreview({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isInAnyWatchlist, setIsInAnyWatchlist] = useState(false);
   const [isNewWatchlistModalOpen, setIsNewWatchlistModalOpen] = useState(false);
+
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside(menuRef, () => {
+    setIsMenuOpen(false);
+  });
 
   useEffect(() => {
     const inAny = watchlists.some((listName) => {
@@ -84,19 +91,55 @@ export default function LinkPreview({
                   <Badge variant="secondary">Blockchain</Badge>
                 </div>
                 {/* Bouton Watchlist */}
-                <Button
-                  className="text-gray-700 hover:text-gray-900 focus:outline-none"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setIsMenuOpen(!isMenuOpen);
-                  }}
-                >
-                  {isInAnyWatchlist ? (
-                    <PiBookmarkSimpleFill size={20} color={color} />
-                  ) : (
-                    <VscBookmark size={20} color={color} />
+                <div className="relative" ref={menuRef}>
+                  <Button
+                    className="text-gray-700 hover:text-gray-900 focus:outline-none"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setIsMenuOpen(!isMenuOpen);
+                    }}
+                  >
+                    {isInAnyWatchlist ? (
+                      <PiBookmarkSimpleFill size={20} color={color} />
+                    ) : (
+                      <VscBookmark size={20} color={color} />
+                    )}
+                  </Button>
+
+                  {/* Watchlist Menu */}
+                  {isMenuOpen && (
+                    <div
+                      className="absolute top-full right-0 mt-1 bg-white border rounded shadow-lg z-20 w-40"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {watchlists.map((listName) => (
+                        <div
+                          key={listName}
+                          className="p-2 hover:bg-gray-100 cursor-pointer text-xs"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleAddToWatchlist(listName);
+                          }}
+                        >
+                          Ajouter à {listName}
+                        </div>
+                      ))}
+                      <div
+                        className="p-2 hover:bg-gray-100 cursor-pointer border-t text-xs"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setIsMenuOpen(false);
+                          setIsNewWatchlistModalOpen(true);
+                        }}
+                      >
+                        + Nouvelle Watchlist
+                      </div>
+                    </div>
                   )}
-                </Button>
+                </div>
               </div>
 
               {/* Titre et Description */}
@@ -129,30 +172,6 @@ export default function LinkPreview({
               <RxExternalLink size={16} className="text-gray-600" />
             </div>
           </a>
-
-          {/* Watchlist Menu */}
-          {isMenuOpen && (
-            <div className="absolute top-40 right-2 bg-white border rounded shadow-lg z-20 w-40">
-              {watchlists.map((listName) => (
-                <div
-                  key={listName}
-                  className="p-2 hover:bg-gray-100 cursor-pointer text-xs"
-                  onClick={() => handleAddToWatchlist(listName)}
-                >
-                  Ajouter à {listName}
-                </div>
-              ))}
-              <div
-                className="p-2 hover:bg-gray-100 cursor-pointer border-t text-xs"
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  setIsNewWatchlistModalOpen(true);
-                }}
-              >
-                + Nouvelle Watchlist
-              </div>
-            </div>
-          )}
 
           {/* Watchlist Modal */}
           {isNewWatchlistModalOpen && (
