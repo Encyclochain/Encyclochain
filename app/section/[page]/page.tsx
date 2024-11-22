@@ -5,7 +5,7 @@ import CategoryTitles from '@/components/Section/CategoryTitles';
 import SectionInfo from '@/components/Section/SectionInformation';
 import prisma from '@/lib/db';
 import { Button } from "@/components/ui/button";
-import SubmitResourceModal from '@/components/Contribution/SubmitResourceModal';
+import SubmitResourceModal from '@/components/Section/SubmitResourceModal';
 
 interface PageProps {
   params: { page: string };

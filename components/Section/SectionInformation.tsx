@@ -21,6 +21,11 @@ export default async function SectionInfo({ page }: SectionInfoProps) {
       websiteLink: true,
       creator: true,
       consensus: true,
+      section: {
+        select: {
+          title: true, // Récupère le titre du topic
+        },
+      },
     },
   });
 
@@ -35,30 +40,31 @@ export default async function SectionInfo({ page }: SectionInfoProps) {
     websiteLink,
     creator,
     consensus,
+    section
   } = sectionInfo;
 
   return (
     <aside className="w-full lg:w-[30%] bg-gray-100 border border-gray-200 rounded-lg p-6 shadow-sm">
-      <h2 className="text-xl font-bold mb-4 font-garamond">Informations sur la Blockchain</h2>
+      <h2 className="text-xl mb-4 font-poppins font-semibold ">{section.title}</h2>
       <ul className="space-y-2 font-poppins">
         {creator && (
           <li>
-            <strong>Creator</strong> : {creator}
+            <span className='font-semibold'>Creator</span> : {creator}
           </li>
         )}
         {consensus && (
           <li>
-            <strong>Consensus</strong> : {consensus}
+            <span className='font-semibold'>Consensus</span> : {consensus}
           </li>
         )}
         {color && (
           <li>
-            <strong>Color</strong> : <span style={{ color }}>{color}</span>
+            <span className='font-semibold'>Color</span> : <span style={{ color }}>{color}</span>
           </li>
         )}
         {whitepaperLink && (
           <li>
-            <strong>Whitepaper</strong> :{' '}
+            <span className='font-semibold'>Whitepaper</span>:{' '}
             <a href={whitepaperLink} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
               Click here
             </a>
@@ -66,7 +72,7 @@ export default async function SectionInfo({ page }: SectionInfoProps) {
         )}
         {twitterLink && (
           <li>
-            <strong>Twitter</strong> :{' '}
+            <span className='font-semibold'>Twitter</span> :{' '}
             <a href={twitterLink} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
               Click here
             </a>
@@ -74,7 +80,7 @@ export default async function SectionInfo({ page }: SectionInfoProps) {
         )}
         {websiteLink && (
           <li>
-            <strong>Site officiel</strong> :{' '}
+           <span className='font-semibold'>Website</span>:{' '}
             <a href={websiteLink} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
               Visit the website
             </a>

@@ -57,7 +57,7 @@ export default function TopicContent({ page, chapters }: SectionContentProps) {
                             <div className="space-y-4">
                                 <h2 className="text-xl md:text-2xl font-bold font-garamond">{chapter.title}</h2>
                                 {/* Corriger les échappements de \n et afficher avec des <br> */}
-                                <p className="text-sm md:text-base font-poppins">
+                                <p className="text-sm md:text-base font-poppins leading-7">
                                     {chapter.description ? formatTextWithLineBreaks(chapter.description) : "Description non disponible"}
                                 </p>
                             </div>

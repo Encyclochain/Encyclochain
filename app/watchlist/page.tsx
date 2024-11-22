@@ -2,7 +2,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Header } from '@/components/Header';
 import WatchlistModal from '@/components/Watchlist/NewWatchlistModal';
 import ShareModal from '@/components/Watchlist/ShareModal';
 import WatchlistTable from '@/components/Watchlist/WatchlistTable';
@@ -36,10 +35,6 @@ export default function Watchlist() {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <Header
-                design="z-10 w-full items-center p-5 justify-between font-mono text-sm lg:flex bg-white"
-                showArrow={true}
-            />
             <main className="flex-grow pt-20">
                 <div className="container mx-auto p-4">
                     <div className="flex flex-wrap justify-between items-center mb-6 gap-4 font-sans">
@@ -54,7 +49,7 @@ export default function Watchlist() {
                             ))}
                         </select>
                         <Button onClick={() => setIsNewWatchlistModalOpen(true)} className='font-poppins'>New Watchlist</Button>
-                        <Button className='font-poppins'>Add alert</Button>
+                      
                         <Button onClick={() => setIsShareModalOpen(true)} className='font-poppins'>Share</Button>
                     </div>
                     <WatchlistTable

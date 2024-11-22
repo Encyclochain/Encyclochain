@@ -43,7 +43,7 @@ export default function EncyclochainContent({ chapters }: EncyclochainContentPro
         <Tabs value={activeSection} onValueChange={setActiveSection} className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-2 mb-4 sm:mb-8">
             {sortedChapters.map((chapter) => (
-              <TabsTrigger key={chapter.id} value={chapter.title} className="capitalize text-xs sm:text-sm max-md:bg-[#64748b] max-md:bg-opacity-10 font-garamond">
+              <TabsTrigger key={chapter.id} value={chapter.title} className="capitalize sm:text-lg max-md:bg-[#64748b] max-md:bg-opacity-10 font-garamond text-black">
                 {chapter.title}
               </TabsTrigger>
             ))}
@@ -51,8 +51,8 @@ export default function EncyclochainContent({ chapters }: EncyclochainContentPro
           {sortedChapters.map((chapter) => (
             <TabsContent key={chapter.id} value={chapter.title}>
               <div className="space-y-4">
-                <h2 className="text-xl md:text-2xl font-bold font-garamond">{chapter.title}</h2>
-                <p className="text-sm md:text-base font-poppins">
+             
+                <p className="text-sm md:text-base font-poppins leading-7">
                   {chapter.description ? formatTextWithLineBreaks(chapter.description) : "Description non disponible"}
                 </p>
               </div>

@@ -12,35 +12,6 @@ interface ProvidersProps {
 }
 
 export default function Providers({ children, topics }: ProvidersProps) {
-    const { authenticated, getAccessToken } = usePrivy();
-
-    useEffect(() => {
-        const authenticateUser = async () => {
-            if (authenticated) {
-                try {
-                    const token = await getAccessToken();
-                    const response = await fetch('@/app/api/authenticate', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ token }),
-                    });
-                    const data = await response.json();
-                    if (!response.ok) {
-                        console.error('Erreur lors de l\'authentification de l\'utilisateur:', data.message);
-                    } else {
-                        console.log('Utilisateur authentifié:', data.user);
-                        // Vous pouvez stocker les informations utilisateur si nécessaire
-                    }
-                } catch (error) {
-                    console.error('Erreur lors de l\'appel à l\'API d\'authentification:', error);
-                }
-            }
-        };
-
-        authenticateUser();
-    }, [authenticated, getAccessToken]);
 
     return (
         <PrivyProvider

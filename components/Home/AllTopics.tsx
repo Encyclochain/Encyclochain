@@ -55,10 +55,10 @@ export async function Alltopics() {
           <Table className="rounded-md border">
             <TableHeader>
               <TableRow>
-                <TableHead className="py-2 ">Section</TableHead>
-                <TableHead className="py-2 ">Ressources</TableHead>
-                <TableHead className="py-2 ">Category</TableHead>
-                <TableHead className="py-2 ">Price</TableHead>
+                <TableHead className="py-2 text-black text-base">Section</TableHead>
+                <TableHead className="py-2 text-black text-base">Ressources</TableHead>
+                <TableHead className="py-2 text-black text-base">Category</TableHead>
+                <TableHead className="py-2 text-black text-base">Price</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -72,16 +72,19 @@ export async function Alltopics() {
                       <div className="flex items-center ">
                         <div className="w-[30px] h-[30px] relative mr-4">
                           {Section.sectionInfo?.imageLink ? (
-                            <Image
-                              src={Section.sectionInfo.imageLink}
-                              alt={`Logo ${Section.title}`}
-                              width={60}
-                              height={60}
-                              style={{ objectFit: 'cover' }}
-                            />
+                           <Image
+                           src={Section.sectionInfo.imageLink}
+                           alt={`Logo ${Section.title}`}
+                           width={80}
+                           height={80}
+                           style={{ objectFit: 'cover' }}
+                           className="rounded-full"
+                         />
+                         
                           ) : (
-                            // Vous pouvez choisir de rendre un élément alternatif ou rien du tout
-                            <div>No image</div>
+                            <span className="text-black font-bold text-xl font-garamond">
+                            {Section.title.charAt(0).toUpperCase()}
+                          </span>
                           )}
                         </div>
                         <div className="text-base font-poppins">{Section.title}</div>

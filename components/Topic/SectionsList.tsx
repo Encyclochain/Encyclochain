@@ -93,13 +93,13 @@ export default async function SectionSelect({ page }: SectionSelectProps) {
       <h2 className="text-3xl font-bold text-black mb-6 lg:text-left text-center font-garamond">
         {topic.title}
       </h2>
-      <Table>
+      <Table className="rounded-md border">
         <TableHeader>
           <TableRow>
-            <TableHead className="py-2 font-poppins">Section</TableHead> {/* Section header */}
-            <TableHead className="py-2 font-poppins">Ressources</TableHead> {/* Ressources header */}
-            <TableHead className="py-2 font-poppins">Category</TableHead> {/* Category header */}
-            <TableHead className="py-2 font-poppins">Price</TableHead> {/* Placeholder for Price */}
+            <TableHead className="py-2 text-black text-base">Section</TableHead> {/* Section header */}
+            <TableHead className="py-2 text-black text-base">Ressources</TableHead> {/* Ressources header */}
+            <TableHead className="py-2 text-black text-base">Category</TableHead> {/* Category header */}
+            <TableHead className="py-2 text-black text-base">Price</TableHead> {/* Placeholder for Price */}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -112,13 +112,20 @@ export default async function SectionSelect({ page }: SectionSelectProps) {
                 >
                   <div className="flex items-center">
                     <div className="w-[30px] h-[30px] relative mr-4">
+                    {section.sectionInfo?.imageLink? (
                       <Image
-                        src={section.sectionInfo?.imageLink || ""} // Fallback to an empty string if imageLink is missing
+                        src={section.sectionInfo?.imageLink } // Fallback to an empty string if imageLink is missing
                         alt={`Logo ${section.title}`} // Alt text for the image
-                        width={60}
-                        height={60}
+                        width={80}
+                        height={80}
                         style={{ objectFit: 'cover' }}
+                        className="rounded-full"
                       />
+                    ) : (
+                      <span className="text-black font-bold text-xl font-garamond">
+                      {section.title.charAt(0).toUpperCase()}
+                    </span>
+                    )}
                     </div>
                     <div className="text-base font-poppins">{section.title}</div>
                   </div>

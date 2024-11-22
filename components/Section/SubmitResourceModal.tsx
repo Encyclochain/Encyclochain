@@ -10,7 +10,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/Dialog"
 import { Plus } from 'lucide-react'
-import SubmitResource from './SubmitRessources'
+import SubmitResource from '@/components/Contribution/SubmitRessources'
 
 interface SubmitResourceModalProps {
     categoryId: number

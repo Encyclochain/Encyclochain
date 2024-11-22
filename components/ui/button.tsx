@@ -10,7 +10,7 @@ const buttonVariants = cva(
     // Variant definitions
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90", // Default button style
+        default: "bg-black text-primary-foreground", // Default button style
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90", // Destructive style (e.g., for delete actions)
         outline:

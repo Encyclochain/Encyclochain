@@ -22,7 +22,7 @@ export default async function EncyclochainInfo() {
   });
 
   if (!sectionInfo) {
-    return <div className='font-poppins'>Informations indisponibles pour cette section.</div>;
+    return <div className='font-poppins'>Informations not available.</div>;
   }
 
   const {

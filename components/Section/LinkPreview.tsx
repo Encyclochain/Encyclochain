@@ -1,7 +1,6 @@
-// components/Section/LinkPreview.tsx
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { RxExternalLink } from 'react-icons/rx';
@@ -10,14 +9,7 @@ import { PiBookmarkSimpleFill } from 'react-icons/pi';
 import { PreviewData } from '@/type';
 import { Button } from "@/components/ui/button";
 import { useClickOutside } from '@/hooks/useClickOutside';
-
-
-// import Image from 'next/image'; // Supprimé
-
-// Importation du contexte des watchlists
 import { useWatchlist } from '@/components/Watchlist/WatchlistContext';
-
-// Importation de la modale pour créer une nouvelle watchlist
 import WatchlistModal from '@/components/Watchlist/NewWatchlistModal';
 
 export default function LinkPreview({
@@ -32,20 +24,29 @@ export default function LinkPreview({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isInAnyWatchlist, setIsInAnyWatchlist] = useState(false);
   const [isNewWatchlistModalOpen, setIsNewWatchlistModalOpen] = useState(false);
+  const [imageSrc, setImageSrc] = useState(
+    data.image === 'nopic' ? '/assets/articles/bitcoinmagazine.png' : data.image
+  );
 
   const menuRef = useRef<HTMLDivElement>(null);
+
+  // Liste des images de fallback
+  const fallbackImages = [
+    '/assets/articles/bitcoinmagazine.png', // Image par défaut
+    '/assets/alternative-image.png', // Image alternative 1
+  ];
 
   useClickOutside(menuRef, () => {
     setIsMenuOpen(false);
   });
 
-  useEffect(() => {
-    const inAny = watchlists.some((listName) => {
-      const items = getWatchlistItems(listName);
-      return items.some((item) => item.id === data.id);
-    });
-    setIsInAnyWatchlist(inAny);
-  }, [data.id, watchlists, getWatchlistItems]);
+  const handleImageError = () => {
+    // Si l'image actuelle échoue, passer à l'image suivante dans fallbackImages
+    const nextImage = fallbackImages.shift();
+    if (nextImage) {
+      setImageSrc(nextImage);
+    }
+  };
 
   const handleAddToWatchlist = (watchlistName: string) => {
     addToWatchlist(data, watchlistName);
@@ -60,8 +61,6 @@ export default function LinkPreview({
     setIsMenuOpen(false);
     setIsNewWatchlistModalOpen(false);
   };
-
-  const imageSrc = data.image === 'nopic' ? '/assets/articles/bitcoinmagazine.png' : data.image;
 
   return (
     <div className="w-full max-w-xs sm:max-w-sm mx-auto h-full">
@@ -80,6 +79,7 @@ export default function LinkPreview({
                 alt={data.title}
                 style={{ objectFit: 'cover' }}
                 className="w-full h-full rounded-t-lg"
+                onError={handleImageError}
               />
             </div>
 
@@ -153,15 +153,6 @@ export default function LinkPreview({
                 {/* Vous pouvez ajouter des éléments ici si nécessaire */}
               </div>
             </div>
-
-            {/* Stars (commenté) */}
-            {/*
-            <div className="flex items-center px-3 pb-1">
-              {[...Array(5)].map((_, index) => (
-                <img key={index} src={star} alt="Star" width={16} height={16} />
-              ))}
-            </div>
-            */}
 
             {/* Author & Date */}
             <div className="flex justify-between items-center px-3 pb-2">
