@@ -172,7 +172,7 @@ const handleUserAuthenticated = async () => {
                   <SidebarMenuSub>
                     <SidebarMenuSubItem />
                     <a
-                      href={`/contribution`}
+                      href={`/contribution/history`}
                       className="flex items-center space-x-1 font-poppins text-sm mt-2"
                     >
                       <AiOutlineFolder />

@@ -1,6 +1,6 @@
 'use client';
 import { PreviewData } from '@/type';
-import LinkPreview from '../Section/LinkPreview';
+import LinkPreview from '../LinkPreview';
 import { useState } from 'react';
 
 const ITEMS_PER_PAGE = 8;

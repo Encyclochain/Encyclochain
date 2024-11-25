@@ -27,7 +27,7 @@ model TopicInfo {
 model Section {
   id          Int          @id @default(autoincrement())
   createdAt   DateTime     @default(now()) @db.Timestamp(6)
-  title       String       @db.VarChar(255)
+  title       String       @unique @db.VarChar(255)
   topicId     Int
   chapters    Chapter[]
   topic       Topic        @relation(fields: [topicId], references: [id])

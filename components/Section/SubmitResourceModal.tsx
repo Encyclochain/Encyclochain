@@ -10,7 +10,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/Dialog"
 import { Plus } from 'lucide-react'
-import SubmitResource from '@/components/Contribution/SubmitRessources'
+import ModalFormResource from '@/components/Section/ModalFormResource'
 
 interface SubmitResourceModalProps {
     categoryId: number
@@ -38,7 +38,7 @@ export default function SubmitResourceModal({
                         Add a new resource to the category {categoryTitle} in section {sectionTitle}
                     </DialogDescription>
                 </DialogHeader>
-                <SubmitResource
+                <ModalFormResource
                     preselectedCategory={categoryId}
                     preselectedSection={sectionTitle}
                 />

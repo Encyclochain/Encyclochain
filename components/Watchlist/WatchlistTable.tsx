@@ -2,7 +2,7 @@
 'use client';
 
 import { PreviewData } from '@/type';
-import LinkPreview from '@/components/Section/LinkPreview';
+import LinkPreview from '@/components/LinkPreview';
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 
