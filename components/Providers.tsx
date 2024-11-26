@@ -1,57 +1,49 @@
 'use client';
 
-import React, { useEffect } from 'react';
 import { WatchlistProvider } from '@/components/Watchlist/WatchlistContext';
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/Layout/SidebarMenu";
-import { PrivyProvider, usePrivy } from '@privy-io/react-auth';
+import { PrivyProvider } from '@privy-io/react-auth';
 
 interface ProvidersProps {
     children: React.ReactNode;
     topics: { id: number; title: string }[];
 }
 
-export default function Providers({ children, topics }: ProvidersProps) {
+'use client'; 
 
+export default function Providers({ children, topics }: ProvidersProps) {
     return (
         <PrivyProvider
-            appId="cm3hg23jk075g94fpypzmp6g9"
+            appId="cm3hg23jk075g94fpypzmp6g9" 
             config={{
                 appearance: {
-                    accentColor: "#6A6FF5",
-                    theme: "#FFFFFF",
-                    showWalletLoginFirst: false,
-                    logo: "https://auth.privy.io/logos/privy-logo.png",
-                    walletChainType: "ethereum-only",
-                    walletList: ["detected_ethereum_wallets"]
+                    accentColor: "#6A6FF5", // Sets the primary UI color.
+                    theme: "#FFFFFF",       // Enables a light theme.
+                    walletChainType: "ethereum-only", // Restricts to Ethereum wallets.
                 },
-                loginMethods: [
-                    "farcaster",
-                    "google",
-                    "github",
-                    "twitter"
-                ],
+                loginMethods: ["farcaster", "google", "github", "twitter"], 
+                // Specifies available login methods.
                 fundingMethodConfig: {
-                    moonpay: {
-                        useSandbox: true
-                    }
+                    moonpay: { useSandbox: true } 
+                    // Activates Moonpay sandbox for testing.
                 },
                 embeddedWallets: {
-                    createOnLogin: "off",
-                    requireUserPasswordOnCreate: false
-                },
-                mfa: {
-                    noPromptOnMfaRequired: false
+                    createOnLogin: "off" 
+                    // Prevents automatic wallet creation at login.
                 }
             }}
         >
             <SidebarProvider>
                 <WatchlistProvider>
                     <div className="flex w-full">
-                        <AppSidebar topics={topics} />
-                        <SidebarTrigger />
+                        <AppSidebar topics={topics} /> 
+                        {/* Renders the sidebar with provided topics. */}
+                        <SidebarTrigger /> 
+                        {/* Trigger for toggling the sidebar. */}
                         <div className="flex-1 flex flex-col overflow-y-auto">
-                            {children}
+                            {children} 
+                            {/* Main content of the app. */}
                         </div>
                     </div>
                 </WatchlistProvider>

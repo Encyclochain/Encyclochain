@@ -1,6 +1,6 @@
-import prisma from "@/lib/db"; // Prisma ORM for database operations
-import Link from "next/link"; // Next.js Link for client-side navigation
-import Image from "next/image"; // Next.js Image component for optimized image loading
+import prisma from "@/lib/db"; 
+import Link from "next/link"; 
+import Image from "next/image"; 
 import {
   Table,
   TableBody,
@@ -8,28 +8,28 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/Table"; // Importing table components for display
+} from "@/components/ui/Table"; //
 
 // Explicit typing for SectionInfo interface (allows null for imageLink)
 interface SectionInfo {
-  color: string | null;  // Color associated with the section
-  imageLink: string | null;  // Image link (nullable)
+  color: string | null;  
+  imageLink: string | null;  
 }
 
 // Typing for individual Section (allows null for sectionInfo)
 interface Section {
-  id: number;  // Section ID
-  title: string;  // Section title
-  sectionInfo: SectionInfo | null;  // Section information (nullable)
-  resourcesCount: number; // Count of resources in the section
-  categoriesCount: number; // Count of categories in the section
+  id: number;  
+  title: string;  
+  sectionInfo: SectionInfo | null;  
+  resourcesCount: number; 
+  categoriesCount: number; 
 }
 
 // Typing for topic, which groups sections
 interface topic {
-  id: number;  // topic ID
-  title: string;  // Title of the topic
-  sections: Section[];  // Array of sections under this type
+  id: number;  
+  title: string;  
+  sections: Section[];  
 }
 
 // Props interface for the SectionSelect component
@@ -42,13 +42,13 @@ async function getSectionsGroupedByType(page: string): Promise<topic | null> {
   const topic = await prisma.Topic.findFirst({
     where: { title: page }, // Filter by the page title
     select: {
-      id: true,  // Select topic ID
-      title: true,  // Select topic title
-      sections: {  // Select sections within this topic
+      id: true,  
+      title: true, 
+      sections: {  
         select: {
-          id: true,  // Select section ID
-          title: true,  // Select section title
-          sectionInfo: {  // Select section info (color and image link)
+          id: true,  
+          title: true,  
+          sectionInfo: {  
             select: {
               color: true,
               imageLink: true,

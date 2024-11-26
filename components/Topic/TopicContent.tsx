@@ -1,23 +1,22 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { Card, CardContent} from "@/components/ui/Card"
+import { Card, CardContent } from "@/components/ui/Card"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 
 interface SectionContentProps {
-    page: string;
-    chapters: Chapter[];
+    page: string; // The current page or section being displayed.
+    chapters: Chapter[]; // Array of chapter objects containing ID, title, and description.
 }
 
 interface Chapter {
-    id: number;
-    title: string;
-    description: string | null;
+    id: number; // Unique identifier for the chapter.
+    title: string; // Chapter title.
+    description: string | null; // Optional description of the chapter.
 }
 
-// Fonction pour corriger les éventuels échappements de \n et les transformer en <br />
+// Function to replace `\n` with `<br />` for rendering line breaks correctly.
 function formatTextWithLineBreaks(text: string) {
-    // Si le texte contient des échappements, on les remplace par de vrais sauts de ligne
     return text.replace(/\\n/g, '\n').split('\n').map((line, index) => (
         <span key={index}>
             {line}
@@ -27,38 +26,46 @@ function formatTextWithLineBreaks(text: string) {
 }
 
 export default function TopicContent({ page, chapters }: SectionContentProps) {
-    // Trie les chapitres par ID ou tout autre critère avant de les utiliser
+    // Sorts chapters by ID to ensure consistent order.
     const sortedChapters = chapters.sort((a, b) => a.id - b.id);
 
-    // Initialisation de l'onglet actif avec le premier chapitre si disponible
+    // State for managing the active tab; initialized with the first chapter title.
     const [activeSection, setActiveSection] = useState('');
 
     useEffect(() => {
-        // Si la liste des chapitres est non vide, on sélectionne le premier par défaut
+        // Automatically sets the first chapter as active if available.
         if (sortedChapters.length > 0) {
             setActiveSection(sortedChapters[0].title);
         }
-    }, [sortedChapters]); // Dépendance sur sortedChapters pour s'assurer de la mise à jour correcte
+    }, [sortedChapters]); // Ensures the state updates when chapters change.
 
     return (
         <Card className="w-full max-w-4xl mx-auto border-none">
             <CardContent>
-                {/* Si activeSection n'est pas vide, il sera utilisé comme valeur */}
                 <Tabs value={activeSection} onValueChange={setActiveSection} className="w-full">
+                    {/* Renders a tab trigger for each chapter */}
                     <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-4 sm:mb-8">
                         {sortedChapters.map((chapter) => (
-                            <TabsTrigger key={chapter.id} value={chapter.title} className="capitalize text-xs sm:text-sm max-md:bg-[#64748b] max-md:bg-opacity-10">
+                            <TabsTrigger 
+                                key={chapter.id} 
+                                value={chapter.title} 
+                                className="capitalize text-xs sm:text-sm max-md:bg-[#64748b] max-md:bg-opacity-10"
+                            >
                                 {chapter.title}
                             </TabsTrigger>
                         ))}
                     </TabsList>
+                    
+                    {/* Renders the content for each chapter */}
                     {sortedChapters.map((chapter) => (
                         <TabsContent key={chapter.id} value={chapter.title}>
                             <div className="space-y-4">
                                 <h2 className="text-xl md:text-2xl font-bold font-garamond">{chapter.title}</h2>
-                                {/* Corriger les échappements de \n et afficher avec des <br> */}
+                                {/* Formats description text with line breaks */}
                                 <p className="text-sm md:text-base font-poppins leading-7">
-                                    {chapter.description ? formatTextWithLineBreaks(chapter.description) : "Description non disponible"}
+                                    {chapter.description 
+                                        ? formatTextWithLineBreaks(chapter.description) 
+                                        : "Description non disponible"}
                                 </p>
                             </div>
                         </TabsContent>

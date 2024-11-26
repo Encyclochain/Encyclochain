@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -25,115 +25,97 @@ import {
   AiOutlineHeart,
   AiOutlineRight,
   AiOutlineDown,
-} from "react-icons/ai"; // Import icons
-import { Button } from "../ui/button"; // Custom button component
-import { usePrivy } from '@privy-io/react-auth';
-import Image from "next/image"; // Import Image component from Next.js
+} from "react-icons/ai"; // Icons for menu items.
+import { Button } from "../ui/button"; // Custom button component.
+import { usePrivy } from "@privy-io/react-auth"; // Handles authentication.
+import Image from "next/image"; // Image component for user profile pictures.
 
 const items = [
-  {
-    title: "Home",
-    url: "/",
-    icon: AiOutlineHome,
-  },
-  {
-    title: "Watchlist",
-    url: "/watchlist",
-    icon: AiOutlineEye,
-  },
+  { title: "Home", url: "/", icon: AiOutlineHome },
+  { title: "Watchlist", url: "/watchlist", icon: AiOutlineEye },
 ];
 
 interface Topic {
-  id: number;
-  title: string;
+  id: number; // Unique identifier for the topic.
+  title: string; // Title of the topic.
 }
 
-// Typing for the props of the SidebarMenu component
 interface SidebarMenuProps {
-  topics: Topic[]; // Array of section types passed from the server component
+  topics: Topic[]; // List of topics to display in the sidebar.
 }
 
 export function AppSidebar({ topics }: SidebarMenuProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const { login, logout, user, authenticated } = usePrivy();
+  const [isOpen, setIsOpen] = useState(false); // Tracks the state of the Contribution submenu.
+  const { login, logout, user, authenticated } = usePrivy(); // Privy authentication hooks.
   const [userProcessed, setUserProcessed] = useState(false);
 
   useEffect(() => {
+    // Runs when the user is authenticated and processes user data.
     if (authenticated && user && !userProcessed) {
       handleUserAuthenticated();
       setUserProcessed(true);
     }
   }, [authenticated, user, userProcessed]);
-console.log(authenticated)
-const handleUserAuthenticated = async () => {
-  // Récupérer les données utilisateur
 
-  const userId = user?.id;
-  const username =
-    user?.farcaster?.username ||
-    user?.github?.username ||
-    user?.twitter?.username ||
-    null;
+  const handleUserAuthenticated = async () => {
+    // Fetches and processes authenticated user data, then sends it to the API.
+    const userId = user?.id;
+    const username =
+      user?.farcaster?.username ||
+      user?.github?.username ||
+      user?.twitter?.username ||
+      null;
 
-  // Vérifiez que les données sont valides
-  if (!userId || !username) {
-    console.error("Unable to retrieve user ID or username.");
-    console.log("User data :", user);
-    return;
-  }
+    if (!userId || !username) {
+      console.error("Unable to retrieve user ID or username.");
+      console.log("User data:", user);
+      return;
+    }
 
-  // Préparer les données
-  const userData = {
-    privyUserId: userId,
-    name: username,
+    const userData = { privyUserId: userId, name: username };
+
+    try {
+      const response = await fetch("http://localhost:3000/api/authenticate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        console.error("API Error:", data.message || "Unknown error");
+      } else {
+        const data = await response.json();
+        console.log("User authenticated successfully:", data.user);
+      }
+    } catch (error) {
+      console.error("API call error:", error);
+    }
   };
 
-  console.log("Données envoyées à l'API :", userData);
-
-  try {
-    // Envoyer la requête
-    const response = await fetch("http://localhost:3000/api/authenticate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    });
-
-    const data = await response.json();
-
-    // Vérifier la réponse
-    if (!response.ok) {
-      console.error("Erreur de l'API :", data.message || "Erreur inconnue");
-    } else {
-      console.log("Utilisateur authentifié avec succès :", data.user);
-    }
-  } catch (error) {
-    console.error("Erreur lors de l'appel à l'API :", error);
-  }
-};
-
-
   const toggleSubMenu = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(!isOpen); // Toggles the Contribution submenu visibility.
   };
 
   return (
     <Sidebar>
+      {/* Header with a search bar */}
       <SidebarHeader>
-        <p className="font-garamond text-black font-serif text-3xl font-medium normal-case not-italic no-underline leading-tight tracking-tighter text-center">
+        <p className="font-garamond text-black text-3xl text-center">
           Encyclochain
         </p>
-        <div className="flex items-center justify-center bg-white mt-[10px] gap-[10px] br-[40px] p-[4px] rounded-[8px] border-solid border-2 border-[#8f96a3] outline-none">
-          <AiOutlineSearch className="text-black" size={24} />
+        <div className="flex items-center justify-center mt-2 p-2 rounded border">
+          <AiOutlineSearch size={24} />
           <input
             type="text"
-            className="bg-transparent outline-none"
             placeholder="Search..."
+            className="bg-transparent outline-none ml-2"
           />
         </div>
       </SidebarHeader>
+
       <SidebarContent>
+        {/* Main navigation menu */}
         <SidebarGroup>
           <SidebarMenu>
             {items.map((item) => (
@@ -141,7 +123,7 @@ const handleUserAuthenticated = async () => {
                 <SidebarMenuButton asChild>
                   <a
                     href={item.url}
-                    className="flex items-center space-x-1 font-poppins text-base text-black"
+                    className="flex items-center space-x-2 text-black"
                   >
                     <item.icon />
                     <span>{item.title}</span>
@@ -150,55 +132,51 @@ const handleUserAuthenticated = async () => {
               </SidebarMenuItem>
             ))}
 
-            <SidebarMenuItem className="p-2">
-              <button onClick={toggleSubMenu} className="flex items-center space-x-1">
+            {/* Contribution submenu */}
+            <SidebarMenuItem>
+              <button
+                onClick={toggleSubMenu}
+                className="flex items-center space-x-2"
+              >
                 <AiOutlineHeart />
-                <span className="font-poppins text-sm text-black">Contribution</span>
+                <span>Contribution</span>
                 {isOpen ? <AiOutlineDown /> : <AiOutlineRight />}
               </button>
 
               {isOpen && (
-                <div className="ml-2">
-                  <SidebarMenuSub>
-                    <SidebarMenuSubItem />
-                    <a
-                      href={`/contribution`}
-                      className="flex items-center space-x-1 font-poppins text-sm mt-2"
-                    >
+                <SidebarMenuSub>
+                  <SidebarMenuSubItem>
+                    <a href="/contribution" className="flex items-center mt-2">
                       <AiOutlineFolder />
                       <span>Contribute</span>
                     </a>
-                  </SidebarMenuSub>
-                  <SidebarMenuSub>
-                    <SidebarMenuSubItem />
+                  </SidebarMenuSubItem>
+                  <SidebarMenuSubItem>
                     <a
-                      href={`/contribution/history`}
-                      className="flex items-center space-x-1 font-poppins text-sm mt-2"
+                      href="/contribution/history"
+                      className="flex items-center mt-2"
                     >
                       <AiOutlineFolder />
                       <span>History</span>
                     </a>
-                  </SidebarMenuSub>
-                </div>
+                  </SidebarMenuSubItem>
+                </SidebarMenuSub>
               )}
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
+
+        {/* Topics section */}
         <SidebarGroup>
           <SidebarGroupLabel>
-            <p className="pb-[10px] mt-4 space-y-4 mb-[20px] text-black font-garamond text-lg">
-              Topics
-            </p>
+            <p className="text-lg">Topics</p>
           </SidebarGroupLabel>
           <SidebarMenu>
             {topics.map((topic) => (
               <SidebarMenuItem key={topic.id}>
                 <SidebarMenuButton asChild>
-                  <a
-                    href={`/topic/${topic.title}`}
-                    className="font-poppins text-black text-sm"
-                  >
-                    <AiOutlineFolder size={24} />
+                  <a href={`/topic/${topic.title}`} className="flex items-center">
+                    <AiOutlineFolder />
                     <span>{topic.title}</span>
                   </a>
                 </SidebarMenuButton>
@@ -208,51 +186,37 @@ const handleUserAuthenticated = async () => {
         </SidebarGroup>
       </SidebarContent>
 
+      {/* User profile and login/logout button */}
       {authenticated && user && (
         <div className="flex items-center p-2">
-          <div className="w-[30px] h-[30px] relative mr-4">
-            <Image
-              src={
-                user.twitter?.profilePictureUrl ||
-                user.farcaster?.pfp ||
-                ""
-              }
-              alt="Logo"
-              width={100}
-              height={100}
-              style={{ objectFit: 'cover', borderRadius: '50%' }}
-            />
-          </div>
-          <div className="text-base font-poppins">
-            {user.farcaster?.username ||
-              user.github?.username ||
-              user.twitter?.username}
-          </div>
+          <Image
+            src={user.twitter?.profilePictureUrl || user.farcaster?.pfp || ""}
+            alt="Profile Picture"
+            width={30}
+            height={30}
+            className="rounded-full"
+          />
+          <span className="ml-2">{user.farcaster?.username}</span>
         </div>
       )}
+      <Button
+        onClick={authenticated ? logout : login}
+        className="w-full mt-4"
+      >
+        {authenticated ? "Logout" : "Login"}
+      </Button>
 
-      <div className="px-4 py-2">
-        <Button
-          onClick={authenticated ? logout : login}
-          className="w-full flex items-center justify-center gap-2 bg-transparent border-2 border-[#8f96a3] hover:bg-gray-100 text-black"
-        >
-          <span className="font-poppins text-sm">
-            {authenticated ? 'Logout' : 'Login'}
-          </span>
+      {/* Footer with external links */}
+      <SidebarFooter>
+        <Button>
+          <AiOutlineDiscord />
         </Button>
-      </div>
-      <SidebarFooter className="items-center">
-        <div className="flex-col gap-1 space-x-10">
-          <Button className="flex-1 py-1 px-1 bg-transparent hover:bg-gray-700">
-            <AiOutlineDiscord size={18} className="text-black" />
-          </Button>
-          <Button className="flex-1 py-1 px-1 bg-transparent hover:bg-gray-700">
-            <AiOutlineX size={18} className="text-black" />
-          </Button>
-          <Button className="flex-1 py-1 px-1 bg-transparent hover:bg-gray-700">
-            <AiFillGithub size={18} className="text-black" />
-          </Button>
-        </div>
+        <Button>
+          <AiOutlineX />
+        </Button>
+        <Button>
+          <AiFillGithub />
+        </Button>
       </SidebarFooter>
     </Sidebar>
   );

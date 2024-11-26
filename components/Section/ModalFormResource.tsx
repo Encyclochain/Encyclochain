@@ -15,69 +15,76 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/Input";
 
-// Schéma de validation
+// Validation schema using Zod
 const formSchema = z.object({
-  link: z.string().url({ message: "Please enter a valid URL" }),
+  link: z.string().url({ message: "Please enter a valid URL" }), // Ensures the input is a valid URL.
 });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = z.infer<typeof formSchema>; // Infers the TypeScript type from the validation schema.
 
 interface SubmitResourceProps {
-  preselectedCategory: number; // ID de la catégorie présélectionnée
-  preselectedSection: string;  // Nom de la section présélectionnée
+  preselectedCategory: number; // Preselected category ID to associate the resource.
+  preselectedSection: string;  // Preselected section title for the resource.
 }
 
 export default function ModalFormResource({
   preselectedCategory,
   preselectedSection,
 }: SubmitResourceProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false); // Gère l'état de chargement
+  const [isSubmitting, setIsSubmitting] = useState(false); // Tracks the submission state.
+
   const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema), // Integrates the Zod schema for validation.
     defaultValues: {
-      link: "",
+      link: "", // Initializes the form with an empty link field.
     },
   });
 
-  // Fonction pour gérer la soumission
+  // Handles form submission
   async function onSubmit(values: FormValues) {
-    setIsSubmitting(true); // Indique que le formulaire est en cours de soumission
+    setIsSubmitting(true); // Starts the loading state.
 
     try {
+      // Sends a POST request to the server to add the resource.
       const response = await fetch('http://localhost:3000/api/resources', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          link: values.link,
-          sectionTitle: preselectedSection,
-          categoryId: preselectedCategory,
+          link: values.link, // User-provided link.
+          sectionTitle: preselectedSection, // Associated section title.
+          categoryId: preselectedCategory, // Associated category ID.
         }),
       });
 
       if (!response.ok) {
+        // Handles errors returned by the server.
         const errorData = await response.json();
-        console.error('Erreur lors de la soumission :', errorData.message);
-        alert('Erreur : ' + errorData.message);
+        console.error('Submission error:', errorData.message);
+        alert('Error: ' + errorData.message);
       } else {
+        // Successful submission
         const data = await response.json();
-        alert('Ressource ajoutée avec succès !');
-        console.log('Ressource ajoutée :', data);
-        form.reset(); // Réinitialise le formulaire après succès
+        alert('Resource added successfully!');
+        console.log('Resource added:', data);
+        form.reset(); // Resets the form after successful submission.
       }
     } catch (error) {
-      console.error('Erreur réseau :', error);
-      alert('Erreur lors de la connexion au serveur.');
+      // Handles network errors.
+      console.error('Network error:', error);
+      alert('Error connecting to the server.');
     } finally {
-      setIsSubmitting(false); // Arrête le spinner de chargement
+      setIsSubmitting(false); // Stops the loading state.
     }
   }
 
   return (
     <div className="space-y-6 w-full max-w-md mx-auto">
+      {/* Wrapper for the form */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          {/* Input field for the link */}
           <FormField
             control={form.control}
             name="link"
@@ -87,16 +94,17 @@ export default function ModalFormResource({
                 <FormControl>
                   <Input
                     placeholder="https://example.com"
-                    {...field}
-                    disabled={isSubmitting}
+                    {...field} // Binds the input field to the form state.
+                    disabled={isSubmitting} // Disables input during submission.
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage /> {/* Displays validation messages */}
               </FormItem>
             )}
           />
+          {/* Submit button */}
           <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? 'Submitting...' : 'Submit'}
+            {isSubmitting ? 'Submitting...' : 'Submit'} {/* Changes text during loading */}
           </Button>
         </form>
       </Form>
