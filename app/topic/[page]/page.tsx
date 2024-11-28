@@ -1,6 +1,5 @@
 import { Header } from "@/components/Header"; // Importing the Header component
 import SectionSelect from "@/components/Topic/SectionsList"; // Importing SectionSelect component
-import prisma from '@/lib/db';
 import TopicInfo from '@/components/Topic/TopicInfo';
 import TopicContent from '@/components/Topic/TopicContent';
 
@@ -12,19 +11,14 @@ interface PageProps {
 }
 
 async function getBlockchainData(page: string) {
-  const chapters = await prisma.chapter.findMany({
-    where: {
-      topic: {
-        title: page,
-      },
-    },
-    select: {
-      id: true,
-      title: true,
-      description: true,
-    },
-  });
-  return { chapters };
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/topicContent/${encodeURIComponent(page)}`);
+  
+  if (!response.ok) {
+    throw new Error(`Erreur lors de la récupération des données : ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return { chapters: data.chapters };
 }
 
 

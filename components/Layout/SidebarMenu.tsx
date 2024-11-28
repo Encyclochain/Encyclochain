@@ -75,7 +75,7 @@ export function AppSidebar({ topics }: SidebarMenuProps) {
     const userData = { privyUserId: userId, name: username };
 
     try {
-      const response = await fetch("http://localhost:3000/api/authenticate", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authenticate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
@@ -101,11 +101,11 @@ export function AppSidebar({ topics }: SidebarMenuProps) {
     <Sidebar>
       {/* Header with a search bar */}
       <SidebarHeader>
-        <p className="font-garamond text-black text-3xl text-center">
+        <p className="font-garamond text-black font-serif text-3xl font-medium normal-case not-italic no-underline leading-tight tracking-tighter text-center">
           Encyclochain
         </p>
-        <div className="flex items-center justify-center mt-2 p-2 rounded border">
-          <AiOutlineSearch size={24} />
+        <div className="flex items-center justify-center bg-white mt-[10px] gap-[10px] br-[40px] p-[4px] rounded-[8px] border-solid border-2 border-[#8f96a3] outline-none">
+          <AiOutlineSearch className="text-black" size={24} />
           <input
             type="text"
             placeholder="Search..."
@@ -123,7 +123,7 @@ export function AppSidebar({ topics }: SidebarMenuProps) {
                 <SidebarMenuButton asChild>
                   <a
                     href={item.url}
-                    className="flex items-center space-x-2 text-black"
+                    className="flex items-center space-x-1 font-poppins text-base"
                   >
                     <item.icon />
                     <span>{item.title}</span>
@@ -133,20 +133,20 @@ export function AppSidebar({ topics }: SidebarMenuProps) {
             ))}
 
             {/* Contribution submenu */}
-            <SidebarMenuItem>
+            <SidebarMenuItem className='p-2'>
               <button
                 onClick={toggleSubMenu}
-                className="flex items-center space-x-2"
+                className="flex items-center space-x-1"
               >
                 <AiOutlineHeart />
-                <span>Contribution</span>
+                <span className="font-poppins text-sm">Contribution</span>
                 {isOpen ? <AiOutlineDown /> : <AiOutlineRight />}
               </button>
 
               {isOpen && (
                 <SidebarMenuSub>
                   <SidebarMenuSubItem>
-                    <a href="/contribution" className="flex items-center mt-2">
+                    <a href="/contribution" className="flex items-center space-x-1 font-poppins text-sm mt-2">
                       <AiOutlineFolder />
                       <span>Contribute</span>
                     </a>
@@ -154,7 +154,7 @@ export function AppSidebar({ topics }: SidebarMenuProps) {
                   <SidebarMenuSubItem>
                     <a
                       href="/contribution/history"
-                      className="flex items-center mt-2"
+                      className="flex items-center space-x-1 font-poppins text-sm mt-2"
                     >
                       <AiOutlineFolder />
                       <span>History</span>
@@ -169,13 +169,13 @@ export function AppSidebar({ topics }: SidebarMenuProps) {
         {/* Topics section */}
         <SidebarGroup>
           <SidebarGroupLabel>
-            <p className="text-lg">Topics</p>
+            <p className="pb-[10px] mt-4 space-y-4 mb-[20px] text-black font-garamond text-lg">Topics</p>
           </SidebarGroupLabel>
           <SidebarMenu>
             {topics.map((topic) => (
               <SidebarMenuItem key={topic.id}>
                 <SidebarMenuButton asChild>
-                  <a href={`/topic/${topic.title}`} className="flex items-center">
+                  <a href={`/topic/${topic.title}`} className="flex items-center font-poppins">
                     <AiOutlineFolder />
                     <span>{topic.title}</span>
                   </a>
@@ -188,35 +188,43 @@ export function AppSidebar({ topics }: SidebarMenuProps) {
 
       {/* User profile and login/logout button */}
       {authenticated && user && (
-        <div className="flex items-center p-2">
-          <Image
+        <div className="flex items-center p-2 ">
+        <div className="w-[30px] h-[30px] relative mr-4">          <Image
             src={user.twitter?.profilePictureUrl || user.farcaster?.pfp || ""}
             alt="Profile Picture"
             width={30}
             height={30}
             className="rounded-full"
           />
-          <span className="ml-2">{user.farcaster?.username}</span>
-        </div>
+                    </div>
+
+          <div className="text-base font-poppins"> {user.farcaster?.username || user.github?.username || user.twitter?.username}</div>
+          </div>
       )}
+            <div className="px-4 py-2">
       <Button
         onClick={authenticated ? logout : login}
-        className="w-full mt-4"
+        className="w-full flex items-center justify-center gap-2 bg-transparent border-2 border-[#8f96a3] hover:bg-gray-100 text-black"
       >
-        {authenticated ? "Logout" : "Login"}
+         <span className="font-poppins text-sm">
+          {authenticated ? 'Logout' : 'Login'}
+          </span>
       </Button>
-
+      </div>
       {/* Footer with external links */}
-      <SidebarFooter>
-        <Button>
-          <AiOutlineDiscord />
-        </Button>
-        <Button>
-          <AiOutlineX />
-        </Button>
-        <Button>
-          <AiFillGithub />
-        </Button>
+      <SidebarFooter className=" items-center">
+        <div className={` flex-col gap-1 space-x-10 `}>
+          {/* Home button in footer */}
+          <Button className="flex-1 py-1 px-1 bg-transparent hover:bg-gray-700">
+            <AiOutlineDiscord size={18} className="text-black" />
+          </Button>
+          <Button className="flex-1 py-1 px-1 bg-transparent hover:bg-gray-700">
+            <AiOutlineX size={18} className="text-black" />
+          </Button>
+          <Button className="flex-1 py-1 px-1 bg-transparent hover:bg-gray-700">
+            <AiFillGithub size={18} className="text-black" />
+          </Button>
+        </div>
       </SidebarFooter>
     </Sidebar>
   );

@@ -65,7 +65,7 @@ export default function EncyclochainContent({ chapters }: EncyclochainContentPro
                 <p className="text-sm md:text-base font-poppins leading-7">
                   {chapter.description
                     ? formatTextWithLineBreaks(chapter.description) // Formats text with line breaks.
-                    : "Description non disponible"} // Fallback for missing descriptions.
+                    : "Description non disponible"} 
                 </p>
               </div>
             </TabsContent>

@@ -10,8 +10,6 @@ interface ProvidersProps {
     topics: { id: number; title: string }[];
 }
 
-'use client'; 
-
 export default function Providers({ children, topics }: ProvidersProps) {
     return (
         <PrivyProvider

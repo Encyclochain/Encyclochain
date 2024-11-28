@@ -3,7 +3,6 @@ import SectionContent from '@/components/Section/SectionContent';
 import Carousel_ImgTop from '@/components/Carousel/CarouselImgTop';
 import CategoryTitles from '@/components/Section/CategoryTitles';
 import SectionInfo from '@/components/Section/SectionInformation';
-import prisma from '@/lib/db';
 import { Button } from "@/components/ui/button";
 import SubmitResourceModal from '@/components/Section/SubmitResourceModal';
 
@@ -35,33 +34,17 @@ interface Chapter {
 }
 
 async function getBlockchainData(page: string) {
-  const sectionData = await prisma.section.findFirst({
-    where: { title: page },
-    select: {
-      title: true,
-      chapters: { select: { id: true, title: true, description: true } },
-      sectionInfo: { select: { color: true } },
-      categories: {
-        select: {
-          id: true,
-          title: true,
-          resources: {
-            where: { sections: { some: { title: page } } }, // Filtre ici
-            select: {
-              id: true,
-              link: true,
-              typeId: true,
-            },
-          },
-        },
-      },
-    },
-  });
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sectionData/${encodeURIComponent(page)}`);
 
+  if (!response.ok) {
+    throw new Error(`Erreur lors de la récupération des données : ${response.statusText}`);
+  }
+
+  const data = await response.json();
   return {
-    chapters: sectionData?.chapters || [],
-    sectionInfo: sectionData?.sectionInfo || null,
-    categories: sectionData?.categories || [],
+    chapters: data.chapters || [],
+    sectionInfo: data.sectionInfo || null,
+    categories: data.categories || [],
   };
 }
 

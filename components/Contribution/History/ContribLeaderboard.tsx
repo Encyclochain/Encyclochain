@@ -1,4 +1,6 @@
-import prisma from "@/lib/db";
+"use client";
+
+import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -10,39 +12,50 @@ import {
 
 // Typing for user data in the leaderboard
 interface LeaderboardUser {
-  id: number; 
-  name: string; 
-  resourcesCount: number; 
-  createdAt: Date; 
+  id: number;
+  name: string;
+  resourcesCount: number;
+  createdAt: string; // Date as a string since it's fetched from the API
 }
 
-// Fetches and formats leaderboard data from the database
-async function getLeaderboard(): Promise<LeaderboardUser[]> {
-  const users = await prisma.user.findMany({
-    select: {
-      id: true,
-      name: true,
-      createdAt: true,
-      contributions: true, // Relation that links users to their contributions
-    },
-  });
+export default function ContributionLeaderboard() {
+  const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  return users
-    .map((user) => ({
-      id: user.id,
-      name: user.name || "Anonymous", // Defaults to "Anonymous" if no username is provided
-      resourcesCount: user.contributions.length, // Counts the number of contributions
-      createdAt: user.createdAt,
-    }))
-    .sort((a, b) => b.resourcesCount - a.resourcesCount); // Sorts users by contributions (descending)
-}
+  // Fetch leaderboard data from the backend API
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/leaderboard`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-// Main component to display the contribution leaderboard
-export default async function ContributionLeaderboard() {
-  const leaderboard = await getLeaderboard(); // Retrieves formatted leaderboard data
+        if (!response.ok) {
+          throw new Error(`Erreur lors de la récupération du leaderboard : ${response.statusText}`);
+        }
+
+        const data: LeaderboardUser[] = await response.json();
+        setLeaderboard(data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération du leaderboard :", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLeaderboard();
+  }, []);
+
+  if (loading) {
+    // Render a loading message while data is being fetched
+    return <p className="text-center font-poppins">Chargement...</p>;
+  }
 
   if (leaderboard.length === 0) {
-    // Renders a fallback message if no users are found
+    // Render a fallback message if no users are found
     return <p className="text-center font-poppins">Aucun contributeur trouvé.</p>;
   }
 
@@ -54,7 +67,6 @@ export default async function ContributionLeaderboard() {
       <Table className="rounded-md border">
         <TableHeader>
           <TableRow>
-            {/* Column headers for the table */}
             <TableHead className="py-2 text-black text-base">Username</TableHead>
             <TableHead className="py-2 text-black text-base">Contributions</TableHead>
             <TableHead className="py-2 text-black text-base">Registration Date</TableHead>
@@ -63,13 +75,10 @@ export default async function ContributionLeaderboard() {
         <TableBody>
           {leaderboard.map((user, index) => (
             <TableRow key={user.id}>
-              {/* Displays the user's rank and name */}
               <TableCell className="py-2 font-poppins">{`${index + 1}. ${user.name}`}</TableCell>
-              {/* Displays the number of contributions */}
               <TableCell className="py-2 font-poppins">{user.resourcesCount}</TableCell>
-              {/* Formats and displays the registration date */}
               <TableCell className="py-2 font-poppins">
-                {user.createdAt.toLocaleDateString("fr-FR")}
+                {new Date(user.createdAt).toLocaleDateString("fr-FR")}
               </TableCell>
             </TableRow>
           ))}

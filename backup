@@ -27,8 +27,7 @@ SET default_table_access_method = heap;
 CREATE TABLE public."Category" (
     id integer NOT NULL,
     "createdAt" timestamp(6) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    title character varying(255) NOT NULL,
-    description text
+    title character varying(255) NOT NULL
 );
 
 
@@ -57,17 +56,51 @@ ALTER SEQUENCE public."Category_id_seq" OWNED BY public."Category".id;
 
 
 --
+-- Name: Chapter; Type: TABLE; Schema: public; Owner: yaugourt
+--
+
+CREATE TABLE public."Chapter" (
+    id integer NOT NULL,
+    title character varying(255) NOT NULL,
+    description text,
+    "sectionId" integer,
+    "topicId" integer
+);
+
+
+ALTER TABLE public."Chapter" OWNER TO yaugourt;
+
+--
+-- Name: Chapter_id_seq; Type: SEQUENCE; Schema: public; Owner: yaugourt
+--
+
+CREATE SEQUENCE public."Chapter_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Chapter_id_seq" OWNER TO yaugourt;
+
+--
+-- Name: Chapter_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yaugourt
+--
+
+ALTER SEQUENCE public."Chapter_id_seq" OWNED BY public."Chapter".id;
+
+
+--
 -- Name: Resource; Type: TABLE; Schema: public; Owner: yaugourt
 --
 
 CREATE TABLE public."Resource" (
     id integer NOT NULL,
     "createdAt" timestamp(6) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    "updatedAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    title character varying(255),
-    description text,
+    "updatedAt" timestamp(3) without time zone NOT NULL,
     link text NOT NULL,
-    imagelink character varying(255),
     "authorId" integer NOT NULL,
     "typeId" integer NOT NULL
 );
@@ -105,7 +138,6 @@ CREATE TABLE public."Section" (
     id integer NOT NULL,
     "createdAt" timestamp(6) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     title character varying(255) NOT NULL,
-    description text,
     "topicId" integer NOT NULL
 );
 
@@ -119,12 +151,17 @@ ALTER TABLE public."Section" OWNER TO yaugourt;
 CREATE TABLE public."SectionInfo" (
     id integer NOT NULL,
     "createdAt" timestamp(6) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    color character varying(255) NOT NULL,
-    "imageLink" text NOT NULL,
+    color character varying(255),
+    "imageLink" text,
     "whitepaperLink" character varying(255),
     "twitterLink" character varying(255),
     "websiteLink" character varying(255),
-    "sectionId" integer NOT NULL
+    "sectionId" integer NOT NULL,
+    consensus character varying(255),
+    creator character varying(255),
+    "blockTime" character varying(255),
+    "creationDate" character varying(255),
+    tvl character varying(255)
 );
 
 
@@ -185,6 +222,43 @@ CREATE TABLE public."Topic" (
 
 
 ALTER TABLE public."Topic" OWNER TO yaugourt;
+
+--
+-- Name: TopicInfo; Type: TABLE; Schema: public; Owner: yaugourt
+--
+
+CREATE TABLE public."TopicInfo" (
+    id integer NOT NULL,
+    "createdAt" timestamp(6) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    relevance character varying(255),
+    "websiteLink" character varying(255),
+    "topicId" integer NOT NULL
+);
+
+
+ALTER TABLE public."TopicInfo" OWNER TO yaugourt;
+
+--
+-- Name: TopicInfo_id_seq; Type: SEQUENCE; Schema: public; Owner: yaugourt
+--
+
+CREATE SEQUENCE public."TopicInfo_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."TopicInfo_id_seq" OWNER TO yaugourt;
+
+--
+-- Name: TopicInfo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yaugourt
+--
+
+ALTER SEQUENCE public."TopicInfo_id_seq" OWNED BY public."TopicInfo".id;
+
 
 --
 -- Name: Topic_id_seq; Type: SEQUENCE; Schema: public; Owner: yaugourt
@@ -248,10 +322,10 @@ ALTER SEQUENCE public."Type_id_seq" OWNED BY public."Type".id;
 
 CREATE TABLE public."User" (
     id integer NOT NULL,
-    name character varying(255) NOT NULL,
-    wallet character varying(255) NOT NULL,
+    name character varying(255),
     "createdAt" timestamp(6) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    verified boolean DEFAULT false NOT NULL
+    verified boolean DEFAULT false NOT NULL,
+    "privyUserId" text NOT NULL
 );
 
 
@@ -412,6 +486,13 @@ ALTER TABLE ONLY public."Category" ALTER COLUMN id SET DEFAULT nextval('public."
 
 
 --
+-- Name: Chapter id; Type: DEFAULT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."Chapter" ALTER COLUMN id SET DEFAULT nextval('public."Chapter_id_seq"'::regclass);
+
+
+--
 -- Name: Resource id; Type: DEFAULT; Schema: public; Owner: yaugourt
 --
 
@@ -437,6 +518,13 @@ ALTER TABLE ONLY public."SectionInfo" ALTER COLUMN id SET DEFAULT nextval('publi
 --
 
 ALTER TABLE ONLY public."Topic" ALTER COLUMN id SET DEFAULT nextval('public."Topic_id_seq"'::regclass);
+
+
+--
+-- Name: TopicInfo id; Type: DEFAULT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."TopicInfo" ALTER COLUMN id SET DEFAULT nextval('public."TopicInfo_id_seq"'::regclass);
 
 
 --
@@ -471,38 +559,69 @@ ALTER TABLE ONLY public."WatchlistItem" ALTER COLUMN id SET DEFAULT nextval('pub
 -- Data for Name: Category; Type: TABLE DATA; Schema: public; Owner: yaugourt
 --
 
-COPY public."Category" (id, "createdAt", title, description) FROM stdin;
-1	2024-10-03 15:29:42.558	Developer core	\N
-2	2024-10-03 15:29:42.581	Medias	\N
-3	2024-10-03 15:29:42.622	Block	\N
-4	2024-10-03 15:29:42.661	Hash	\N
-5	2024-10-03 15:29:42.7	Transaction	\N
-6	2024-10-03 15:29:42.735	Security	\N
-7	2024-10-03 15:29:42.775	Full node	\N
-8	2024-10-03 15:29:42.81	Memory pool	\N
-9	2024-10-03 15:29:42.921	Mining	\N
-10	2024-10-03 15:29:42.935	Hard fork	\N
-11	2024-10-03 15:29:43.045	Soft fork	\N
-12	2024-10-03 15:29:43.156	Keys	\N
-13	2024-10-03 15:29:43.277	Merkle root	\N
-14	2024-10-03 15:29:43.39	Fee	\N
-15	2024-10-03 15:29:43.5	51% attack	\N
-16	2024-10-03 15:29:43.607	Light node	\N
-17	2024-10-03 15:29:43.714	Vitalik article	\N
-18	2024-10-03 15:29:43.722	MEV	\N
-19	2024-10-03 15:29:43.826	EOA	\N
-20	2024-10-03 15:29:43.932	Smart contract	\N
-21	2024-10-03 15:29:44.04	EVM	\N
-22	2024-10-03 15:29:44.047	Data availability	\N
-23	2024-10-03 15:29:44.165	EIP	\N
-24	2024-10-03 15:29:44.172	Keccak-256	\N
-25	2024-10-03 15:29:44.179	Proof-of-work	\N
-26	2024-10-03 15:29:44.186	Proof-of-stake	\N
-27	2024-10-03 15:29:44.194	Gas fees	\N
-28	2024-10-03 15:29:44.201	Liquid staking	\N
-29	2024-10-03 15:29:44.237	Zero knowledge	\N
-30	2024-10-03 15:29:44.272	Layer 2	\N
-31	2024-10-03 15:29:44.284	Projects	\N
+COPY public."Category" (id, "createdAt", title) FROM stdin;
+1	2024-10-03 15:29:42.558	Developer core
+2	2024-10-03 15:29:42.581	Medias
+3	2024-10-03 15:29:42.622	Block
+4	2024-10-03 15:29:42.661	Hash
+5	2024-10-03 15:29:42.7	Transaction
+6	2024-10-03 15:29:42.735	Security
+7	2024-10-03 15:29:42.775	Full node
+8	2024-10-03 15:29:42.81	Memory pool
+9	2024-10-03 15:29:42.921	Mining
+10	2024-10-03 15:29:42.935	Hard fork
+11	2024-10-03 15:29:43.045	Soft fork
+12	2024-10-03 15:29:43.156	Keys
+13	2024-10-03 15:29:43.277	Merkle root
+14	2024-10-03 15:29:43.39	Fee
+15	2024-10-03 15:29:43.5	51% attack
+16	2024-10-03 15:29:43.607	Light node
+17	2024-10-03 15:29:43.714	Vitalik article
+18	2024-10-03 15:29:43.722	MEV
+19	2024-10-03 15:29:43.826	EOA
+20	2024-10-03 15:29:43.932	Smart contract
+21	2024-10-03 15:29:44.04	EVM
+22	2024-10-03 15:29:44.047	Data availability
+23	2024-10-03 15:29:44.165	EIP
+24	2024-10-03 15:29:44.172	Keccak-256
+25	2024-10-03 15:29:44.179	Proof-of-work
+26	2024-10-03 15:29:44.186	Proof-of-stake
+27	2024-10-03 15:29:44.194	Gas fees
+28	2024-10-03 15:29:44.201	Liquid staking
+29	2024-10-03 15:29:44.237	Zero knowledge
+30	2024-10-03 15:29:44.272	Layer 2
+31	2024-10-03 15:29:44.284	Projects
+32	2024-11-26 10:47:19.857	Solidity
+33	2024-11-26 10:47:19.857	Rust
+34	2024-11-26 10:53:35.193	Execution
+35	2024-11-26 10:53:35.193	Settlement
+36	2024-11-26 10:53:35.193	Finality
+\.
+
+
+--
+-- Data for Name: Chapter; Type: TABLE DATA; Schema: public; Owner: yaugourt
+--
+
+COPY public."Chapter" (id, title, description, "sectionId", "topicId") FROM stdin;
+1	Introduction	Bitcoin is a digital currency that operates on a decentralized network, allowing users to make peer-to-peer transactions without the need for intermediaries like banks or governments. It was the first cryptocurrency to implement blockchain technology, which ensures transparency and security in transactions.	5	\N
+2	History	Introduced in 2009 by an anonymous person or group using the pseudonym Satoshi Nakamoto, Bitcoin emerged in response to the global financial crisis of 2008. Its creation aimed to offer an alternative to traditional financial systems, promoting transparency and decentralization. Over the years, Bitcoin has gained significant attention, leading to increased adoption and the emergence of numerous other cryptocurrencies.	5	\N
+3	Design	Bitcoin's design is built on blockchain technology—a distributed ledger that records all transactions across a network of computers. This design ensures that once a transaction is recorded, it cannot be altered, promoting security and trust. The system uses cryptographic techniques to control the creation of new units and to verify transactions.	5	\N
+10	How it works	Toi tu es blablabla	\N	18
+5	Introduction	Layer 1 blockchains are the foundational networks upon which decentralized applications and protocols are built. They serve as the base layer in the blockchain ecosystem, handling all on-chain transactions and core functionality. Examples of Layer 1 blockchains include Bitcoin, Ethereum, and Binance Smart Chain. These platforms provide the infrastructure for security, consensus mechanisms, and transaction validation.	\N	1
+6	History	The concept of Layer 1 blockchains began with the creation of Bitcoin in 2009 by Satoshi Nakamoto. Bitcoin introduced a decentralized ledger technology that allowed peer-to-peer transactions without intermediaries. As the potential of blockchain technology became evident, new Layer 1 blockchains like Ethereum emerged in 2015, offering programmable smart contracts and enabling decentralized applications (dApps). The evolution of Layer 1 blockchains has focused on addressing scalability, security, and functionality to support a growing ecosystem.	\N	1
+4	How It Works	Bitcoin transactions involve sending digital tokens from one wallet to another. These transactions are grouped into blocks and added to the blockchain through a process called mining. Miners use powerful computers to solve complex mathematical problems, validating transactions and securing the network. In return for their efforts, miners are rewarded with newly created bitcoins, incentivizing participation in the network.	5	\N
+7	Design	Layer 1 blockchains are designed to operate independently, validating and finalizing transactions without relying on another network. They utilize consensus mechanisms such as Proof of Work (PoW) or Proof of Stake (PoS) to maintain network integrity. The design emphasizes decentralization, ensuring no single entity controls the network. Scalability solutions and upgrades are often implemented at this layer to enhance performance and throughput while maintaining security.	\N	1
+18	Design	DeFi platforms are built on blockchain networks and utilize smart contracts—self-executing contracts with the terms encoded directly into code. These smart contracts automate financial operations without the need for central authorities. The design emphasizes transparency, as all transactions are recorded on a public ledger, and accessibility, allowing users worldwide to participate without extensive verification processes. Security measures are implemented through cryptographic techniques and decentralized consensus mechanisms to protect against fraud and tampering.	\N	2
+8	How it works	Layer 1 blockchains function by processing all transactions on their own network. Nodes participate in validating transactions through consensus algorithms. In a PoW system like Bitcoin, miners solve complex mathematical problems to add new blocks to the chain, receiving cryptocurrency rewards for their efforts. In PoS systems like Ethereum 2.0, validators stake their tokens to propose and validate new blocks, earning rewards proportional to their stake. This layer ensures that transactions are secure, transparent, and immutable, forming the backbone of the blockchain ecosystem.	\N	1
+12	Introduction	Ethereum is a decentralized, open-source blockchain platform that enables the creation of smart contracts and decentralized applications (dApps). It extends the functionality of blockchain beyond simple transactions, allowing developers to build and deploy code that runs on the network. Ethereum's native cryptocurrency is Ether (ETH), which is used to facilitate transactions and incentivize network participants.	3	\N
+13	History	Proposed in 2013 by programmer Vitalik Buterin, Ethereum was designed to expand on Bitcoin's underlying technology by introducing programmable contracts. The development was funded through a crowdsale in 2014, and the network officially launched on July 30, 2015. Ethereum has since undergone several upgrades to improve scalability, security, and functionality, including a significant transition from Proof of Work to Proof of Stake consensus mechanism in 2022, known as "The Merge."	3	\N
+14	Design	Ethereum's architecture is built around the Ethereum Virtual Machine (EVM), a runtime environment that executes smart contracts. The platform uses a decentralized network of nodes to validate and record transactions. Developers can write smart contracts in programming languages like Solidity, enabling a wide range of applications from finance to gaming. The network's consensus mechanism, now Proof of Stake, relies on validators who stake their Ether to participate in block creation and validation.	3	\N
+15	How It Works	Users interact with Ethereum by sending transactions, deploying smart contracts, or using dApps. When a transaction is initiated, it is broadcast to the network and included in a block by a validator. Validators are selected based on the amount of Ether they have staked. Once a block is added to the blockchain, the transaction becomes immutable. Smart contracts automatically execute predefined actions when certain conditions are met, eliminating the need for intermediaries. Transaction fees, known as "gas," are paid in Ether to compensate validators for their work and to prevent network spam.	3	\N
+16	Introduction	Decentralized Finance (DeFi) refers to a financial system that operates without traditional intermediaries like banks or brokerages, using blockchain technology to facilitate transactions. DeFi platforms leverage smart contracts on decentralized networks, primarily Ethereum, to offer services such as lending, borrowing, trading, and earning interest. The goal is to create an open, transparent, and accessible financial ecosystem for anyone with an internet connection.	\N	2
+17	History	The DeFi movement began gaining traction around 2017 with the emergence of platforms like MakerDAO, which introduced decentralized lending and stablecoins. In 2020, often referred to as the "DeFi Summer," the sector experienced rapid growth and innovation. Numerous protocols were developed, offering yield farming, liquidity mining, and decentralized exchanges. This period marked a significant increase in user adoption and total value locked (TVL) in DeFi platforms, signaling a shift towards more decentralized financial services.	\N	2
+19	How It Works	Users interact with DeFi applications by connecting their digital wallets to decentralized platforms. They can perform a variety of financial activities:  Lending and Borrowing: Users can lend their cryptocurrency to earn interest or borrow assets by providing collateral. Trading: Decentralized exchanges (DEXs) enable peer-to-peer trading of tokens without intermediaries. Yield Farming: Users provide liquidity to DeFi protocols and earn rewards or interest. Asset Management: DeFi offers tools for managing investments, tracking portfolios, and automating trading strategies. Transactions are executed through smart contracts, which ensure that all conditions are met before processing. This system reduces reliance on traditional financial institutions, potentially lowering costs and increasing transaction speeds. However, it also requires users to manage their own security, as there is no central authority to address errors or losses.	\N	2
+9	Introduction	Encyclochain is a platform dedicated to simplifying access to reliable, open-source educational content for the tech community, with a focus on blockchain technology. In a landscape where liquidity and resources are fragmented, accessing high-quality information has become increasingly challenging for users, language models, and decentralized applications. Encyclochain addresses this issue by aggregating all educational content into a single, organized repository. Our mission is twofold: to make information search effortless and efficient for users worldwide, and to provide a quality data bank for language models to enhance innovation in data processing and analysis.	\N	18
 \.
 
 
@@ -510,86 +629,524 @@ COPY public."Category" (id, "createdAt", title, description) FROM stdin;
 -- Data for Name: Resource; Type: TABLE DATA; Schema: public; Owner: yaugourt
 --
 
-COPY public."Resource" (id, "createdAt", "updatedAt", title, description, link, imagelink, "authorId", "typeId") FROM stdin;
-1	2024-10-03 15:29:51.197	2024-10-03 15:29:51.197	\N	\N	https://developer.bitcoin.org/	\N	1	1
-2	2024-10-03 15:29:51.205	2024-10-03 15:29:51.205	\N	\N	https://argoblockchain.com/articles/explaining-the-bitcoin-block-reward	\N	1	1
-3	2024-10-03 15:29:51.212	2024-10-03 15:29:51.212	\N	\N	https://en.bitcoin.it/wiki/Block_hashing_algorithm	\N	1	1
-4	2024-10-03 15:29:51.219	2024-10-03 15:29:51.219	\N	\N	https://learnmeabitcoin.com/technical/mining/target/	\N	1	1
-5	2024-10-03 15:29:51.228	2024-10-03 15:29:51.228	\N	\N	https://bitcoinwiki.org/wiki/hash	\N	1	1
-6	2024-10-03 15:29:51.236	2024-10-03 15:29:51.236	\N	\N	https://bitcoindevs.xyz/bitcoin-core	\N	1	1
-7	2024-10-03 15:29:51.244	2024-10-03 15:29:51.244	\N	\N	https://www.bitstamp.net/learn/crypto-101/what-was-the-blocksize-war/	\N	1	1
-8	2024-10-03 15:29:51.251	2024-10-03 15:29:51.251	\N	\N	https://www.investopedia.com/terms/g/genesis-block.asp	\N	1	1
-9	2024-10-03 15:29:51.258	2024-10-03 15:29:51.258	\N	\N	https://developer.bitcoin.org/	\N	1	1
-10	2024-10-03 15:29:51.264	2024-10-03 15:29:51.264	\N	\N	https://www.deltecbank.com/news-and-insights/bitcoin-transaction-validation-what-exactly-goes-on-under-the-hood/	\N	1	1
-11	2024-10-03 15:29:51.27	2024-10-03 15:29:51.27	\N	\N	https://www.onceinaspecies.com/p/bitcoin-blocks-are-like-container?utm_source=/search/Bitcoin%20blocks&utm_medium=reader2	\N	1	1
-12	2024-10-03 15:29:51.276	2024-10-03 15:29:51.276	\N	\N	https://www.coindesk.com/learn/what-is-the-bitcoin-block-size-debate-and-why-does-it-matter/	\N	1	1
-13	2024-10-03 15:29:51.282	2024-10-03 15:29:51.282	\N	\N	https://www.reddit.com/r/Bitcoin/comments/160ti2c/is_running_a_full_node_helpful_to_the_network/	\N	1	1
-14	2024-10-03 15:29:51.29	2024-10-03 15:29:51.29	\N	\N	https://blog.lopp.net/securing-your-financial-sovereignty/	\N	1	1
-15	2024-10-03 15:29:51.297	2024-10-03 15:29:51.297	\N	\N	https://www.mintlayer.org/en/news/bitcoin-nodes/	\N	1	1
-16	2024-10-03 15:29:51.303	2024-10-03 15:29:51.303	\N	\N	https://bitkan.com/learn/bitcoin-full-node-what-is-the-role-of-a-full-node-2867	\N	1	1
-17	2024-10-03 15:29:51.309	2024-10-03 15:29:51.309	\N	\N	https://jlopp.github.io/bitcoin-core-config-generator/	\N	1	1
-18	2024-10-03 15:29:51.316	2024-10-03 15:29:51.316	\N	\N	https://blog.lopp.net/securing-your-financial-sovereignty/	\N	1	1
-19	2024-10-03 15:29:51.322	2024-10-03 15:29:51.322	\N	\N	https://bitcoin.org/en/full-node	\N	1	1
-20	2024-10-03 15:29:51.328	2024-10-03 15:29:51.328	\N	\N	https://www.lopp.net/bitcoin-information/full-node.html#running	\N	1	1
-21	2024-10-03 15:29:51.334	2024-10-03 15:29:51.334	\N	\N	https://jlopp.github.io/bitcoin-core-config-generator/	\N	1	1
-22	2024-10-03 15:29:51.34	2024-10-03 15:29:51.34	\N	\N	https://bitcoiner.guide/node/	\N	1	1
-23	2024-10-03 15:29:51.347	2024-10-03 15:29:51.347	\N	\N	https://www.lopp.net/bitcoin-information/full-node.html#diy	\N	1	1
-24	2024-10-03 15:29:51.354	2024-10-03 15:29:51.354	\N	\N	https://github.com/BlockchainCommons/GordianServer-macOS	\N	1	1
-25	2024-10-03 15:29:51.361	2024-10-03 15:29:51.361	\N	\N	https://medium.com/@meeDamian/bitcoin-full-node-on-rbp3-revised-88bb7c8ef1d1	\N	1	1
-26	2024-10-03 15:29:51.367	2024-10-03 15:29:51.367	\N	\N	https://github.com/lightning-power-users/node-launcher	\N	1	1
-27	2024-10-03 15:29:51.373	2024-10-03 15:29:51.373	\N	\N	https://github.com/dgarage/hack0-hardware	\N	1	1
-28	2024-10-03 15:29:51.379	2024-10-03 15:29:51.379	\N	\N	https://gildedpleb.github.io/hab-guide/	\N	1	1
-29	2024-10-03 15:29:51.385	2024-10-03 15:29:51.385	\N	\N	https://raspibolt.org/	\N	1	1
-30	2024-10-03 15:29:51.391	2024-10-03 15:29:51.391	\N	\N	https://mynodebtc.com/download	\N	1	1
-31	2024-10-03 15:29:51.398	2024-10-03 15:29:51.398	\N	\N	https://www.lopp.net/bitcoin-information/full-node.html#dashboards	\N	1	1
-32	2024-10-03 15:29:51.404	2024-10-03 15:29:51.404	\N	\N	https://getumbrel.com/	\N	1	1
-33	2024-10-03 15:29:51.412	2024-10-03 15:29:51.412	\N	\N	https://github.com/Mirobit/bitcoin-node-manager	\N	1	1
-34	2024-10-03 15:29:51.419	2024-10-03 15:29:51.419	\N	\N	https://github.com/craigwatson/bitcoind-status	\N	1	1
-35	2024-10-03 15:29:51.425	2024-10-03 15:29:51.425	\N	\N	https://github.com/bitseed-org/bitseed-web-ui-2	\N	1	1
-36	2024-10-03 15:29:51.431	2024-10-03 15:29:51.431	\N	\N	https://github.com/curly60e/pyblock	\N	1	1
-37	2024-10-03 15:29:51.438	2024-10-03 15:29:51.438	\N	\N	https://github.com/wintercooled/NodeMonitor-Python-Django	\N	1	1
-38	2024-10-03 15:29:51.444	2024-10-03 15:29:51.444	\N	\N	https://github.com/pxsocs/warden_terminal	\N	1	1
-39	2024-10-03 15:29:51.449	2024-10-03 15:29:51.449	\N	\N	https://bitcoin.org/en/download	\N	1	1
-40	2024-10-03 15:29:51.456	2024-10-03 15:29:51.456	\N	\N	https://www.lopp.net/bitcoin-information/full-node.html#software	\N	1	1
-41	2024-10-03 15:29:51.462	2024-10-03 15:29:51.462	\N	\N	https://bitcoinknots.org/	\N	1	1
-42	2024-10-03 15:29:51.468	2024-10-03 15:29:51.468	\N	\N	https://github.com/bcoin-org/bcoin/releases	\N	1	1
-43	2024-10-03 15:29:51.473	2024-10-03 15:29:51.473	\N	\N	https://github.com/block-core/blockcore/releases	\N	1	1
-44	2024-10-03 15:29:51.479	2024-10-03 15:29:51.479	\N	\N	https://github.com/btcsuite/btcd	\N	1	1
-45	2024-10-03 15:29:51.485	2024-10-03 15:29:51.485	\N	\N	https://github.com/Davidson-Souza/Floresta	\N	1	1
-46	2024-10-03 15:29:51.491	2024-10-03 15:29:51.491	\N	\N	https://gocoin.pl/	\N	1	1
-47	2024-10-03 15:29:51.497	2024-10-03 15:29:51.497	\N	\N	https://github.com/libbitcoin/libbitcoin-node/releases	\N	1	1
-48	2024-10-03 15:29:51.503	2024-10-03 15:29:51.503	\N	\N	https://github.com/succinctlabs/btc-warp	\N	1	1
-49	2024-10-03 15:29:51.509	2024-10-03 15:29:51.509	\N	\N	https://www.lopp.net/bitcoin-information/full-node.html#alpha	\N	1	1
-50	2024-10-03 15:29:51.515	2024-10-03 15:29:51.515	\N	\N	https://github.com/fort-nix/nix-bitcoin	\N	1	1
-51	2024-10-03 15:29:51.52	2024-10-03 15:29:51.52	\N	\N	https://github.com/chjj/mako	\N	1	1
-52	2024-10-03 15:29:51.526	2024-10-03 15:29:51.526	\N	\N	https://github.com/paritytech/parity-bitcoin	\N	1	1
-53	2024-10-03 15:29:51.531	2024-10-03 15:29:51.531	\N	\N	https://www.lopp.net/bitcoin-information/full-node.html#hardware	\N	1	1
-54	2024-10-03 15:29:51.537	2024-10-03 15:29:51.537	\N	\N	https://github.com/preston-evans98/zebra-btc	\N	1	1
-55	2024-10-03 15:29:51.543	2024-10-03 15:29:51.543	\N	\N	https://thebitcoinhole.com/bitcoin-nodes	\N	1	1
-56	2024-10-03 15:29:51.548	2024-10-03 15:29:51.548	\N	\N	https://thebitcoinmachines.com/	\N	1	1
-57	2024-10-03 15:29:51.554	2024-10-03 15:29:51.554	\N	\N	https://diynodes.com/	\N	1	1
-58	2024-10-03 15:29:51.56	2024-10-03 15:29:51.56	\N	\N	https://mynodebtc.com/order_now	\N	1	1
-59	2024-10-03 15:29:51.567	2024-10-03 15:29:51.567	\N	\N	https://www.santander.com/en/stories/blockchain-consensus	\N	1	1
-60	2024-10-03 15:29:51.573	2024-10-03 15:29:51.573	\N	\N	https://x.com/TheBitcoinLayer	\N	1	1
-61	2024-10-03 15:29:51.579	2024-10-03 15:29:51.579	\N	\N	https://www.coindesk.com/markets/2017/02/19/bitcoin-hash-functions-explained/	\N	1	1
-62	2024-10-03 15:29:51.586	2024-10-03 15:29:51.586	\N	\N	https://academy.bit2me.com/en/how-bitcoin-hashing-works/	\N	1	1
-63	2024-10-03 15:29:51.592	2024-10-03 15:29:51.592	\N	\N	https://medium.com/coinmonks/bitcoin-security-a-negative-exponential-95e78b6b575	\N	1	1
-64	2024-10-03 15:29:51.598	2024-10-03 15:29:51.598	\N	\N	https://bitcoin.org/en/full-node	\N	1	1
-65	2024-10-03 15:29:51.605	2024-10-03 15:29:51.605	\N	\N	https://x.com/BitcoinMagazine	\N	1	1
-66	2024-10-03 15:29:51.611	2024-10-03 15:29:51.611	\N	\N	https://bitpay.com/blog/bitcoin-nodes/	\N	1	1
-67	2024-10-03 15:29:51.617	2024-10-03 15:29:51.617	\N	\N	https://en.bitcoin.it/wiki/Transaction	\N	1	1
-68	2024-10-03 15:29:51.623	2024-10-03 15:29:51.623	\N	\N	https://www.bitcoin.com/get-started/how-bitcoin-transactions-work/	\N	1	1
-69	2024-10-03 15:29:51.629	2024-10-03 15:29:51.629	\N	\N	https://medium.datadriveninvestor.com/a-decomposition-of-the-bitcoin-block-header-data-driven-investor-e094ee3ff03f	\N	1	1
-70	2024-10-03 15:29:51.635	2024-10-03 15:29:51.635	\N	\N	https://learnmeabitcoin.com/technical/cryptography/hash-function/	\N	1	1
-71	2024-10-03 15:29:51.641	2024-10-03 15:29:51.641	\N	\N	https://medium.com/blockchain/using-the-blockchain-api-to-determine-the-time-left-until-the-next-bitcoin-block-halving-10e2a170e75f	\N	1	1
-72	2024-10-03 15:29:51.646	2024-10-03 15:29:51.646	\N	\N	https://river.com/learn/how-does-a-bitcoin-transaction-work/	\N	1	1
-73	2024-10-03 15:29:51.653	2024-10-03 15:29:51.653	\N	\N	https://www.gemini.com/fr-fr/cryptopedia/what-is-block-in-blockchain-bitcoin-block-size	\N	1	1
-74	2024-10-03 15:29:51.659	2024-10-03 15:29:51.659	\N	\N	https://learnmeabitcoin.com/beginners/guide/blocks/	\N	1	1
-75	2024-10-03 15:29:51.664	2024-10-03 15:29:51.664	\N	\N	https://vitalik.eth.limo/general/2024/05/31/blocksize.html	\N	1	1
-76	2024-10-03 15:29:51.67	2024-10-03 15:29:51.67	\N	\N	https://vitalik.eth.limo/general/2024/05/31/blocksize.html	\N	1	1
-77	2024-10-03 15:29:51.675	2024-10-03 15:29:51.675	\N	\N	https://www.bitpanda.com/academy/en/lessons/what-is-a-hash-function-in-a-blockchain-transaction/	\N	1	1
-78	2024-10-03 15:29:51.681	2024-10-03 15:29:51.681	\N	\N	https://medium.com/@johnblocke/the-importance-of-clear-definitions-in-bitcoins-block-size-debate-f8ce550d0919	\N	1	1
-79	2024-10-03 15:29:51.687	2024-10-03 15:29:51.687	\N	\N	https://support.ledger.com/fr/article/360017551659-zd	\N	1	1
+COPY public."Resource" (id, "createdAt", "updatedAt", link, "authorId", "typeId") FROM stdin;
+1	2024-10-03 15:29:51.197	2024-10-03 15:29:51.197	https://developer.bitcoin.org/	1	1
+2	2024-10-03 15:29:51.205	2024-10-03 15:29:51.205	https://argoblockchain.com/articles/explaining-the-bitcoin-block-reward	1	1
+3	2024-10-03 15:29:51.212	2024-10-03 15:29:51.212	https://en.bitcoin.it/wiki/Block_hashing_algorithm	1	1
+4	2024-10-03 15:29:51.219	2024-10-03 15:29:51.219	https://learnmeabitcoin.com/technical/mining/target/	1	1
+5	2024-10-03 15:29:51.228	2024-10-03 15:29:51.228	https://bitcoinwiki.org/wiki/hash	1	1
+6	2024-10-03 15:29:51.236	2024-10-03 15:29:51.236	https://bitcoindevs.xyz/bitcoin-core	1	1
+7	2024-10-03 15:29:51.244	2024-10-03 15:29:51.244	https://www.bitstamp.net/learn/crypto-101/what-was-the-blocksize-war/	1	1
+8	2024-10-03 15:29:51.251	2024-10-03 15:29:51.251	https://www.investopedia.com/terms/g/genesis-block.asp	1	1
+9	2024-10-03 15:29:51.258	2024-10-03 15:29:51.258	https://developer.bitcoin.org/	1	1
+10	2024-10-03 15:29:51.264	2024-10-03 15:29:51.264	https://www.deltecbank.com/news-and-insights/bitcoin-transaction-validation-what-exactly-goes-on-under-the-hood/	1	1
+11	2024-10-03 15:29:51.27	2024-10-03 15:29:51.27	https://www.onceinaspecies.com/p/bitcoin-blocks-are-like-container?utm_source=/search/Bitcoin%20blocks&utm_medium=reader2	1	1
+12	2024-10-03 15:29:51.276	2024-10-03 15:29:51.276	https://www.coindesk.com/learn/what-is-the-bitcoin-block-size-debate-and-why-does-it-matter/	1	1
+14	2024-10-03 15:29:51.29	2024-10-03 15:29:51.29	https://blog.lopp.net/securing-your-financial-sovereignty/	1	1
+15	2024-10-03 15:29:51.297	2024-10-03 15:29:51.297	https://www.mintlayer.org/en/news/bitcoin-nodes/	1	1
+16	2024-10-03 15:29:51.303	2024-10-03 15:29:51.303	https://bitkan.com/learn/bitcoin-full-node-what-is-the-role-of-a-full-node-2867	1	1
+17	2024-10-03 15:29:51.309	2024-10-03 15:29:51.309	https://jlopp.github.io/bitcoin-core-config-generator/	1	1
+18	2024-10-03 15:29:51.316	2024-10-03 15:29:51.316	https://blog.lopp.net/securing-your-financial-sovereignty/	1	1
+19	2024-10-03 15:29:51.322	2024-10-03 15:29:51.322	https://bitcoin.org/en/full-node	1	1
+20	2024-10-03 15:29:51.328	2024-10-03 15:29:51.328	https://www.lopp.net/bitcoin-information/full-node.html#running	1	1
+21	2024-10-03 15:29:51.334	2024-10-03 15:29:51.334	https://jlopp.github.io/bitcoin-core-config-generator/	1	1
+22	2024-10-03 15:29:51.34	2024-10-03 15:29:51.34	https://bitcoiner.guide/node/	1	1
+23	2024-10-03 15:29:51.347	2024-10-03 15:29:51.347	https://www.lopp.net/bitcoin-information/full-node.html#diy	1	1
+24	2024-10-03 15:29:51.354	2024-10-03 15:29:51.354	https://github.com/BlockchainCommons/GordianServer-macOS	1	1
+25	2024-10-03 15:29:51.361	2024-10-03 15:29:51.361	https://medium.com/@meeDamian/bitcoin-full-node-on-rbp3-revised-88bb7c8ef1d1	1	1
+26	2024-10-03 15:29:51.367	2024-10-03 15:29:51.367	https://github.com/lightning-power-users/node-launcher	1	1
+27	2024-10-03 15:29:51.373	2024-10-03 15:29:51.373	https://github.com/dgarage/hack0-hardware	1	1
+28	2024-10-03 15:29:51.379	2024-10-03 15:29:51.379	https://gildedpleb.github.io/hab-guide/	1	1
+29	2024-10-03 15:29:51.385	2024-10-03 15:29:51.385	https://raspibolt.org/	1	1
+30	2024-10-03 15:29:51.391	2024-10-03 15:29:51.391	https://mynodebtc.com/download	1	1
+31	2024-10-03 15:29:51.398	2024-10-03 15:29:51.398	https://www.lopp.net/bitcoin-information/full-node.html#dashboards	1	1
+32	2024-10-03 15:29:51.404	2024-10-03 15:29:51.404	https://getumbrel.com/	1	1
+33	2024-10-03 15:29:51.412	2024-10-03 15:29:51.412	https://github.com/Mirobit/bitcoin-node-manager	1	1
+34	2024-10-03 15:29:51.419	2024-10-03 15:29:51.419	https://github.com/craigwatson/bitcoind-status	1	1
+35	2024-10-03 15:29:51.425	2024-10-03 15:29:51.425	https://github.com/bitseed-org/bitseed-web-ui-2	1	1
+36	2024-10-03 15:29:51.431	2024-10-03 15:29:51.431	https://github.com/curly60e/pyblock	1	1
+37	2024-10-03 15:29:51.438	2024-10-03 15:29:51.438	https://github.com/wintercooled/NodeMonitor-Python-Django	1	1
+38	2024-10-03 15:29:51.444	2024-10-03 15:29:51.444	https://github.com/pxsocs/warden_terminal	1	1
+39	2024-10-03 15:29:51.449	2024-10-03 15:29:51.449	https://bitcoin.org/en/download	1	1
+40	2024-10-03 15:29:51.456	2024-10-03 15:29:51.456	https://www.lopp.net/bitcoin-information/full-node.html#software	1	1
+41	2024-10-03 15:29:51.462	2024-10-03 15:29:51.462	https://bitcoinknots.org/	1	1
+42	2024-10-03 15:29:51.468	2024-10-03 15:29:51.468	https://github.com/bcoin-org/bcoin/releases	1	1
+43	2024-10-03 15:29:51.473	2024-10-03 15:29:51.473	https://github.com/block-core/blockcore/releases	1	1
+44	2024-10-03 15:29:51.479	2024-10-03 15:29:51.479	https://github.com/btcsuite/btcd	1	1
+45	2024-10-03 15:29:51.485	2024-10-03 15:29:51.485	https://github.com/Davidson-Souza/Floresta	1	1
+46	2024-10-03 15:29:51.491	2024-10-03 15:29:51.491	https://gocoin.pl/	1	1
+47	2024-10-03 15:29:51.497	2024-10-03 15:29:51.497	https://github.com/libbitcoin/libbitcoin-node/releases	1	1
+48	2024-10-03 15:29:51.503	2024-10-03 15:29:51.503	https://github.com/succinctlabs/btc-warp	1	1
+49	2024-10-03 15:29:51.509	2024-10-03 15:29:51.509	https://www.lopp.net/bitcoin-information/full-node.html#alpha	1	1
+50	2024-10-03 15:29:51.515	2024-10-03 15:29:51.515	https://github.com/fort-nix/nix-bitcoin	1	1
+51	2024-10-03 15:29:51.52	2024-10-03 15:29:51.52	https://github.com/chjj/mako	1	1
+52	2024-10-03 15:29:51.526	2024-10-03 15:29:51.526	https://github.com/paritytech/parity-bitcoin	1	1
+53	2024-10-03 15:29:51.531	2024-10-03 15:29:51.531	https://www.lopp.net/bitcoin-information/full-node.html#hardware	1	1
+54	2024-10-03 15:29:51.537	2024-10-03 15:29:51.537	https://github.com/preston-evans98/zebra-btc	1	1
+55	2024-10-03 15:29:51.543	2024-10-03 15:29:51.543	https://thebitcoinhole.com/bitcoin-nodes	1	1
+56	2024-10-03 15:29:51.548	2024-10-03 15:29:51.548	https://thebitcoinmachines.com/	1	1
+57	2024-10-03 15:29:51.554	2024-10-03 15:29:51.554	https://diynodes.com/	1	1
+58	2024-10-03 15:29:51.56	2024-10-03 15:29:51.56	https://mynodebtc.com/order_now	1	1
+59	2024-10-03 15:29:51.567	2024-10-03 15:29:51.567	https://www.santander.com/en/stories/blockchain-consensus	1	1
+61	2024-10-03 15:29:51.579	2024-10-03 15:29:51.579	https://www.coindesk.com/markets/2017/02/19/bitcoin-hash-functions-explained/	1	1
+62	2024-10-03 15:29:51.586	2024-10-03 15:29:51.586	https://academy.bit2me.com/en/how-bitcoin-hashing-works/	1	1
+63	2024-10-03 15:29:51.592	2024-10-03 15:29:51.592	https://medium.com/coinmonks/bitcoin-security-a-negative-exponential-95e78b6b575	1	1
+64	2024-10-03 15:29:51.598	2024-10-03 15:29:51.598	https://bitcoin.org/en/full-node	1	1
+66	2024-10-03 15:29:51.611	2024-10-03 15:29:51.611	https://bitpay.com/blog/bitcoin-nodes/	1	1
+67	2024-10-03 15:29:51.617	2024-10-03 15:29:51.617	https://en.bitcoin.it/wiki/Transaction	1	1
+68	2024-10-03 15:29:51.623	2024-10-03 15:29:51.623	https://www.bitcoin.com/get-started/how-bitcoin-transactions-work/	1	1
+69	2024-10-03 15:29:51.629	2024-10-03 15:29:51.629	https://medium.datadriveninvestor.com/a-decomposition-of-the-bitcoin-block-header-data-driven-investor-e094ee3ff03f	1	1
+70	2024-10-03 15:29:51.635	2024-10-03 15:29:51.635	https://learnmeabitcoin.com/technical/cryptography/hash-function/	1	1
+71	2024-10-03 15:29:51.641	2024-10-03 15:29:51.641	https://medium.com/blockchain/using-the-blockchain-api-to-determine-the-time-left-until-the-next-bitcoin-block-halving-10e2a170e75f	1	1
+72	2024-10-03 15:29:51.646	2024-10-03 15:29:51.646	https://river.com/learn/how-does-a-bitcoin-transaction-work/	1	1
+73	2024-10-03 15:29:51.653	2024-10-03 15:29:51.653	https://www.gemini.com/fr-fr/cryptopedia/what-is-block-in-blockchain-bitcoin-block-size	1	1
+74	2024-10-03 15:29:51.659	2024-10-03 15:29:51.659	https://learnmeabitcoin.com/beginners/guide/blocks/	1	1
+75	2024-10-03 15:29:51.664	2024-10-03 15:29:51.664	https://vitalik.eth.limo/general/2024/05/31/blocksize.html	1	1
+76	2024-10-03 15:29:51.67	2024-10-03 15:29:51.67	https://vitalik.eth.limo/general/2024/05/31/blocksize.html	1	1
+77	2024-10-03 15:29:51.675	2024-10-03 15:29:51.675	https://www.bitpanda.com/academy/en/lessons/what-is-a-hash-function-in-a-blockchain-transaction/	1	1
+78	2024-10-03 15:29:51.681	2024-10-03 15:29:51.681	https://medium.com/@johnblocke/the-importance-of-clear-definitions-in-bitcoins-block-size-debate-f8ce550d0919	1	1
+79	2024-10-03 15:29:51.687	2024-10-03 15:29:51.687	https://support.ledger.com/fr/article/360017551659-zd	1	1
+80	2024-11-19 10:58:02.193	2024-11-19 10:58:02.193	https://bitpushnews.medium.com/why-bitcoins-proof-of-work-might-just-be-the-future-after-all-1f02b69d7496	1	1
+81	2024-11-19 10:58:02.214	2024-11-19 10:58:02.214	https://medium.com/the-crypto-kiosk/the-secret-war-against-bitcoins-proof-of-work-pow-b1a4e7ae0d02	1	1
+82	2024-11-19 10:58:02.223	2024-11-19 10:58:02.223	https://medium.com/@billtai/earths-greening-and-proof-of-work-satoshi-is-smiling-13dbf059025	1	1
+83	2024-11-19 10:58:02.23	2024-11-19 10:58:02.23	https://medium.com/hackernoon/asic-resistance-is-nothing-but-a-blockchain-buzzword-b91d3d770366	1	1
+84	2024-11-19 10:58:02.238	2024-11-19 10:58:02.238	https://hugonguyen.medium.com/bitcoin-chance-and-randomness-ba49a6edf933	1	1
+85	2024-11-19 10:58:02.245	2024-11-19 10:58:02.245	https://medium.com/swlh/bitcoins-proof-of-work-the-problem-of-the-byzantine-generals-33dc4540442	1	1
+86	2024-11-19 10:58:02.254	2024-11-19 10:58:02.254	https://www.investopedia.com/terms/p/proof-work.asp	1	1
+87	2024-11-19 10:58:02.261	2024-11-19 10:58:02.261	https://www.forbes.com/advisor/investing/cryptocurrency/proof-of-work/	1	1
+88	2024-11-19 10:58:02.268	2024-11-19 10:58:02.268	https://www.ledger.com/academy/blockchain/what-is-proof-of-work	1	1
+89	2024-11-19 10:58:02.275	2024-11-19 10:58:02.275	https://www.businessinsider.com/personal-finance/investing/proof-of-work	1	1
+90	2024-11-19 10:58:02.282	2024-11-19 10:58:02.282	https://medium.com/hackernoon/understanding-bitcoin-transaction-verification-a-childrens-story-3d877eb2641c?source=search_post---------10----------------------------	1	1
+91	2024-11-19 10:58:02.289	2024-11-19 10:58:02.289	https://medium.com/@Elysian_Ely/transaction-fees-transaction-speed-a48c2e69909?source=search_post---------15----------------------------	1	1
+92	2024-11-19 10:58:02.296	2024-11-19 10:58:02.296	https://medium.com/@coachschuman/a-deeper-understanding-of-bitcoin-mining-proof-of-work-2462bafa21db	1	1
+93	2024-11-19 10:58:02.304	2024-11-19 10:58:02.304	https://medium.com/@craig_10243/black-mirror-fb2457166a3d	1	1
+94	2024-11-19 10:58:02.311	2024-11-19 10:58:02.311	https://learnmeabitcoin.com/technical/mining/memory-pool/	1	1
+95	2024-11-19 10:58:02.317	2024-11-19 10:58:02.317	https://learnmeabitcoin.com/technical/mining/candidate-block/	1	1
+96	2024-11-19 10:58:02.324	2024-11-19 10:58:02.324	https://learnmeabitcoin.com/technical/mining/target/	1	1
+97	2024-11-19 10:58:02.332	2024-11-19 10:58:02.332	https://learnmeabitcoin.com/technical/mining/coinbase-transaction/	1	1
+98	2024-11-19 10:58:02.339	2024-11-19 10:58:02.339	https://learnmeabitcoin.com/technical/blockchain/hard-fork/	1	1
+99	2024-11-19 10:58:02.35	2024-11-19 10:58:02.35	https://learnmeabitcoin.com/technical/blockchain/51-attack/	1	1
+100	2024-11-19 10:58:02.358	2024-11-19 10:58:02.358	https://learnmeabitcoin.com/technical/transaction/input/	1	1
+101	2024-11-19 10:58:02.365	2024-11-19 10:58:02.365	https://learnmeabitcoin.com/technical/transaction/input/txid/	1	1
+102	2024-11-19 10:58:02.371	2024-11-19 10:58:02.371	https://learnmeabitcoin.com/technical/transaction/input/vout/	1	1
+103	2024-11-19 10:58:02.378	2024-11-19 10:58:02.378	https://learnmeabitcoin.com/technical/transaction/input/scriptsig/	1	1
+104	2024-11-19 10:58:02.384	2024-11-19 10:58:02.384	https://learnmeabitcoin.com/technical/transaction/input/sequence/	1	1
+105	2024-11-19 10:58:02.391	2024-11-19 10:58:02.391	https://learnmeabitcoin.com/technical/transaction/output/	1	1
+106	2024-11-19 10:58:02.397	2024-11-19 10:58:02.397	https://learnmeabitcoin.com/technical/transaction/output/scriptpubkey/	1	1
+107	2024-11-19 10:58:02.404	2024-11-19 10:58:02.404	https://learnmeabitcoin.com/technical/transaction/witness/	1	1
+108	2024-11-19 10:58:02.411	2024-11-19 10:58:02.411	https://learnmeabitcoin.com/technical/transaction/locktime/	1	1
+109	2024-11-19 10:58:02.418	2024-11-19 10:58:02.418	https://learnmeabitcoin.com/technical/transaction/fee/	1	1
+110	2024-11-19 10:58:02.424	2024-11-19 10:58:02.424	https://learnmeabitcoin.com/technical/transaction/size/	1	1
+111	2024-11-19 10:58:02.431	2024-11-19 10:58:02.431	https://learnmeabitcoin.com/technical/transaction/utxo/	1	1
+112	2024-11-19 10:58:02.438	2024-11-19 10:58:02.438	https://learnmeabitcoin.com/technical/transaction/wtxid/	1	1
+113	2024-11-19 10:58:02.445	2024-11-19 10:58:02.445	https://learnmeabitcoin.com/technical/keys/private-key/	1	1
+114	2024-11-19 10:58:02.45	2024-11-19 10:58:02.45	https://learnmeabitcoin.com/technical/keys/public-key/	1	1
+115	2024-11-19 10:58:02.457	2024-11-19 10:58:02.457	https://learnmeabitcoin.com/technical/keys/public-key/hash/	1	1
+116	2024-11-19 10:58:02.463	2024-11-19 10:58:02.463	https://learnmeabitcoin.com/technical/keys/address/	1	1
+117	2024-11-19 10:58:02.471	2024-11-19 10:58:02.471	https://learnmeabitcoin.com/technical/keys/private-key/wif/	1	1
+118	2024-11-19 10:58:02.484	2024-11-19 10:58:02.484	https://learnmeabitcoin.com/technical/keys/signature/	1	1
+119	2024-11-19 10:58:02.497	2024-11-19 10:58:02.497	https://learnmeabitcoin.com/technical/keys/checksum/	1	1
+120	2024-11-19 10:58:02.506	2024-11-19 10:58:02.506	https://learnmeabitcoin.com/technical/keys/base58/	1	1
+121	2024-11-19 10:58:02.514	2024-11-19 10:58:02.514	https://learnmeabitcoin.com/technical/block/version/	1	1
+122	2024-11-19 10:58:02.522	2024-11-19 10:58:02.522	https://learnmeabitcoin.com/technical/block/previous-block/	1	1
+123	2024-11-19 10:58:02.529	2024-11-19 10:58:02.529	https://learnmeabitcoin.com/technical/block/merkle-root/	1	1
+124	2024-11-19 10:58:02.534	2024-11-19 10:58:02.534	https://learnmeabitcoin.com/technical/block/time/	1	1
+125	2024-11-19 10:58:02.541	2024-11-19 10:58:02.541	https://learnmeabitcoin.com/technical/block/time/	1	1
+126	2024-11-19 10:58:02.547	2024-11-19 10:58:02.547	https://learnmeabitcoin.com/technical/block/hash/	1	1
+127	2024-11-19 10:58:02.554	2024-11-19 10:58:02.554	https://learnmeabitcoin.com/technical/block/hash/	1	1
+128	2024-11-19 10:58:02.56	2024-11-19 10:58:02.56	https://learnmeabitcoin.com/technical/block/blkdat/	1	1
+129	2024-11-19 10:58:02.566	2024-11-19 10:58:02.566	https://medium.com/zen-and-the-art-of-crypto/the-possibility-and-probability-of-a-51-attack-on-bitcoin-c28877c9f945	1	1
+130	2024-11-19 10:58:02.572	2024-11-19 10:58:02.572	https://medium.com/@rickmulvey/the-fact-that-a-51-attack-would-render-bitcoin-worthless-should-be-enough-of-a-deterrent-572f74821385	1	1
+131	2024-11-19 10:58:02.578	2024-11-19 10:58:02.578	https://medium.com/@alvintwrites/how-about-cyberwar-a-51-attack-on-the-bitcoin-blockchain-2a7e762af244	1	1
+132	2024-11-19 10:58:02.583	2024-11-19 10:58:02.583	https://medium.com/decryptionary/trump-impeachment-looks-like-a-bitcoin-51-attack-75b5630ec41c	1	1
+133	2024-11-19 10:58:02.589	2024-11-19 10:58:02.589	https://blog.goodaudience.com/what-is-a-51-attack-or-double-spend-attack-aa108db63474	1	1
+134	2024-11-19 10:58:02.595	2024-11-19 10:58:02.595	https://river.com/learn/how-bitcoin-fees-work/	1	1
+135	2024-11-19 10:58:02.6	2024-11-19 10:58:02.6	https://tangem.com/en/blog/post/bitcoin-transaction-fees/	1	1
+136	2024-11-19 10:58:02.605	2024-11-19 10:58:02.605	https://www.fidelitydigitalassets.com/research-and-insights/bitcoin-and-ethereum-fees-explained	1	1
+137	2024-11-19 10:58:02.611	2024-11-19 10:58:02.611	https://help.magiceden.io/en/articles/8515503-understanding-bitcoin-transaction-fees	1	1
+138	2024-11-19 10:58:02.617	2024-11-19 10:58:02.617	https://medium.com/lumerin-blog/bitcoins-most-expensive-transaction-fee-ever-bitcoin-mining-landscape-overview-8aa67ff98f5b	1	1
+139	2024-11-19 10:58:02.622	2024-11-19 10:58:02.622	https://medium.com/the-coinbase-blog/reliable-fee-less-bitcoin-transactions-in-custody-with-child-pays-for-parent-94a2c091cdb	1	1
+140	2024-11-19 10:58:02.628	2024-11-19 10:58:02.628	https://medium.com/@spair/the-bitcoin-fee-market-4df1857d12b7	1	1
+141	2024-11-19 10:58:02.633	2024-11-19 10:58:02.633	https://medium.com/blockchains-huji/rethinking-bitcoins-fee-market-ea9319e4ea57	1	1
+142	2024-11-19 10:58:02.638	2024-11-19 10:58:02.638	https://www-bitpanda-com.translate.goog/academy/en/lessons/what-are-transaction-fees-and-why-do-i-need-to-pay-them/?_x_tr_sl=en&_x_tr_tl=fr&_x_tr_hl=fr&_x_tr_pto=sc&_x_tr_hist=true	1	1
+143	2024-11-19 10:58:02.644	2024-11-19 10:58:02.644	https://en.bitcoin.it/wiki/Full_node	1	1
+144	2024-11-19 10:58:02.649	2024-11-19 10:58:02.649	https://bitcoinblog.de/2024/09/20/love-and-suffering-of-the-archive-nodes/	1	1
+145	2024-11-19 10:58:02.655	2024-11-19 10:58:02.655	https://www.crypto-news-flash.com/a-beginners-guide-to-archive-nodes-what-they-are-and-why-they-matter/	1	1
+146	2024-11-19 10:58:02.661	2024-11-19 10:58:02.661	https://d-central.tech/understanding-the-role-of-archival-and-pruned-nodes-in-the-decentralization-of-bitcoin/	1	1
+147	2024-11-19 10:58:02.667	2024-11-19 10:58:02.667	https://bitcoin.org/en/full-node	1	1
+148	2024-11-19 10:58:02.672	2024-11-19 10:58:02.672	https://stopanddecrypt.medium.com/a-complete-beginners-guide-to-installing-a-bitcoin-full-node-on-linux-2021-edition-46bf20fbe8ff	1	1
+149	2024-11-19 10:58:02.679	2024-11-19 10:58:02.679	https://8bitcoin.medium.com/how-to-run-a-bitcoin-full-node-over-tor-on-an-ubuntu-linux-virtual-machine-bdd7e9415a70	1	1
+150	2024-11-19 10:58:02.684	2024-11-19 10:58:02.684	https://medium.com/hackernoon/a-complete-beginners-guide-to-installing-a-bitcoin-full-node-on-linux-2018-edition-cb8e384479ea	1	1
+151	2024-11-19 10:58:02.69	2024-11-19 10:58:02.69	https://medium.com/@eallam/what-to-do-when-your-bitcoin-full-node-running-on-digital-ocean-fills-up-your-storage-space-e8a60f2f2819	1	1
+152	2024-11-19 10:58:02.696	2024-11-19 10:58:02.696	https://medium.com/hackernoon/money-is-a-social-construct-and-thats-why-you-should-run-a-bitcoin-full-node-ea0330cb69a5	1	1
+153	2024-11-19 10:58:02.701	2024-11-19 10:58:02.701	https://medium.com/@lopp/how-to-set-up-a-bitcoin-full-node-2dd1c09763d3	1	1
+154	2024-11-19 10:58:02.707	2024-11-19 10:58:02.707	https://medium.com/@nicolasdorier/stratis-and-the-bitcoin-full-node-efd03184f57d	1	1
+155	2024-11-19 10:58:02.713	2024-11-19 10:58:02.713	https://medium.com/@stadicus/the-box-my-5-satoshis-for-a-personal-bitcoin-full-node-fd7dc73d1b77	1	1
+156	2024-11-19 10:58:02.718	2024-11-19 10:58:02.718	https://learnmeabitcoin.com/technical/networking/node/#lightweight-node	1	1
+157	2024-11-19 10:58:02.724	2024-11-19 10:58:02.724	https://learnmeabitcoin.com/technical/networking/node/#full-node	1	1
+158	2024-11-19 10:58:02.73	2024-11-19 10:58:02.73	https://www.mintlayer.org/blogs/bitcoin-nodes	1	1
+159	2024-11-19 10:58:02.735	2024-11-19 10:58:02.735	https://www.zeeve.io/blog/what-are-lightweight-nodes-in-blockchain/	1	1
+160	2024-11-19 10:58:02.742	2024-11-19 10:58:02.742	https://zondacrypto.com/fr/academie/comprendre-les-n-uds-du-bitcoin	1	1
+161	2024-11-19 10:58:02.747	2024-11-19 10:58:02.747	https://www.wallstreetmojo.com/light-node/	1	1
+162	2024-11-19 10:58:02.753	2024-11-19 10:58:02.753	https://en.bitcoin.it/wiki/Lightweight_node	1	1
+163	2024-11-19 10:58:02.759	2024-11-19 10:58:02.759	https://blog.blockstream.com/education/nodes/what-are-the-types-of-bitcoin-nodes/	1	1
+164	2024-11-19 10:58:02.765	2024-11-19 10:58:02.765	https://river.com/learn/terms/s/simplified-payment-verification-spv/	1	1
+165	2024-11-19 10:58:02.771	2024-11-19 10:58:02.771	https://www.bitdegree.org/crypto/learn/crypto-terms/what-is-simplified-payment-verification-spv	1	1
+166	2024-11-19 10:58:02.776	2024-11-19 10:58:02.776	https://academy.bsvblockchain.org/blog/the-bitcoin-white-paper-simplified-payment-verification	1	1
+167	2024-11-19 10:58:02.782	2024-11-19 10:58:02.782	https://medium.com/decentralize-today/connecting-to-the-bitcoin-peer-to-peer-network-5c27209efa4	1	1
+168	2024-11-19 10:58:02.789	2024-11-19 10:58:02.789	https://tara-annison.medium.com/bloom-filters-and-spv-nodes-within-the-bitcoin-blockchain-66c36ea673f2	1	1
+169	2024-11-19 10:58:02.794	2024-11-19 10:58:02.794	https://medium.com/@traderric/so-by-accident-spv-was-added-to-bitcoin-after-the-btc-and-bch-forks-2351a8066040	1	1
+170	2024-11-19 10:58:02.8	2024-11-19 10:58:02.8	https://medium.com/@michaelflaxman/to-run-an-spv-server-you-a-bitcoind-node-and-an-spv-server-on-top-of-that-to-index-transactions-5d9d1263d2e8	1	1
+171	2024-11-19 10:58:02.805	2024-11-19 10:58:02.805	https://medium.com/@Chris_Stewart_5/modeling-bitcoin-payments-with-a-finite-state-machine-8a43220ee02a	1	1
+172	2024-11-19 10:58:02.811	2024-11-19 10:58:02.811	https://medium.com/@jonaldfyookball/why-every-bitcoin-user-should-understand-spv-security-520d1d45e0b9	1	1
+173	2024-11-19 10:58:02.817	2024-11-19 10:58:02.817	https://bitcoinwiki.org/wiki/simplified-payment-verification	1	1
+174	2024-11-19 10:58:02.821	2024-11-19 10:58:02.821	https://bitcoinwiki.org/wiki/hash	1	1
+175	2024-11-19 10:58:02.827	2024-11-19 10:58:02.827	https://www.investopedia.com/terms/h/hash.asp	1	1
+176	2024-11-19 10:58:02.832	2024-11-19 10:58:02.832	https://learnmeabitcoin.com/technical/cryptography/hash-function/	1	1
+177	2024-11-19 10:58:02.838	2024-11-19 10:58:02.838	https://academy.bit2me.com/en/how-bitcoin-hashing-works/	1	1
+178	2024-11-19 10:58:02.843	2024-11-19 10:58:02.843	https://supra.com/academy/the-nsa-and-bitcoin-origins-of-the-sha-256-hashing-algorithm/	1	1
+179	2024-11-19 10:58:02.849	2024-11-19 10:58:02.849	https://mohitmamoria.medium.com/there-are-not-special-technologies-used-in-blockchain-64bdc5ddc25b	1	1
+180	2024-11-19 10:58:02.853	2024-11-19 10:58:02.853	https://medium.com/@nic__carter/none-of-the-5-hash-functions-in-verge-had-to-be-broken-for-verge-itself-to-be-exploited-bitcoin-edb05123d100	1	1
+181	2024-11-19 10:58:02.858	2024-11-19 10:58:02.858	https://medium.com/coinmonks/what-is-the-sha-256-algorithm-3e99a78bcfb5	1	1
+182	2024-11-19 10:58:02.863	2024-11-19 10:58:02.863	https://medium.com/coinmonks/cryptocurrency-fundamentals-hash-function-a46a1a6eba66	1	1
+183	2024-11-19 10:58:02.868	2024-11-19 10:58:02.868	https://academy.bsvblockchain.org/course/bitcoin-primitives-hash-functions	1	1
+184	2024-11-19 10:58:02.874	2024-11-19 10:58:02.874	https://corporatefinanceinstitute.com/resources/cryptocurrency/hash-function/	1	1
+185	2024-11-19 10:58:02.88	2024-11-19 10:58:02.88	https://dydx.exchange/crypto-learning/cryptographic-hash-functions	1	1
+186	2024-11-19 10:58:02.885	2024-11-19 10:58:02.885	https://medium.com/@winklevoss/update-2-bitcoin-hard-fork-bitcoin-cash-db16bc577316	1	1
+187	2024-11-19 10:58:02.891	2024-11-19 10:58:02.891	https://medium.com/@winklevoss/update-bitcoin-hard-fork-bitcoin-cash-5531676ebb19	1	1
+188	2024-11-19 10:58:02.897	2024-11-19 10:58:02.897	https://viabtc.medium.com/viabtc-differences-between-the-soft-fork-and-the-hard-fork-of-bitcoin-1b07777acc45	1	1
+189	2024-11-19 10:58:02.903	2024-11-19 10:58:02.903	https://viabtc.medium.com/miner-guide-how-to-safely-hard-fork-to-bitcoin-unlimited-8ac1570dc1a8	1	1
+190	2024-11-19 10:58:02.909	2024-11-19 10:58:02.909	https://www.investopedia.com/tech/history-bitcoin-hard-forks/#:~:text=A%20Bitcoin%20hard%20fork%20refers,path%20a%20blockchain%20is%20taking.	1	1
+191	2024-11-19 10:58:02.915	2024-11-19 10:58:02.915	https://trustmachines.co/learn/what-is-a-hard-fork-bitcoin/	1	1
+192	2024-11-19 10:58:02.921	2024-11-19 10:58:02.921	https://www.investopedia.com/terms/h/hard-fork.asp	1	1
+193	2024-11-19 10:58:02.927	2024-11-19 10:58:02.927	https://b2binpay.com/en/what-is-bitcoin-fork-and-when-will-be-the-next-one/	1	1
+194	2024-11-19 10:58:02.932	2024-11-19 10:58:02.932	https://medium.com/coinmonks/merkle-root-of-a-bitcoin-block-calculated-in-c-8c659a3b3290	1	1
+195	2024-11-19 10:58:02.938	2024-11-19 10:58:02.938	https://medium.com/coinmonks/how-to-manually-verify-the-merkle-root-of-a-bitcoin-block-command-line-7881397d4db1	1	1
+196	2024-11-19 10:58:02.943	2024-11-19 10:58:02.943	https://enlear.academy/merkle-tree-the-root-of-bitcoin-5a9062394fbf	1	1
+197	2024-11-19 10:58:02.949	2024-11-19 10:58:02.949	https://medium.com/@dongha.sohn/bitcoin-5-pool-merkle-root-272a9c83dec7	1	1
+198	2024-11-19 10:58:02.955	2024-11-19 10:58:02.955	https://medium.com/@mailmehnaz/the-merkle-magic-in-bitcoin-blockchain-5722e4d0d1f1	1	1
+199	2024-11-19 10:58:02.959	2024-11-19 10:58:02.959	https://www.investopedia.com/terms/m/merkle-root-cryptocurrency.asp	1	1
+200	2024-11-19 10:58:02.965	2024-11-19 10:58:02.965	https://www.simplilearn.com/tutorials/blockchain-tutorial/merkle-tree-in-blockchain	1	1
+201	2024-11-19 10:58:02.97	2024-11-19 10:58:02.97	https://www.gemini.com/fr-fr/cryptopedia/merkle-tree-blockchain-merkle-root	1	1
+202	2024-11-19 10:58:02.975	2024-11-19 10:58:02.975	https://phemex.com/academy/merkle-tree-and-merkle-root	1	1
+203	2024-11-19 10:58:02.979	2024-11-19 10:58:02.979	https://www.investopedia.com/terms/m/merkle-tree.asp	1	1
+204	2024-11-19 10:58:02.985	2024-11-19 10:58:02.985	https://medium.com/@idogwuchi/merkle-trees-and-their-application-in-bitcoin-88e82efca544	1	1
+205	2024-11-19 10:58:02.99	2024-11-19 10:58:02.99	https://viabtc.medium.com/bitcoin-miners-guide-how-to-use-btc-mining-calculator-3ac8b7cf6e88	1	1
+206	2024-11-19 10:58:02.995	2024-11-19 10:58:02.995	https://medium.com/@shosaski/bitcoin-mining-shoots-by-22-despite-price-drop-fb5ff3bc9d20	1	1
+207	2024-11-19 10:58:03	2024-11-19 10:58:03	https://medium.com/@BlockchainLycan/bitcoin-mining-stocks-surge-following-trumps-support-amid-cbdc-concerns-c04e76e83404	1	1
+208	2024-11-19 10:58:03.004	2024-11-19 10:58:03.004	https://medium.com/@reinknapp/bitcoin-mining-of-its-best-with-bitharvest-0b39878638f8	1	1
+209	2024-11-19 10:58:03.011	2024-11-19 10:58:03.011	https://medium.com/@jpelton722/exploring-bitcoin-mining-as-a-passive-income-stream-dc1c987d05b0	1	1
+210	2024-11-19 10:58:03.016	2024-11-19 10:58:03.016	https://medium.com/@cryptonicaed/how-much-does-btc-mining-cost-after-halving-2024-dc008a58c90b	1	1
+211	2024-11-19 10:58:03.021	2024-11-19 10:58:03.021	https://christian-soschner.medium.com/one-idea-after-reading-the-article-governments-can-also-force-their-bitcoin-mining-farms-into-945a3a58d940	1	1
+212	2024-11-19 10:58:03.028	2024-11-19 10:58:03.028	https://blog.coinshares.com/coinshares-mining-report-update-our-insights-at-the-2024-halving-382089820a07	1	1
+213	2024-11-19 10:58:03.033	2024-11-19 10:58:03.033	https://medium.com/@maxstoneSL/bitcoin-energy-summit-2024-exploring-bitcoin-mining-and-energy-sustainability-584c1e69b250	1	1
+214	2024-11-19 10:58:03.041	2024-11-19 10:58:03.041	https://trustmachines.co/learn/what-are-zero-knowledge-proofs/	1	1
+215	2024-11-19 10:58:03.049	2024-11-19 10:58:03.049	https://starkware.co/blog/scaling-bitcoin-for-mass-use/	1	1
+216	2024-11-19 10:58:03.054	2024-11-19 10:58:03.054	https://starkware.co/blog/general-computation-on-bitcoin/	1	1
+217	2024-11-19 10:58:03.06	2024-11-19 10:58:03.06	https://cointelegraph.com/news/zero-knowledge-proofs-coming-to-bitcoin-overhauling-network-state-validation	1	1
+218	2024-11-19 10:58:03.066	2024-11-19 10:58:03.066	https://decrypt.co/241461/bitcoin-zkp-verified-mainnet-bitcoinos	1	1
+219	2024-11-19 10:58:03.072	2024-11-19 10:58:03.072	https://crypto.com/university/what-are-bitcoin-layer-2s	1	1
+220	2024-11-19 10:58:03.078	2024-11-19 10:58:03.078	https://www.coingecko.com/learn/bitcoin-layer-2s-top-bitcoin-layer-2s	1	1
+221	2024-11-19 10:58:03.084	2024-11-19 10:58:03.084	https://medium.com/@igwewashere/current-landscape-of-bitcoin-layer-2-d06de600a3c1	1	1
+222	2024-11-19 10:58:03.09	2024-11-19 10:58:03.09	https://www-ledger-com.translate.goog/academy/bitcoin-layer-2s-what-they-are-and-how-they-work?_x_tr_sl=en&_x_tr_tl=fr&_x_tr_hl=fr&_x_tr_pto=sc	1	1
+223	2024-11-19 10:58:03.095	2024-11-19 10:58:03.095	https://tangem.com/en/blog/post/bitcoin-layer-2-blockchains/	1	1
+224	2024-11-19 10:58:03.101	2024-11-19 10:58:03.101	https://hackernoon.com/how-bitcoins-layer-2-networks-are-transforming-the-worlds-oldest-digital-asset	1	1
+225	2024-11-19 10:58:03.107	2024-11-19 10:58:03.107	https://unisat.io/	1	1
+226	2024-11-19 10:58:03.113	2024-11-19 10:58:03.113	https://lightning.network/	1	1
+227	2024-11-19 10:58:03.119	2024-11-19 10:58:03.119	https://www.xverse.app/	1	1
+228	2024-11-19 10:58:03.125	2024-11-19 10:58:03.125	https://www.satscreener.com/	1	1
+229	2024-11-19 10:58:03.131	2024-11-19 10:58:03.131	https://motoswap.org/	1	1
+230	2024-11-19 10:58:03.137	2024-11-19 10:58:03.137	https://ordinalsbot.com/	1	1
+231	2024-11-19 10:58:03.142	2024-11-19 10:58:03.142	https://bvm.network/	1	1
+232	2024-11-19 10:58:03.148	2024-11-19 10:58:03.148	https://vitalik.eth.limo/general/2024/08/03/museumfuture.html	1	1
+233	2024-11-19 10:58:03.154	2024-11-19 10:58:03.154	https://vitalik.eth.limo/general/2024/07/23/circlestarks.html	1	1
+234	2024-11-19 10:58:03.161	2024-11-19 10:58:03.161	https://vitalik.eth.limo/general/2024/07/17/procrypto.html	1	1
+235	2024-11-19 10:58:03.167	2024-11-19 10:58:03.167	https://vitalik.eth.limo/general/2024/06/30/epochslot.html	1	1
+236	2024-11-19 10:58:03.175	2024-11-19 10:58:03.175	https://vitalik.eth.limo/general/2024/05/31/blocksize.html	1	1
+237	2024-11-19 10:58:03.183	2024-11-19 10:58:03.183	https://vitalik.eth.limo/general/2024/05/29/l2culture.html	1	1
+238	2024-11-19 10:58:03.191	2024-11-19 10:58:03.191	https://vitalik.eth.limo/general/2024/05/23/l2exec.html	1	1
+239	2024-11-19 10:58:03.197	2024-11-19 10:58:03.197	https://vitalik.eth.limo/general/2024/05/17/decentralization.html	1	1
+240	2024-11-19 10:58:03.203	2024-11-19 10:58:03.203	https://vitalik.eth.limo/general/2024/05/09/multidim.html	1	1
+241	2024-11-19 10:58:03.208	2024-11-19 10:58:03.208	https://vitalik.eth.limo/general/2024/04/29/binius.html	1	1
+242	2024-11-19 10:58:03.214	2024-11-19 10:58:03.214	https://vitalik.eth.limo/general/2024/04/01/dc.html	1	1
+243	2024-11-19 10:58:03.22	2024-11-19 10:58:03.22	https://vitalik.eth.limo/general/2024/03/29/memecoins.html	1	1
+244	2024-11-19 10:58:03.226	2024-11-19 10:58:03.226	https://vitalik.eth.limo/general/2024/03/28/blobs.html	1	1
+245	2024-11-19 10:58:03.231	2024-11-19 10:58:03.231	https://vitalik.eth.limo/general/2024/02/09/securityquestions.html	1	1
+246	2024-11-19 10:58:03.237	2024-11-19 10:58:03.237	https://vitalik.eth.limo/general/2024/01/31/end.html	1	1
+247	2024-11-19 10:58:03.243	2024-11-19 10:58:03.243	https://vitalik.eth.limo/general/2024/01/30/cryptoai.html	1	1
+248	2024-11-19 10:58:03.249	2024-11-19 10:58:03.249	https://vitalik.eth.limo/general/2023/12/28/cypherpunk.html	1	1
+249	2024-11-19 10:58:03.254	2024-11-19 10:58:03.254	https://vitalik.eth.limo/general/2023/11/27/techno_optimism.html	1	1
+250	2024-11-19 10:58:03.26	2024-11-19 10:58:03.26	https://vitalik.eth.limo/general/2023/11/14/neoplasma.html	1	1
+251	2024-11-19 10:58:03.265	2024-11-19 10:58:03.265	https://vitalik.eth.limo/general/2023/10/31/l2types.html	1	1
+252	2024-11-19 10:58:03.27	2024-11-19 10:58:03.27	https://vitalik.eth.limo/general/2023/09/30/enshrinement.html	1	1
+253	2024-11-19 10:58:03.276	2024-11-19 10:58:03.276	https://vitalik.eth.limo/general/2023/08/16/communitynotes.html	1	1
+254	2024-11-19 10:58:03.281	2024-11-19 10:58:03.281	https://vitalik.eth.limo/general/2023/07/24/biometric.html	1	1
+255	2024-11-19 10:58:03.287	2024-11-19 10:58:03.287	https://vitalik.eth.limo/general/2023/06/20/deeperdive.html	1	1
+256	2024-11-19 10:58:03.292	2024-11-19 10:58:03.292	https://vitalik.eth.limo/general/2023/06/09/three_transitions.html	1	1
+257	2024-11-19 10:58:03.297	2024-11-19 10:58:03.297	https://vitalik.eth.limo/general/2023/05/21/dont_overload.html	1	1
+258	2024-11-19 10:58:03.303	2024-11-19 10:58:03.303	https://vitalik.eth.limo/general/2023/04/14/traveltime.html	1	1
+259	2024-11-19 10:58:03.308	2024-11-19 10:58:03.308	https://vitalik.eth.limo/general/2023/03/31/zkmulticlient.html	1	1
+260	2024-11-19 10:58:03.313	2024-11-19 10:58:03.313	https://vitalik.eth.limo/general/2023/02/28/ux.html	1	1
+261	2024-11-19 10:58:03.319	2024-11-19 10:58:03.319	https://vitalik.eth.limo/general/2023/01/20/stealth.html	1	1
+262	2024-11-19 10:58:03.325	2024-11-19 10:58:03.325	https://vitalik.eth.limo/general/2022/12/30/institutions.html	1	1
+263	2024-11-19 10:58:03.331	2024-11-19 10:58:03.331	https://vitalik.eth.limo/general/2022/12/06/gpt3.html	1	1
+264	2024-11-19 10:58:03.337	2024-11-19 10:58:03.337	https://vitalik.eth.limo/general/2022/12/05/excited.html	1	1
+265	2024-11-19 10:58:03.344	2024-11-19 10:58:03.344	https://vitalik.eth.limo/general/2022/11/19/proof_of_solvency.html	1	1
+266	2024-11-19 10:58:03.352	2024-11-19 10:58:03.352	https://vitalik.eth.limo/general/2022/10/28/revenue_evil.html	1	1
+267	2024-11-19 10:58:03.36	2024-11-19 10:58:03.36	https://vitalik.eth.limo/general/2022/09/20/daos.html	1	1
+268	2024-11-19 10:58:03.369	2024-11-19 10:58:03.369	https://vitalik.eth.limo/general/2022/09/17/layer_3.html	1	1
+269	2024-11-19 10:58:03.376	2024-11-19 10:58:03.376	https://vitalik.eth.limo/general/2022/09/09/ens.html	1	1
+270	2024-11-19 10:58:03.382	2024-11-19 10:58:03.382	https://vitalik.eth.limo/general/2022/08/04/zkevm.html	1	1
+271	2024-11-19 10:58:03.388	2024-11-19 10:58:03.388	https://vitalik.eth.limo/general/2022/07/13/networkstates.html	1	1
+272	2024-11-19 10:58:03.394	2024-11-19 10:58:03.394	https://vitalik.eth.limo/general/2022/06/20/backpack.html	1	1
+273	2024-11-19 10:58:03.4	2024-11-19 10:58:03.4	https://vitalik.eth.limo/general/2022/06/15/using_snarks.html	1	1
+274	2024-11-19 10:58:03.407	2024-11-19 10:58:03.407	https://vitalik.eth.limo/general/2022/06/12/nonfin.html	1	1
+275	2024-11-19 10:58:03.413	2024-11-19 10:58:03.413	https://vitalik.eth.limo/general/2022/05/25/stable.html	1	1
+276	2024-11-19 10:58:03.42	2024-11-19 10:58:03.42	https://vitalik.eth.limo/general/2022/04/01/maximalist.html	1	1
+277	2024-11-19 10:58:03.426	2024-11-19 10:58:03.426	https://vitalik.eth.limo/general/2022/03/29/road.html	1	1
+278	2024-11-19 10:58:03.433	2024-11-19 10:58:03.433	https://vitalik.eth.limo/general/2022/03/14/trustedsetup.html	1	1
+279	2024-11-19 10:58:03.439	2024-11-19 10:58:03.439	https://vitalik.eth.limo/general/2022/02/28/complexity.html	1	1
+280	2024-11-19 10:58:03.445	2024-11-19 10:58:03.445	https://vitalik.eth.limo/general/2022/01/26/soulbound.html	1	1
+281	2024-11-19 10:58:03.452	2024-11-19 10:58:03.452	https://vitalik.eth.limo/general/2021/12/19/bullveto.html	1	1
+282	2024-11-19 10:58:03.459	2024-11-19 10:58:03.459	https://vitalik.eth.limo/general/2021/12/06/endgame.html	1	1
+283	2024-11-19 10:58:03.466	2024-11-19 10:58:03.466	https://vitalik.eth.limo/general/2021/11/16/retro1.html	1	1
+284	2024-11-19 10:58:03.473	2024-11-19 10:58:03.473	https://vitalik.eth.limo/general/2021/11/05/halo.html	1	1
+285	2024-11-19 10:58:03.481	2024-11-19 10:58:03.481	https://vitalik.eth.limo/general/2021/10/31/cities.html	1	1
+286	2024-11-19 10:58:03.489	2024-11-19 10:58:03.489	https://vitalik.eth.limo/general/2021/09/26/limits.html	1	1
+287	2024-11-19 10:58:03.497	2024-11-19 10:58:03.497	https://vitalik.eth.limo/general/2021/08/22/prices.html	1	1
+288	2024-11-19 10:58:03.504	2024-11-19 10:58:03.504	https://vitalik.eth.limo/general/2021/08/16/voting3.html	1	1
+289	2024-11-19 10:58:03.513	2024-11-19 10:58:03.513	https://vitalik.eth.limo/general/2021/07/29/gini.html	1	1
+290	2024-11-19 10:58:03.521	2024-11-19 10:58:03.521	https://vitalik.eth.limo/general/2021/06/18/verkle.html	1	1
+291	2024-11-19 10:58:03.529	2024-11-19 10:58:03.529	https://vitalik.eth.limo/general/2021/05/25/voting2.html	1	1
+292	2024-11-19 10:58:03.536	2024-11-19 10:58:03.536	https://vitalik.eth.limo/general/2021/05/23/scaling.html	1	1
+293	2024-11-19 10:58:03.544	2024-11-19 10:58:03.544	https://vitalik.eth.limo/general/2021/04/07/sharding.html	1	1
+294	2024-11-19 10:58:03.552	2024-11-19 10:58:03.552	https://vitalik.eth.limo/general/2021/04/02/round9.html	1	1
+295	2024-11-19 10:58:03.561	2024-11-19 10:58:03.561	https://vitalik.eth.limo/general/2021/03/23/legitimacy.html	1	1
+296	2024-11-19 10:58:03.568	2024-11-19 10:58:03.568	https://vitalik.eth.limo/general/2021/02/18/election.html	1	1
+297	2024-11-19 10:58:03.578	2024-11-19 10:58:03.578	https://vitalik.eth.limo/general/2021/01/26/snarks.html	1	1
+298	2024-11-19 10:58:03.584	2024-11-19 10:58:03.584	https://vitalik.eth.limo/general/2021/01/11/recovery.html	1	1
+299	2024-11-19 10:58:03.592	2024-11-19 10:58:03.592	https://vitalik.eth.limo/general/2021/01/05/rollup.html	1	1
+300	2024-11-19 10:58:03.6	2024-11-19 10:58:03.6	https://vitalik.eth.limo/general/2020/12/28/endnotes.html	1	1
+301	2024-11-19 10:58:03.608	2024-11-19 10:58:03.608	https://vitalik.eth.limo/general/2020/11/08/concave.html	1	1
+302	2024-11-19 10:58:03.615	2024-11-19 10:58:03.615	https://vitalik.eth.limo/general/2020/11/06/pos2020.html	1	1
+303	2024-11-19 10:58:03.623	2024-11-19 10:58:03.623	https://vitalik.eth.limo/general/2020/10/18/round7.html	1	1
+304	2024-11-19 10:58:03.629	2024-11-19 10:58:03.629	https://vitalik.eth.limo/general/2020/09/11/coordination.html	1	1
+305	2024-11-19 10:58:03.637	2024-11-19 10:58:03.637	https://vitalik.eth.limo/general/2020/08/20/trust.html	1	1
+306	2024-11-19 10:58:03.645	2024-11-19 10:58:03.645	https://vitalik.eth.limo/general/2020/08/17/philosophy.html	1	1
+307	2024-11-19 10:58:03.654	2024-11-19 10:58:03.654	https://vitalik.eth.limo/general/2020/07/22/round6.html	1	1
+308	2024-11-19 10:58:03.663	2024-11-19 10:58:03.663	https://vitalik.eth.limo/general/2020/07/20/homomorphic.html	1	1
+309	2024-11-19 10:58:03.671	2024-11-19 10:58:03.671	https://vitalik.eth.limo/general/2020/04/30/round5.html	1	1
+310	2024-11-19 10:58:03.678	2024-11-19 10:58:03.678	https://vitalik.eth.limo/general/2020/03/21/garbled.html	1	1
+311	2024-11-19 10:58:03.685	2024-11-19 10:58:03.685	https://vitalik.eth.limo/general/2020/01/28/round4.html	1	1
+312	2024-11-19 10:58:03.692	2024-11-19 10:58:03.692	https://vitalik.eth.limo/general/2019/12/26/mvb.html	1	1
+313	2024-11-19 10:58:03.698	2024-11-19 10:58:03.698	https://vitalik.eth.limo/general/2019/12/24/christmas.html	1	1
+314	2024-11-19 10:58:03.705	2024-11-19 10:58:03.705	https://vitalik.eth.limo/general/2019/12/07/quadratic.html	1	1
+315	2024-11-19 10:58:03.712	2024-11-19 10:58:03.712	https://vitalik.eth.limo/general/2019/11/22/progress.html	1	1
+316	2024-11-19 10:58:03.718	2024-11-19 10:58:03.718	https://vitalik.eth.limo/general/2019/10/24/gitcoin.html	1	1
+317	2024-11-19 10:58:03.724	2024-11-19 10:58:03.724	https://vitalik.eth.limo/general/2019/10/01/story.html	1	1
+318	2024-11-19 10:58:03.73	2024-11-19 10:58:03.73	https://vitalik.eth.limo/general/2019/09/22/plonk.html	1	1
+319	2024-11-19 10:58:03.737	2024-11-19 10:58:03.737	https://vitalik.eth.limo/general/2019/08/28/hybrid_layer_2.html	1	1
+320	2024-11-19 10:58:03.743	2024-11-19 10:58:03.743	https://vitalik.eth.limo/general/2019/06/12/plasma_vs_sharding.html	1	1
+321	2024-11-19 10:58:03.749	2024-11-19 10:58:03.749	https://vitalik.eth.limo/general/2019/05/12/fft.html	1	1
+322	2024-11-19 10:58:03.754	2024-11-19 10:58:03.754	https://vitalik.eth.limo/general/2019/05/09/control_as_liability.html	1	1
+323	2024-11-19 10:58:03.759	2024-11-19 10:58:03.759	https://vitalik.eth.limo/general/2019/04/16/free_speech.html	1	1
+324	2024-11-19 10:58:03.766	2024-11-19 10:58:03.766	https://vitalik.eth.limo/general/2019/04/03/collusion.html	1	1
+325	2024-11-19 10:58:03.771	2024-11-19 10:58:03.771	https://vitalik.eth.limo/general/2019/04/01/cantor.html	1	1
+326	2024-11-19 10:58:03.776	2024-11-19 10:58:03.776	https://vitalik.eth.limo/general/2018/12/05/cbc_casper.html	1	1
+327	2024-11-19 10:58:03.782	2024-11-19 10:58:03.782	https://vitalik.eth.limo/general/2018/11/25/central_planning.html	1	1
+328	2024-11-19 10:58:03.788	2024-11-19 10:58:03.788	https://vitalik.eth.limo/general/2018/08/26/layer_1.html	1	1
+329	2024-11-19 10:58:03.795	2024-11-19 10:58:03.795	https://vitalik.eth.limo/general/2018/08/07/99_fault_tolerant.html	1	1
+330	2024-11-19 10:58:03.801	2024-11-19 10:58:03.801	https://vitalik.eth.limo/general/2018/07/21/starks_part_3.html	1	1
+331	2024-11-19 10:58:03.807	2024-11-19 10:58:03.807	https://vitalik.eth.limo/general/2018/04/20/radical_markets.html	1	1
+332	2024-11-19 10:58:03.813	2024-11-19 10:58:03.813	https://vitalik.eth.limo/general/2018/03/28/plutocracy.html	1	1
+333	2024-11-19 10:58:03.82	2024-11-19 10:58:03.82	https://vitalik.eth.limo/general/2017/12/31/pos_faq.html	1	1
+334	2024-11-19 10:58:03.825	2024-11-19 10:58:03.825	https://vitalik.eth.limo/general/2017/12/31/sharding_faq.html	1	1
+335	2024-11-19 10:58:03.83	2024-11-19 10:58:03.83	https://vitalik.eth.limo/general/2017/12/17/voting.html	1	1
+336	2024-11-19 10:58:03.837	2024-11-19 10:58:03.837	https://vitalik.eth.limo/general/2017/12/14/gas_analysis.html	1	1
+337	2024-11-19 10:58:03.844	2024-11-19 10:58:03.844	https://vitalik.eth.limo/general/2017/11/22/starks_part_2.html	1	1
+338	2024-11-19 10:58:03.849	2024-11-19 10:58:03.849	https://vitalik.eth.limo/general/2017/11/09/starks_part_1.html	1	1
+339	2024-11-19 10:58:03.855	2024-11-19 10:58:03.855	https://vitalik.eth.limo/general/2017/10/17/moe.html	1	1
+340	2024-11-19 10:58:03.861	2024-11-19 10:58:03.861	https://vitalik.eth.limo/general/2017/09/14/prehistory.html	1	1
+341	2024-11-19 10:58:03.866	2024-11-19 10:58:03.866	https://vitalik.eth.limo/general/2017/07/27/metcalfe.html	1	1
+342	2024-11-19 10:58:03.871	2024-11-19 10:58:03.871	https://vitalik.eth.limo/general/2017/07/16/triangle_of_harm.html	1	1
+343	2024-11-19 10:58:03.876	2024-11-19 10:58:03.876	https://vitalik.eth.limo/general/2017/06/22/marketmakers.html	1	1
+344	2024-11-19 10:58:03.882	2024-11-19 10:58:03.882	https://vitalik.eth.limo/general/2017/06/09/sales.html	1	1
+345	2024-11-19 10:58:03.887	2024-11-19 10:58:03.887	https://vitalik.eth.limo/general/2017/05/08/coordination_problems.html	1	1
+346	2024-11-19 10:58:03.891	2024-11-19 10:58:03.891	https://vitalik.eth.limo/general/2017/03/14/forks_and_markets.html	1	1
+347	2024-11-19 10:58:03.897	2024-11-19 10:58:03.897	https://vitalik.eth.limo/general/2017/03/11/a_note_on_charity.html	1	1
+348	2024-11-19 10:58:03.902	2024-11-19 10:58:03.902	https://vitalik.eth.limo/general/2017/02/01/zk_snarks.html	1	1
+349	2024-11-19 10:58:03.908	2024-11-19 10:58:03.908	https://vitalik.eth.limo/general/2017/01/14/exploring_ecp.html	1	1
+350	2024-11-19 10:58:03.912	2024-11-19 10:58:03.912	https://vitalik.eth.limo/general/2016/12/29/pos_design.html	1	1
+351	2024-11-19 10:58:03.918	2024-11-19 10:58:03.918	https://vitalik.eth.limo/general/2016/12/10/qap.html	1	1
+352	2024-11-19 10:58:03.922	2024-11-19 10:58:03.922	https://www.bitcoin.com/get-started/what-are-bitcoin-network-fees/#:~:text=A%20Bitcoin%20network%20fee%2C%20also,next%20block%20of%20the%20blockchain.	1	1
+353	2024-11-19 10:58:03.928	2024-11-19 10:58:03.928	https://www.blocknative.com/blog/ethereum-block-building	1	1
+354	2024-11-19 10:58:03.933	2024-11-19 10:58:03.933	https://arxiv.org/abs/2407.13931	1	1
+355	2024-11-19 10:58:03.938	2024-11-19 10:58:03.938	https://goethereumbook.org/block-query/	1	1
+356	2024-11-19 10:58:03.943	2024-11-19 10:58:03.943	https://ethresear.ch/t/on-block-sizes-gas-limits-and-scalability/18444	1	1
+357	2024-11-19 10:58:03.95	2024-11-19 10:58:03.95	https://docs.chainstack.com/reference/ethereum-blocks-rpc-methods	1	1
+358	2024-11-19 10:58:03.956	2024-11-19 10:58:03.956	https://www.geeksforgeeks.org/ethereum-block-structure/	1	1
+359	2024-11-19 10:58:03.962	2024-11-19 10:58:03.962	https://ethereum.org/en/developers/docs/blocks/	1	1
+360	2024-11-19 10:58:03.969	2024-11-19 10:58:03.969	https://etherscan.io/blocks	1	1
+361	2024-11-19 10:58:03.974	2024-11-19 10:58:03.974	https://medium.com/@solidity101/demystifying-ethereum-block-and-transaction-properties-a-technical-deep-dive-a5b5face9ded	1	1
+362	2024-11-19 10:58:03.98	2024-11-19 10:58:03.98	https://ethereum.org/en/developers/docs/transactions/	1	1
+363	2024-11-19 10:58:03.987	2024-11-19 10:58:03.987	https://ethereum.org/en/developers/docs/gas/	1	1
+364	2024-11-19 10:58:03.993	2024-11-19 10:58:03.993	https://ethereum.org/en/developers/docs/accounts/	1	1
+365	2024-11-19 10:58:03.999	2024-11-19 10:58:03.999	https://ethereum.org/en/developers/docs/accounts/	1	1
+366	2024-11-19 10:58:04.007	2024-11-19 10:58:04.007	https://safe.global/	1	1
+367	2024-11-19 10:58:04.015	2024-11-19 10:58:04.015	https://portal.thirdweb.com/connect/account-abstraction/how-it-works	1	1
+368	2024-11-19 10:58:04.025	2024-11-19 10:58:04.025	https://transak.com/blog/what-are-smart-accounts	1	1
+369	2024-11-19 10:58:04.033	2024-11-19 10:58:04.033	https://www.coinspeaker.com/guides/what-are-smart-accounts-on-ethereum/	1	1
+370	2024-11-19 10:58:04.042	2024-11-19 10:58:04.042	https://docs.alchemy.com/docs/smart-accounts-from-scratch	1	1
+371	2024-11-19 10:58:04.051	2024-11-19 10:58:04.051	https://safe.mirror.xyz/vZHodiI1NLJbz4fd0vuil0hyLHNGCBH8oLyMzGTb4sc	1	1
+372	2024-11-19 10:58:04.06	2024-11-19 10:58:04.06	https://cointelegraph.com/news/ethereum-smart-accounts-utility	1	1
+373	2024-11-19 10:58:04.068	2024-11-19 10:58:04.068	https://docs.reown.com/appkit/vue/onboarding/smart-accounts	1	1
+374	2024-11-19 10:58:04.076	2024-11-19 10:58:04.076	https://docs.zksync.io/build/developer-reference/account-abstraction/building-smart-accounts	1	1
+375	2024-11-19 10:58:04.083	2024-11-19 10:58:04.083	https://quicknode.com/guides/ethereum-development/getting-started/what-are-ethereum-accounts	1	1
+376	2024-11-19 10:58:04.09	2024-11-19 10:58:04.09	https://ethereum.stackexchange.com/questions/5828/what-is-an-eoa-account	1	1
+377	2024-11-19 10:58:04.097	2024-11-19 10:58:04.097	https://blog.ambire.com/eoas-vs-smart-contract-accounts/	1	1
+378	2024-11-19 10:58:04.104	2024-11-19 10:58:04.104	https://www.coinfabrik.com/glossary/eoa-externally-owned-account/	1	1
+379	2024-11-19 10:58:04.112	2024-11-19 10:58:04.112	https://members.delphidigital.io/learn/externally-owned-account-eoa	1	1
+380	2024-11-19 10:58:04.118	2024-11-19 10:58:04.118	https://unchainedcrypto.com/externally-owned-accounts-ethereum/	1	1
+381	2024-11-19 10:58:04.123	2024-11-19 10:58:04.123	https://developers.circle.com/w3s/docs/programmable-wallets-account-types	1	1
+382	2024-11-19 10:58:04.131	2024-11-19 10:58:04.131	https://www.okx.com/fr/help/whats-externally-owned-accounts-eoa	1	1
+383	2024-11-19 10:58:04.138	2024-11-19 10:58:04.138	https://docs.starknet.io/architecture-and-concepts/accounts/introduction/	1	1
+384	2024-11-19 10:58:04.144	2024-11-19 10:58:04.144	https://help.port.startrail.io/hc/en-us/articles/7487943515543-What-is-Ethereum-Address-EOA	1	1
+385	2024-11-19 10:58:04.15	2024-11-19 10:58:04.15	https://ethereum.org/en/developers/docs/evm/	1	1
+386	2024-11-19 10:58:04.157	2024-11-19 10:58:04.157	https://ethereum.org/en/developers/docs/evm/opcodes/	1	1
+387	2024-11-19 10:58:04.163	2024-11-19 10:58:04.163	https://ethereum.org/en/developers/docs/smart-contracts/	1	1
+388	2024-11-19 10:58:04.169	2024-11-19 10:58:04.169	https://ethereum.org/en/developers/docs/smart-contracts/languages/	1	1
+389	2024-11-19 10:58:04.175	2024-11-19 10:58:04.175	https://ethereum.org/en/developers/docs/smart-contracts/anatomy/	1	1
+390	2024-11-19 10:58:04.18	2024-11-19 10:58:04.18	https://ethereum.org/en/developers/docs/smart-contracts/libraries/	1	1
+391	2024-11-19 10:58:04.187	2024-11-19 10:58:04.187	https://ethereum.org/en/developers/docs/smart-contracts/testing/	1	1
+392	2024-11-19 10:58:04.192	2024-11-19 10:58:04.192	https://ethereum.org/en/developers/docs/smart-contracts/compiling/	1	1
+393	2024-11-19 10:58:04.198	2024-11-19 10:58:04.198	https://ethereum.org/en/developers/docs/smart-contracts/deploying/	1	1
+394	2024-11-19 10:58:04.204	2024-11-19 10:58:04.204	https://ethereum.org/en/developers/docs/smart-contracts/verifying/	1	1
+395	2024-11-19 10:58:04.21	2024-11-19 10:58:04.21	https://ethereum.org/en/developers/docs/smart-contracts/upgrading/	1	1
+396	2024-11-19 10:58:04.216	2024-11-19 10:58:04.216	https://ethereum.org/en/developers/docs/smart-contracts/security/	1	1
+397	2024-11-19 10:58:04.223	2024-11-19 10:58:04.223	https://ethereum.org/en/developers/docs/smart-contracts/formal-verification/	1	1
+398	2024-11-19 10:58:04.229	2024-11-19 10:58:04.229	https://ethereum.org/en/developers/docs/smart-contracts/composability/	1	1
+399	2024-11-19 10:58:04.234	2024-11-19 10:58:04.234	https://ethereum.org/en/developers/docs/mev/	1	1
+400	2024-11-19 10:58:04.24	2024-11-19 10:58:04.24	https://ethereum.org/en/developers/docs/data-availability/	1	1
+401	2024-11-19 10:58:04.246	2024-11-19 10:58:04.246	https://ethereum.org/en/developers/docs/data-availability/blockchain-data-storage-strategies/	1	1
+402	2024-11-19 10:58:04.254	2024-11-19 10:58:04.254	https://jpmorais.medium.com/learn-ethereum-in-2024-10-hash-functions-and-ethereum-6f442b9cb4d1#::~:text=The%20most%20commonly%20used%20hash,is%20extensively%20employed%20by%20Bitcoin.	1	1
+403	2024-11-19 10:58:04.26	2024-11-19 10:58:04.26	https://wiki.rugdoc.io/docs/introduction-to-ethereums-keccak-256-algorithm/	1	1
+404	2024-11-19 10:58:04.265	2024-11-19 10:58:04.265	https://www.nervos.org/knowledge-base/what_is_keccak256_(explainCKBot)	1	1
+405	2024-11-19 10:58:04.271	2024-11-19 10:58:04.271	https://www.geeksforgeeks.org/difference-between-sha-256-and-keccak-256/	1	1
+406	2024-11-19 10:58:04.277	2024-11-19 10:58:04.277	https://dev.to/shlok2740/keccak256-in-solidity-433m	1	1
+407	2024-11-19 10:58:04.282	2024-11-19 10:58:04.282	https://medium.com/0xcode/hashing-functions-in-solidity-using-keccak256-70779ea55bb0	1	1
+408	2024-11-19 10:58:04.288	2024-11-19 10:58:04.288	https://cryptomarketpool.com/keccak256/	1	1
+409	2024-11-19 10:58:04.294	2024-11-19 10:58:04.294	https://solstep.gitbook.io/solidity-steps/step-5/47-keccak256	1	1
+410	2024-11-19 10:58:04.3	2024-11-19 10:58:04.3	https://ethereum.org/en/developers/docs/consensus-mechanisms/	1	1
+411	2024-11-19 10:58:04.306	2024-11-19 10:58:04.306	https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/	1	1
+412	2024-11-19 10:58:04.312	2024-11-19 10:58:04.312	https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/gasper/	1	1
+413	2024-11-19 10:58:04.318	2024-11-19 10:58:04.318	https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/weak-subjectivity/	1	1
+414	2024-11-19 10:58:04.323	2024-11-19 10:58:04.323	https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/attestations/	1	1
+415	2024-11-19 10:58:04.329	2024-11-19 10:58:04.329	https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/rewards-and-penalties/	1	1
+416	2024-11-19 10:58:04.337	2024-11-19 10:58:04.337	https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/rewards-and-penalties/	1	1
+417	2024-11-19 10:58:04.342	2024-11-19 10:58:04.342	https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/keys/	1	1
+418	2024-11-19 10:58:04.348	2024-11-19 10:58:04.348	https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/pos-vs-pow/	1	1
+419	2024-11-19 10:58:04.354	2024-11-19 10:58:04.354	https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/block-proposal/	1	1
+420	2024-11-19 10:58:04.36	2024-11-19 10:58:04.36	https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/faqs/	1	1
+421	2024-11-19 10:58:04.366	2024-11-19 10:58:04.366	https://www.ledger.com/academy/ethereum-proof-of-stake-pos-explained	1	1
+422	2024-11-19 10:58:04.372	2024-11-19 10:58:04.372	https://blog.bake.io/why-did-ethereum-switch-to-proof-of-stake/	1	1
+423	2024-11-19 10:58:04.378	2024-11-19 10:58:04.378	https://cointelegraph.com/learn/ethereum-2-0-staking-a-beginners-guide-on-how-to-stake-eth	1	1
+424	2024-11-19 10:58:04.384	2024-11-19 10:58:04.384	https://consensys.io/blog/what-is-proof-of-stake	1	1
+425	2024-11-19 10:58:04.39	2024-11-19 10:58:04.39	https://www.mdpi.com/2813-2432/2/2/6	1	1
+426	2024-11-19 10:58:04.395	2024-11-19 10:58:04.395	https://www.investopedia.com/terms/g/gas-ethereum.asp	1	1
+427	2024-11-19 10:58:04.4	2024-11-19 10:58:04.4	https://bitcoin.com/get-started/what-is-ETH-gas-and-how-do-fees-work-in-ethereum/	1	1
+428	2024-11-19 10:58:04.405	2024-11-19 10:58:04.405	https://help.zengo.com/en/articles/8975427-understanding-ethereum-and-layer-2-l2-network-fees	1	1
+429	2024-11-19 10:58:04.411	2024-11-19 10:58:04.411	https://medium.com/coinmonks/demystifying-gas-fees-in-ethereum-transactions-67fed041eae1	1	1
+430	2024-11-19 10:58:04.416	2024-11-19 10:58:04.416	https://medium.com/quantum-economics/why-high-gas-fees-on-ethereum-is-a-problem-but-the-best-problem-ever-3f7e65da4724	1	1
+431	2024-11-19 10:58:04.421	2024-11-19 10:58:04.421	https://medium.com/loopring-protocol/the-bottlenecked-blockchain-how-high-gas-fees-on-ethereum-are-killing-my-vibe-and-what-we-do-e324c76d5dba	1	1
+432	2024-11-19 10:58:04.426	2024-11-19 10:58:04.426	https://medium.com/stk-token/research-of-the-week-reducing-gas-fees-9061d19cc171	1	1
+433	2024-11-19 10:58:04.431	2024-11-19 10:58:04.431	https://medium.com/@catherineashleydumont/gas-fees-explained-ethereum-gas-fees-and-the-role-of-cometh-connect-b81372f5dff4	1	1
+434	2024-11-19 10:58:04.436	2024-11-19 10:58:04.436	https://medium.com/@luishrsoares/optimizing-gas-fees-in-ethereum-smart-contracts-e1d9f2b17da7	1	1
+435	2024-11-19 10:58:04.442	2024-11-19 10:58:04.442	https://medium.com/coinmonks/how-zkrollups-optimistic-rollups-can-reduce-gas-fees-on-ethereum-4c0f773db8ad	1	1
+436	2024-11-19 10:58:04.446	2024-11-19 10:58:04.446	https://koinly.io/fr/blog/ethereum-gas-fees-guide/	1	1
+437	2024-11-19 10:58:04.451	2024-11-19 10:58:04.451	https://www.britannica.com/money/ethereum-gas-fees-eth	1	1
+438	2024-11-19 10:58:04.456	2024-11-19 10:58:04.456	https://ethresear.ch/t/mev-capturing-amm-mcamm/13336	1	1
+439	2024-11-19 10:58:04.461	2024-11-19 10:58:04.461	https://mirror.xyz/0xshittrader.eth/WiV8DM3I6abNMVsXf-DqioYb2NglnfjmM-zSsw2ruG8	1	1
+440	2024-11-19 10:58:04.471	2024-11-19 10:58:04.471	https://mirror.xyz/0xshittrader.eth/c6J_PCK87K3joTWmLEtG6qVN6BFXLBZxQniReYSEjLI	1	1
+441	2024-11-19 10:58:04.552	2024-11-19 10:58:04.552	https://mirror.xyz/0xshittrader.eth/f2VSuoZ91vAbCv82MtWM-Gosyf_DeUXfPlDx3EYV3RM	1	1
+442	2024-11-19 10:58:04.56	2024-11-19 10:58:04.56	https://medium.com/@Prestwich/mev-c417d9a5eb3d	1	1
+443	2024-11-19 10:58:04.565	2024-11-19 10:58:04.565	https://doseofdefi.substack.com/p/mevs-new-chapter-beyond-ethereums	1	1
+444	2024-11-19 10:58:04.57	2024-11-19 10:58:04.57	https://hackingdistributed.com/2017/08/13/cost-of-decent/	1	1
+445	2024-11-19 10:58:04.579	2024-11-19 10:58:04.579	https://arxiv.org/abs/1902.05164	1	1
+446	2024-11-19 10:58:04.585	2024-11-19 10:58:04.585	https://arxiv.org/abs/1904.05234	1	1
+447	2024-11-19 10:58:04.592	2024-11-19 10:58:04.592	https://arxiv.org/abs/2003.03052	1	1
+448	2024-11-19 10:58:04.598	2024-11-19 10:58:04.598	https://www.paradigm.xyz/2020/08/ethereum-is-a-dark-forest	1	1
+449	2024-11-19 10:58:04.605	2024-11-19 10:58:04.605	https://samczsun.com/escaping-the-dark-forest/	1	1
+450	2024-11-19 10:58:04.611	2024-11-19 10:58:04.611	https://arxiv.org/abs/2101.05511	1	1
+451	2024-11-19 10:58:04.618	2024-11-19 10:58:04.618	https://www.paradigm.xyz/2021/02/mev-and-me	1	1
+452	2024-11-19 10:58:04.624	2024-11-19 10:58:04.624	https://arxiv.org/pdf/1911.03380	1	1
+453	2024-11-19 10:58:04.63	2024-11-19 10:58:04.63	https://noma.substack.com/mev-and-coordination	1	1
+454	2024-11-19 10:58:04.637	2024-11-19 10:58:04.637	https://pmcgoohan.medium.com/mev-do-this-beb2754bca63	1	1
+455	2024-11-19 10:58:04.643	2024-11-19 10:58:04.643	https://www.paradigm.xyz/2021/07/ethereum-reorgs-after-the-merge	1	1
+456	2024-11-19 10:58:04.65	2024-11-19 10:58:04.65	https://hackmd.io/@flashbots/mev-in-eth2	1	1
+457	2024-11-19 10:58:04.658	2024-11-19 10:58:04.658	https://hackmd.io/@flashbots/MEV-1559	1	1
+458	2024-11-19 10:58:04.665	2024-11-19 10:58:04.665	https://arxiv.org/pdf/2103.02228	1	1
+459	2024-11-19 10:58:04.671	2024-11-19 10:58:04.671	https://bertcmiller.com/2021/09/05/mev-synthetix.html	1	1
+460	2024-11-19 10:58:04.677	2024-11-19 10:58:04.677	https://arxiv.org/abs/2112.01472	1	1
+461	2024-11-19 10:58:04.684	2024-11-19 10:58:04.684	https://www.galaxy.com/insights/research/mev-how-flashboys-became-flashbots/	1	1
+462	2024-11-19 10:58:04.69	2024-11-19 10:58:04.69	https://arxiv.org/pdf/2103.12732	1	1
+463	2024-11-19 10:58:04.696	2024-11-19 10:58:04.696	https://arxiv.org/pdf/2204.05238	1	1
+464	2024-11-19 10:58:04.703	2024-11-19 10:58:04.703	https://people.eecs.berkeley.edu/~ksk/files/MEV_CFMM.pdf	1	1
+465	2024-11-19 10:58:04.709	2024-11-19 10:58:04.709	https://writings.flashbots.net/the-future-of-mev-is-suave	1	1
+466	2024-11-19 10:58:04.714	2024-11-19 10:58:04.714	https://www.ddmckinnon.com/2022/11/27/all-is-fair-in-arb-and-mev-on-avalanche-c-chain/	1	1
+467	2024-11-19 10:58:04.72	2024-11-19 10:58:04.72	https://www.galaxy.com/insights/research/mev-the-rise-of-the-builders/	1	1
+468	2024-11-19 10:58:04.727	2024-11-19 10:58:04.727	https://www.paradigm.xyz/2023/04/mev-boost-ethereum-consensus	1	1
+469	2024-11-19 10:58:04.734	2024-11-19 10:58:04.734	https://ethresear.ch/t/mev-auction-auctioning-transaction-ordering-rights-as-a-solution-to-miner-extractable-value/6788	1	1
+470	2024-11-19 10:58:04.74	2024-11-19 10:58:04.74	https://ethresear.ch/t/targeting-zero-mev-a-content-layer-solution/9224	1	1
+471	2024-11-19 10:58:04.747	2024-11-19 10:58:04.747	https://ethresear.ch/t/mev-sgx-a-sealed-bid-mev-auction-design/9677	1	1
+472	2024-11-19 10:58:04.754	2024-11-19 10:58:04.754	https://ethresear.ch/t/proposer-block-builder-separation-friendly-fee-market-designs/9725	1	1
+473	2024-11-19 10:58:04.76	2024-11-19 10:58:04.76	https://ethresear.ch/t/committee-driven-mev-smoothing/10408	1	1
+474	2024-11-19 10:58:04.766	2024-11-19 10:58:04.766	https://ethresear.ch/t/two-slot-proposer-builder-separation/10980	1	1
+475	2024-11-19 10:58:04.773	2024-11-19 10:58:04.773	https://ethresear.ch/t/mev-boost-merge-ready-flashbots-architecture/11177	1	1
+476	2024-11-19 10:58:04.78	2024-11-19 10:58:04.78	https://ethresear.ch/t/burning-mev-through-block-proposer-auctions/14029	1	1
+477	2024-11-19 10:58:04.785	2024-11-19 10:58:04.785	https://messari.io/report/understanding-mev	1	1
+478	2024-11-19 10:58:04.793	2024-11-19 10:58:04.793	https://members.delphidigital.io/reports/flashing-a-light-on-the-dark-forest-part-1	1	1
+479	2024-11-19 10:58:04.8	2024-11-19 10:58:04.8	https://thedefiant.io/education/infrastructure/ethereums-value-extracting-bots-explainer-and-project-map	1	1
+480	2024-11-19 10:58:04.805	2024-11-19 10:58:04.805	https://members.delphidigital.io/reports/what-you-should-know-about-mev-and-how-it-affects-gas-costs	1	1
+481	2024-11-19 10:58:04.811	2024-11-19 10:58:04.811	https://medium.com/offchainlabs/five-theses-about-transaction-ordering-mev-and-front-running-5ebf52bc0cbe	1	1
+482	2024-11-19 10:58:04.817	2024-11-19 10:58:04.817	https://hackmd.io/ivUzk3piQEG8ALzCGbxlag	1	1
+483	2024-11-19 10:58:04.823	2024-11-19 10:58:04.823	https://www.quicknode.com/guides/ethereum-development/transactions/what-are-ethereum-transactions	1	1
+484	2024-11-19 10:58:04.829	2024-11-19 10:58:04.829	https://docs.alchemy.com/docs/understanding-the-transaction-object-on-ethereum	1	1
+485	2024-11-19 10:58:04.835	2024-11-19 10:58:04.835	https://docs.alchemy.com/docs/how-ethereum-transactions-work	1	1
+486	2024-11-19 10:58:04.841	2024-11-19 10:58:04.841	https://ethereum.org/en/developers/docs/gas/	1	1
+487	2024-11-19 10:58:04.846	2024-11-19 10:58:04.846	https://medium.com/@solidity101/unveiling-the-mysteries-of-ethereum-transaction-details-by-hash-632f2d00558f	1	1
+488	2024-11-19 10:58:04.852	2024-11-19 10:58:04.852	https://bouncefinance.medium.com/flashbots-auction-a-paradigm-shift-in-ethereum-transaction-processing-fb1909ab4286	1	1
+489	2024-11-19 10:58:04.858	2024-11-19 10:58:04.858	https://medium.com/@blockchain101/crafting-an-ethereum-transaction-step-by-step-138453521ab4	1	1
+490	2024-11-19 10:58:04.864	2024-11-19 10:58:04.864	https://medium.com/@eiki1212/ethereum-transaction-structure-explained-aa5a94182ad6	1	1
+491	2024-11-19 10:58:04.869	2024-11-19 10:58:04.869	https://lido.fi/	1	1
+492	2024-11-19 10:58:04.875	2024-11-19 10:58:04.875	https://www.eigenlayer.xyz/	1	1
+493	2024-11-19 10:58:04.881	2024-11-19 10:58:04.881	https://aave.com/	1	1
+494	2024-11-19 10:58:04.886	2024-11-19 10:58:04.886	https://makerdao.com/en/	1	1
+495	2024-11-19 10:58:04.892	2024-11-19 10:58:04.892	https://uniswap.org/	1	1
+496	2024-11-19 10:58:04.897	2024-11-19 10:58:04.897	https://rocketpool.net/	1	1
+497	2024-11-19 10:58:04.904	2024-11-19 10:58:04.904	https://www.binance.com/en/wbeth	1	1
+498	2024-11-19 10:58:04.909	2024-11-19 10:58:04.909	https://www.ethena.fi/	1	1
+499	2024-11-19 10:58:04.915	2024-11-19 10:58:04.915	https://www.spark.fi/	1	1
+500	2024-11-19 10:58:04.922	2024-11-19 10:58:04.922	https://pendle.finance/	1	1
+501	2024-11-19 10:58:04.927	2024-11-19 10:58:04.927	https://stake.zircuit.com/	1	1
+502	2024-11-19 10:58:04.932	2024-11-19 10:58:04.932	https://compound.finance/	1	1
+503	2024-11-19 10:58:04.937	2024-11-19 10:58:04.937	https://curve.fi/	1	1
+504	2024-11-19 10:58:04.943	2024-11-19 10:58:04.943	https://symbiotic.fi/	1	1
+505	2024-11-19 10:58:04.948	2024-11-19 10:58:04.948	https://www.swellnetwork.io/	1	1
+506	2024-11-19 10:58:04.954	2024-11-19 10:58:04.954	https://www.puffer.fi/	1	1
+507	2024-11-19 10:58:04.959	2024-11-19 10:58:04.959	https://morpho.org/	1	1
+508	2024-11-19 10:58:04.966	2024-11-19 10:58:04.966	https://www.mantle.xyz/meth	1	1
+509	2024-11-19 10:58:04.971	2024-11-19 10:58:04.971	https://link3.to/magpiexyz	1	1
+510	2024-11-19 10:58:04.977	2024-11-19 10:58:04.977	https://www.convexfinance.com/	1	1
+511	2024-11-19 10:58:04.983	2024-11-19 10:58:04.983	https://app.renzoprotocol.com/restake	1	1
+512	2024-11-19 10:58:04.989	2024-11-19 10:58:04.989	https://trustmachines.co/learn/what-makes-the-bitcoin-blockchain-secure/	1	1
+513	2024-11-19 10:58:04.994	2024-11-19 10:58:04.994	https://finimize.com/content/bitcoin-security-heres-what-makes-the-og-blockchain-safer-than-fort-knox-with-ledger	1	1
+514	2024-11-19 10:58:05	2024-11-19 10:58:05	https://www.zscaler.fr/blogs/security-research/bitcoin-regulations-and-security	1	1
+515	2024-11-19 10:58:05.006	2024-11-19 10:58:05.006	https://www.investopedia.com/news/bitcoin-safe-storage-cold-wallet/	1	1
+516	2024-11-19 10:58:05.011	2024-11-19 10:58:05.011	https://www.cnb.com/personal-banking/insights/cryptocurrency-cybersecurity-risks.html	1	1
+517	2024-11-19 10:58:05.017	2024-11-19 10:58:05.017	https://en.bitcoin.it/wiki/Weaknesses	1	1
+518	2024-11-19 10:58:05.023	2024-11-19 10:58:05.023	https://d-central.tech/understanding-bitcoins-security-budget-in-2023-a-comprehensive-analysis/	1	1
+519	2024-11-19 10:58:05.029	2024-11-19 10:58:05.029	https://www.oreilly.com/library/view/mastering-bitcoin/9781491902639/ch10.html	1	1
+520	2024-11-19 10:58:05.033	2024-11-19 10:58:05.033	https://www.egr.msu.edu/~renjian/pubs/Blockchain-IoT.pdf	1	1
 \.
 
 
@@ -597,45 +1154,20 @@ COPY public."Resource" (id, "createdAt", "updatedAt", title, description, link, 
 -- Data for Name: Section; Type: TABLE DATA; Schema: public; Owner: yaugourt
 --
 
-COPY public."Section" (id, "createdAt", title, description, "topicId") FROM stdin;
-1	2024-10-03 15:29:09.509	Monero	\N	1
-2	2024-10-03 15:29:09.514	Bsc	\N	1
-3	2024-10-03 15:29:09.518	Ethereum	\N	1
-4	2024-10-03 15:29:09.523	Avalanche	\N	1
-5	2024-10-03 15:29:09.533	Bitcoin	\N	1
-6	2024-10-03 15:29:09.538	Solana	\N	1
-7	2024-10-03 15:29:09.543	Starknet	\N	6
-8	2024-10-03 15:29:09.547	Arbtitrum	\N	6
-9	2024-10-03 15:29:09.552	Optimism	\N	6
-10	2024-10-03 15:29:09.556	Zksync	\N	6
-11	2024-10-03 15:29:09.561	Metis	\N	6
-12	2024-10-03 15:29:09.566	Base	\N	6
-13	2024-10-03 15:29:09.57	Liquid staking	\N	2
-14	2024-10-03 15:29:09.574	Lending	\N	2
-15	2024-10-03 15:29:09.578	Bridge	\N	2
-16	2024-10-03 15:29:09.582	Dexes	\N	2
-17	2024-10-03 15:29:09.587	Restacking	\N	2
-18	2024-10-03 15:29:09.592	CDP	\N	2
-19	2024-10-03 15:29:09.596	RWA	\N	2
-20	2024-10-03 15:29:09.6	Derivatives	\N	2
-21	2024-10-03 15:29:09.604	Mantle	\N	6
-22	2024-10-03 15:29:09.608	Scroll	\N	6
-23	2024-10-03 15:29:09.613	Linea	\N	6
-24	2024-10-03 15:29:09.617	Near	\N	3
-25	2024-10-03 15:29:09.621	Celestia	\N	3
-26	2024-10-03 15:29:09.626	Avail	\N	3
-27	2024-10-03 15:29:09.63	Covalent	\N	3
-28	2024-10-03 15:29:09.633	Liquid restaking	\N	2
-29	2024-10-03 15:29:09.637	Solidity	\N	7
-30	2024-10-03 15:29:09.642	Rust	\N	7
-31	2024-10-03 15:29:09.646	Javascript	\N	7
-32	2024-10-03 15:29:09.65	Move	\N	7
-33	2024-10-03 15:29:09.654	Chainlink	\N	8
-34	2024-10-03 15:29:09.659	Pyth network	\N	8
-35	2024-10-03 15:29:09.663	UMA	\N	8
-36	2024-10-03 15:29:09.667	Tellor tributes	\N	8
-37	2024-10-03 15:29:09.671	API3	\N	8
-38	2024-10-03 15:29:09.675	Fuel	\N	6
+COPY public."Section" (id, "createdAt", title, "topicId") FROM stdin;
+3	2024-10-03 15:29:09.518	Ethereum	1
+5	2024-10-03 15:29:09.533	Bitcoin	1
+6	2024-10-03 15:29:09.538	Solana	1
+7	2024-10-03 15:29:09.543	Starknet	6
+10	2024-10-03 15:29:09.556	Zksync	6
+13	2024-10-03 15:29:09.57	Liquid staking	2
+16	2024-10-03 15:29:09.582	Dexes	2
+24	2024-10-03 15:29:09.617	Near	3
+25	2024-10-03 15:29:09.621	Celestia	3
+29	2024-10-03 15:29:09.637	Solidity	7
+30	2024-10-03 15:29:09.642	Rust	7
+33	2024-10-03 15:29:09.654	Chainlink	8
+34	2024-10-03 15:29:09.659	Pyth network	8
 \.
 
 
@@ -643,33 +1175,20 @@ COPY public."Section" (id, "createdAt", title, description, "topicId") FROM stdi
 -- Data for Name: SectionInfo; Type: TABLE DATA; Schema: public; Owner: yaugourt
 --
 
-COPY public."SectionInfo" (id, "createdAt", color, "imageLink", "whitepaperLink", "twitterLink", "websiteLink", "sectionId") FROM stdin;
-27	2024-10-03 15:29:37.5	#58C8F6	https://res.cloudinary.com/dotdojnco/image/upload/v1727021657/Encyclochain/Section/Data%20availability/ney9v1ajuobmchsdaekd.svg	https://docs.availproject.org/	https://x.com/AvailProject	https://www.availproject.org/	26
-28	2024-10-03 15:29:37.505	#000000	https://res.cloudinary.com/dotdojnco/image/upload/v1727021393/Encyclochain/Section/Layer%202/jychd5slxs0oqm5kwr2q.svg	https://docs.zksync.io/	https://x.com/zksync	https://zksync.io/	10
-29	2024-10-03 15:29:37.508	#0052FF	https://res.cloudinary.com/dotdojnco/image/upload/v1727021392/Encyclochain/Section/Layer%202/fjwduhf3srddazmxx3he.svg	https://docs.base.org/	https://x.com/base	https://www.base.org/	12
-30	2024-10-03 15:29:37.512	#FFEEDA	https://res.cloudinary.com/dotdojnco/image/upload/v1727021392/Encyclochain/Section/Layer%202/hwqnna0gf1adze0tvbof.svg	https://docs.scroll.io/en/home/	https://x.com/Scroll_ZKP	https://scroll.io/	22
-31	2024-10-03 15:29:37.515	#61DFFF	https://res.cloudinary.com/dotdojnco/image/upload/v1727021392/Encyclochain/Section/Layer%202/fsegscaopd6eyeyaklh2.svg	https://docs.linea.build/	https://x.com/LineaBuild	https://linea.build/	23
-32	2024-10-03 15:29:37.519	#000000	https://res.cloudinary.com/dotdojnco/image/upload/v1727020864/Encyclochain/Section/DeFi/ek8pxmvzcaofeiamrxwi.svg				14
-33	2024-10-03 15:29:37.523	#000000	https://res.cloudinary.com/dotdojnco/image/upload/v1727021436/Encyclochain/Section/DeFi/xlrldgn1ehv1jgvtgefj.svg				13
-34	2024-10-03 15:29:37.527	#00ec97	https://res.cloudinary.com/dotdojnco/image/upload/v1727021657/Encyclochain/Section/Data%20availability/r94tmupqmovjtvnyrtb2.svg	https://docs.near.org/build/chain-abstraction/data-availability	https://x.com/NEARProtocol	https://near.org/data-availability	24
-35	2024-10-03 15:29:37.532	#000000	https://res.cloudinary.com/dotdojnco/image/upload/v1727021437/Encyclochain/Section/DeFi/q7whglszjgp0eavvbdc4.svg				19
-36	2024-10-03 15:29:37.535	#000000	https://res.cloudinary.com/dotdojnco/image/upload/v1727021436/Encyclochain/Section/DeFi/dmieyrr5ekxuzwf57dbw.svg				28
-37	2024-10-03 15:29:37.539	#000000	https://res.cloudinary.com/dotdojnco/image/upload/v1727021435/Encyclochain/Section/DeFi/stc7e3obhldvtxvqsqht.svg				18
-38	2024-10-03 15:29:37.543	#0C0C4F	https://res.cloudinary.com/dotdojnco/image/upload/v1727021594/Encyclochain/Section/Layer%202/is7i5ovpxc7rpbayvf8t.svg	https://docs.starknet.io/	https://x.com/Starknet	https://www.starknet.io/	7
-39	2024-10-03 15:29:37.546	#ff0420	https://res.cloudinary.com/dotdojnco/image/upload/v1727021392/Encyclochain/Section/Layer%202/y7yfn9v9mfatgyjicxca.svg	https://community.optimism.io/	https://x.com/Optimism	https://optimism.io/	9
-40	2024-10-03 15:29:37.549	#000000	https://res.cloudinary.com/dotdojnco/image/upload/v1727021594/Encyclochain/Section/Layer%202/scjs79qfwwhiqrh3a1yf.svg	https://docs-v2.mantle.xyz/	https://x.com/0xMantle	https://www.mantle.xyz/	21
-41	2024-10-03 15:29:37.552	#54FE6D	https://res.cloudinary.com/dotdojnco/image/upload/v1727021657/Encyclochain/Section/Data%20availability/amzk3ur5gbit3j620wrt.svg	https://www.covalenthq.com/docs/resources/covalent-network-whitepaper	https://x.com/Covalent_HQ	https://www.covalenthq.com/	27
-42	2024-10-03 15:29:37.556	#7b2bf9	https://res.cloudinary.com/dotdojnco/image/upload/v1727021657/Encyclochain/Section/Data%20availability/iw54vlftt0g9ixfgouti.svg	https://docs.celestia.org/	https://x.com/CelestiaOrg	https://celestia.org/	25
-43	2024-10-03 15:29:37.56	#00CFF	https://res.cloudinary.com/dotdojnco/image/upload/v1727021392/Encyclochain/Section/Layer%202/mki2mll7reerzyr2yzdz.svg	https://docs.metis.io/dev	https://x.com/MetisL2	https://www.metis.io/	11
-44	2024-10-03 15:29:37.563	#F7931A	https://res.cloudinary.com/dotdojnco/image/upload/v1726967095/Encyclochain/Section/Layer%201/rzsjqqqiqfmqlnphy8uz.svg	https://bitcoin.org/bitcoin.pdf	https://x.com/Bitcoin	https://bitcoin.org/fr/	5
-45	2024-10-03 15:29:37.567	#627EEA	https://res.cloudinary.com/dotdojnco/image/upload/v1726967095/Encyclochain/Section/Layer%201/ob8ozm287zdyl736dant.svg	https://ethereum.org/en/whitepaper/	https://x.com/ethereum	https://ethereum.org/	3
-46	2024-10-03 15:29:37.57	#f0b90b	https://res.cloudinary.com/dotdojnco/image/upload/v1726967095/Encyclochain/Section/Layer%201/aoihmsbogqmoeq34jiyk.svg	https://github.com/bnb-chain/whitepaper/blob/master/assets/cross-chain.png	https://x.com/BNBChain	https://www.bnbchain.org/	2
-47	2024-10-03 15:29:37.574	#4c4c4c	https://res.cloudinary.com/dotdojnco/image/upload/v1726967095/Encyclochain/Section/Layer%201/uacpzpjbbfc6rbjujpkh.svg	https://github.com/monero-project/research-lab/blob/master/whitepaper/whitepaper.pdf	https://x.com/monero	https://www.getmonero.org/	1
-48	2024-10-03 15:29:37.577	#FF394A	https://res.cloudinary.com/dotdojnco/image/upload/v1727024879/Encyclochain/Section/Layer%201/kekuugu4tm4uims47vko.svg	https://www.avalabs.org/whitepapers	https://x.com/avax	https://www.avax.network/	4
-49	2024-10-03 15:29:37.581	#00000	https://res.cloudinary.com/dotdojnco/image/upload/v1727024884/Encyclochain/Section/Layer%201/csv6epvqanc9glnt8sfk.svg	https://solana.com/solana-whitepaper.pdf	https://x.com/solana	https://x.com/solana	6
-50	2024-10-03 15:29:37.584	#000000	https://res.cloudinary.com/dotdojnco/image/upload/v1727021436/Encyclochain/Section/DeFi/vviqtmdls45sqkfshwwg.svg				17
-51	2024-10-03 15:29:37.587	#000000	https://res.cloudinary.com/dotdojnco/image/upload/v1727021435/Encyclochain/Section/DeFi/k0of3jdzowyyxd6fszlx.svg				16
-52	2024-10-03 15:29:37.591	#213147	https://res.cloudinary.com/dotdojnco/image/upload/v1727021392/Encyclochain/Section/Layer%202/pfhrgo5kwjpu4vwlbi6t.svg	https://docs.arbitrum.io/welcome/get-started	https://x.com/arbitrum	https://arbitrum.io/	8
+COPY public."SectionInfo" (id, "createdAt", color, "imageLink", "whitepaperLink", "twitterLink", "websiteLink", "sectionId", consensus, creator, "blockTime", "creationDate", tvl) FROM stdin;
+34	2024-10-03 15:29:37.527	#00ec97	https://res.cloudinary.com/dotdojnco/image/upload/v1727021657/Encyclochain/Section/Data%20availability/r94tmupqmovjtvnyrtb2.svg	https://docs.near.org/build/chain-abstraction/data-availability	https://x.com/NEARProtocol	https://near.org/data-availability	24	\N	\N	\N	\N	\N
+38	2024-10-03 15:29:37.543	#0C0C4F	https://res.cloudinary.com/dotdojnco/image/upload/v1727021594/Encyclochain/Section/Layer%202/is7i5ovpxc7rpbayvf8t.svg	https://docs.starknet.io/	https://x.com/Starknet	https://www.starknet.io/	7	\N	\N	\N	\N	\N
+44	2024-10-03 15:29:37.563	#F7931A	https://res.cloudinary.com/dotdojnco/image/upload/v1726967095/Encyclochain/Section/Layer%201/rzsjqqqiqfmqlnphy8uz.svg	https://bitcoin.org/bitcoin.pdf	https://x.com/Bitcoin	https://bitcoin.org/fr/	5	Proof of work (POW)	Satoshi nakamoto	10 minutes	3 January 2009	\N
+45	2024-10-03 15:29:37.567	#627EEA	https://res.cloudinary.com/dotdojnco/image/upload/v1726967095/Encyclochain/Section/Layer%201/ob8ozm287zdyl736dant.svg	https://ethereum.org/en/whitepaper/	https://x.com/ethereum	https://ethereum.org/	3	Proof of stake (POS)	Vitalik Buterin	12 seconds	30 July 2015	\N
+49	2024-10-03 15:29:37.581	#00000	https://res.cloudinary.com/dotdojnco/image/upload/v1732199030/Encyclochain/Section/Layer%201/hp2a4wf6gm0m9wd6ngec.jpg	https://solana.com/solana-whitepaper.pdf	https://x.com/solana	https://x.com/solana	6	\N	\N	\N	\N	\N
+42	2024-10-03 15:29:37.556	#7b2bf9	https://res.cloudinary.com/dotdojnco/image/upload/v1732199847/Encyclochain/Section/Data%20availability/dcva4edyejix3p00tfao.jpg	https://docs.celestia.org/	https://x.com/CelestiaOrg	https://celestia.org/	25	\N	\N	\N	\N	\N
+28	2024-10-03 15:29:37.505	#000000	https://res.cloudinary.com/dotdojnco/image/upload/v1732199970/Encyclochain/Section/Layer%202/u3om175kfncbbtzs3pot.jpg	https://docs.zksync.io/	https://x.com/zksync	https://zksync.io/	10	\N	\N	\N	\N	\N
+53	2024-11-21 14:45:36	\N	https://res.cloudinary.com/dotdojnco/image/upload/v1732200080/Encyclochain/Section/Oracle/ntfu57bz1pp6tyr5qy0z.jpg	\N	\N	\N	33	\N	\N	\N	\N	\N
+54	2024-11-21 14:47:40.772	\N	https://res.cloudinary.com/dotdojnco/image/upload/v1732200371/Encyclochain/Section/Oracle/bguuifp8bioj69ntsdu9.jpg	\N	\N	\N	34	\N	\N	\N	\N	\N
+55	2024-11-21 14:57:20.674	\N	https://res.cloudinary.com/dotdojnco/image/upload/v1732200855/Encyclochain/Section/developer/pvsacputh25zk7lkwtn2.svg	\N	\N	\N	29	\N	\N	\N	\N	\N
+56	2024-11-21 14:57:20.674	\N	https://res.cloudinary.com/dotdojnco/image/upload/v1732200855/Encyclochain/Section/developer/ndzysdv7ck4zevmds1x7.svg	\N	\N	\N	30	\N	\N	\N	\N	\N
+33	2024-10-03 15:29:37.523	#000000	\N				13	\N	\N	\N	\N	\N
+51	2024-10-03 15:29:37.587	#000000	\N				16	\N	\N	\N	\N	\N
 \.
 
 
@@ -680,12 +1199,19 @@ COPY public."SectionInfo" (id, "createdAt", color, "imageLink", "whitepaperLink"
 COPY public."Topic" (id, title) FROM stdin;
 1	Layer 1
 2	DeFi
-4	Zero knowledge
 3	Data availability
-5	AI
 7	Developer
 8	Oracle
 6	Ethereum layer 2
+18	Encyclochain
+\.
+
+
+--
+-- Data for Name: TopicInfo; Type: TABLE DATA; Schema: public; Owner: yaugourt
+--
+
+COPY public."TopicInfo" (id, "createdAt", relevance, "websiteLink", "topicId") FROM stdin;
 \.
 
 
@@ -703,8 +1229,9 @@ COPY public."Type" (id, title) FROM stdin;
 -- Data for Name: User; Type: TABLE DATA; Schema: public; Owner: yaugourt
 --
 
-COPY public."User" (id, name, wallet, "createdAt", verified) FROM stdin;
-1	yaugourt		2024-09-22 00:24:20.444	f
+COPY public."User" (id, name, "createdAt", verified, "privyUserId") FROM stdin;
+2	0xDeka	2024-11-22 08:50:36.492	f	did:privy:cm3si44dl06vd9j0q3lte5uqz
+1	yaugourt	2024-09-22 00:24:20.444	f	did:privy:cm3inxzln0di859gpf5e5dvyo
 \.
 
 
@@ -741,7 +1268,6 @@ COPY public."_CategoryToResource" ("A", "B") FROM stdin;
 5	10
 3	11
 3	12
-7	13
 7	14
 7	15
 7	16
@@ -788,12 +1314,10 @@ COPY public."_CategoryToResource" ("A", "B") FROM stdin;
 7	57
 7	58
 25	59
-2	60
 4	61
 4	62
 6	63
 7	64
-2	65
 7	66
 5	67
 5	68
@@ -808,6 +1332,447 @@ COPY public."_CategoryToResource" ("A", "B") FROM stdin;
 4	77
 3	78
 7	79
+25	80
+25	81
+25	82
+25	83
+25	84
+25	85
+25	86
+25	87
+25	88
+25	89
+5	90
+5	91
+25	92
+25	93
+8	94
+3	95
+9	96
+5	97
+10	98
+15	99
+5	100
+5	101
+5	102
+5	103
+5	104
+5	105
+5	106
+5	107
+5	108
+5	109
+5	110
+5	111
+5	112
+12	113
+12	114
+12	115
+12	116
+12	117
+12	118
+12	119
+12	120
+3	121
+3	122
+3	123
+3	124
+3	125
+3	126
+3	127
+3	128
+15	129
+15	130
+15	131
+15	132
+15	133
+14	134
+14	135
+14	136
+14	137
+14	138
+14	139
+14	140
+14	141
+14	142
+7	143
+7	144
+7	145
+7	146
+7	147
+7	148
+7	149
+7	150
+7	151
+7	152
+7	153
+7	154
+7	155
+16	156
+7	157
+16	158
+16	159
+16	160
+16	161
+16	162
+16	163
+16	164
+16	165
+16	166
+16	167
+16	168
+16	169
+16	170
+16	171
+16	172
+16	173
+4	174
+4	175
+4	176
+4	177
+4	178
+4	179
+4	180
+4	181
+4	182
+4	183
+4	184
+4	185
+10	186
+10	187
+10	188
+10	189
+10	190
+10	191
+10	192
+10	193
+13	194
+13	195
+13	196
+13	197
+13	198
+13	199
+13	200
+13	201
+13	202
+13	203
+13	204
+9	205
+9	206
+9	207
+9	208
+9	209
+9	210
+9	211
+9	212
+9	213
+29	214
+29	215
+29	216
+29	217
+29	218
+30	219
+30	220
+30	221
+30	222
+30	223
+30	224
+31	225
+31	226
+31	227
+31	228
+31	229
+31	230
+31	231
+17	232
+17	233
+17	234
+17	235
+17	236
+17	237
+17	238
+17	239
+17	240
+17	241
+17	242
+17	243
+17	244
+17	245
+17	246
+17	247
+17	248
+17	249
+17	250
+17	251
+17	252
+17	253
+17	254
+17	255
+17	256
+17	257
+17	258
+17	259
+17	260
+17	261
+17	262
+17	263
+17	264
+17	265
+17	266
+17	267
+17	268
+17	269
+17	270
+17	271
+17	272
+17	273
+17	274
+17	275
+17	276
+17	277
+17	278
+17	279
+17	280
+17	281
+17	282
+17	283
+17	284
+17	285
+17	286
+17	287
+17	288
+17	289
+17	290
+17	291
+17	292
+17	293
+17	294
+17	295
+17	296
+17	297
+17	298
+17	299
+17	300
+17	301
+17	302
+17	303
+17	304
+17	305
+17	306
+17	307
+17	308
+17	309
+17	310
+17	311
+17	312
+17	313
+17	314
+17	315
+17	316
+17	317
+17	318
+17	319
+17	320
+17	321
+17	322
+17	323
+17	324
+17	325
+17	326
+17	327
+17	328
+17	329
+17	330
+17	331
+17	332
+17	333
+17	334
+17	335
+17	336
+17	337
+17	338
+17	339
+17	340
+17	341
+17	342
+17	343
+17	344
+17	345
+17	346
+17	347
+17	348
+17	349
+17	350
+17	351
+14	352
+3	353
+3	354
+3	355
+3	356
+3	357
+3	358
+3	359
+3	360
+3	361
+5	362
+27	363
+20	364
+19	365
+20	366
+20	367
+20	368
+20	369
+20	370
+20	371
+20	372
+20	373
+20	374
+20	375
+19	376
+19	377
+19	378
+19	379
+19	380
+19	381
+19	382
+19	383
+19	384
+21	385
+21	386
+20	387
+20	388
+20	389
+20	390
+20	391
+20	392
+20	393
+20	394
+20	395
+20	396
+20	397
+20	398
+18	399
+22	400
+22	401
+24	402
+24	403
+24	404
+24	405
+24	406
+24	407
+24	408
+24	409
+26	410
+26	411
+26	412
+26	413
+26	414
+26	415
+26	416
+26	417
+26	418
+26	419
+26	420
+26	421
+26	422
+26	423
+26	424
+26	425
+27	426
+27	427
+27	428
+27	429
+27	430
+27	431
+27	432
+27	433
+27	434
+27	435
+27	436
+27	437
+18	438
+18	439
+18	440
+18	441
+18	442
+18	443
+18	444
+18	445
+18	446
+18	447
+18	448
+18	449
+18	450
+18	451
+18	452
+18	453
+18	454
+18	455
+18	456
+18	457
+18	458
+18	459
+18	460
+18	461
+18	462
+18	463
+18	464
+18	465
+18	466
+18	467
+18	468
+18	469
+18	470
+18	471
+18	472
+18	473
+18	474
+18	475
+18	476
+18	477
+18	478
+18	479
+18	480
+18	481
+18	482
+5	483
+5	484
+5	485
+5	486
+5	487
+5	488
+5	489
+5	490
+31	491
+31	492
+31	493
+31	494
+31	495
+31	496
+31	497
+31	498
+31	499
+31	500
+31	501
+31	502
+31	503
+31	504
+31	505
+31	506
+31	507
+31	508
+31	509
+31	510
+31	511
+6	512
+6	513
+6	514
+6	515
+6	516
+6	517
+6	518
+6	519
+6	520
 \.
 
 
@@ -817,329 +1782,145 @@ COPY public."_CategoryToResource" ("A", "B") FROM stdin;
 
 COPY public."_CategoryToSection" ("A", "B") FROM stdin;
 1	5
-2	1
-2	2
+32	3
+33	6
 2	3
-2	4
 2	5
 2	6
-3	1
-3	2
 3	3
-3	4
 3	5
 3	6
-4	1
-4	2
 4	3
-4	4
 4	5
 4	6
-5	1
-5	2
 5	3
-5	4
 5	5
 5	6
-6	1
-6	2
 6	3
-6	4
 6	5
 6	6
-7	1
-7	2
 7	3
-7	4
 7	5
 7	6
-8	1
-8	2
 8	3
-8	4
 8	5
 8	6
 8	7
-8	8
-8	9
 8	10
-8	11
-8	12
-8	22
-8	23
 8	24
 8	25
-8	26
-8	27
-8	28
-9	1
 9	5
-10	1
-10	2
 10	3
-10	4
 10	5
 10	6
 10	7
-10	8
-10	9
 10	10
-10	11
-10	12
-10	22
-10	23
 10	24
 10	25
-10	26
-10	27
-10	28
-11	1
-11	2
 11	3
-11	4
 11	5
 11	6
 11	7
-11	8
-11	9
 11	10
-11	11
-11	12
-11	22
-11	23
 11	24
 11	25
-11	26
-11	27
-11	28
-12	1
-12	2
 12	3
-12	4
 12	5
 12	6
 12	7
-12	8
-12	9
 12	10
-12	11
-12	12
-12	22
-12	23
 12	24
 12	25
-12	26
-12	27
-12	28
-13	1
-13	2
 13	3
-13	4
 13	5
 13	6
 13	7
-13	8
-13	9
 13	10
-13	11
-13	12
-13	22
-13	23
 13	24
 13	25
-13	26
-13	27
-13	28
-14	1
-14	2
 14	3
-14	4
 14	5
 14	6
 14	7
-14	8
-14	9
 14	10
-14	11
-14	12
-14	22
-14	23
 14	24
 14	25
-14	26
-14	27
-14	28
-15	1
-15	2
 15	3
-15	4
 15	5
 15	6
 15	7
-15	8
-15	9
 15	10
-15	11
-15	12
-15	22
-15	23
 15	24
 15	25
-15	26
-15	27
-15	28
-16	1
-16	2
 16	3
-16	4
 16	5
 16	6
 16	7
-16	8
-16	9
 16	10
-16	11
-16	12
-16	22
-16	23
 16	24
 16	25
-16	26
-16	27
-16	28
 17	3
-18	2
 18	3
-18	4
 18	5
 18	6
 18	7
-18	8
-18	9
 18	10
-18	11
-18	12
-18	22
-18	23
 18	24
 18	25
-18	26
-18	27
-18	28
-19	2
 19	3
-19	4
 19	6
 19	7
-19	8
-19	9
 19	10
-19	11
-19	12
-19	22
-19	23
 19	24
 19	25
-19	26
-19	27
-19	28
+34	3
 19	30
-19	31
-20	2
+34	6
+35	3
 20	3
-20	4
+35	6
 20	6
 20	7
-20	8
-20	9
+36	3
+36	6
 20	10
-20	11
-20	12
-20	22
-20	23
 20	24
 20	25
-20	26
-20	27
-20	28
 20	30
-20	31
 21	3
-22	1
-22	2
 22	3
-22	4
 22	5
 22	6
 22	7
-22	8
-22	9
 22	10
-22	11
-22	12
-22	22
-22	23
 22	24
 22	25
-22	26
-22	27
-22	28
 22	30
 23	3
 24	3
 25	5
 26	3
 27	3
-28	1
-28	2
 28	3
-28	4
 28	5
 28	6
 29	3
 29	5
 29	7
 29	10
-29	11
-29	23
 30	3
 30	5
-31	1
-31	2
 31	3
-31	4
 31	5
 31	6
 31	7
-31	8
-31	9
 31	10
-31	11
-31	12
 31	13
-31	14
-31	15
 31	16
-31	17
-31	19
-31	20
-31	21
-31	22
-31	23
 31	24
 31	25
-31	26
-31	27
-31	28
-31	18
 31	30
-31	31
-31	32
 31	33
-31	35
-31	36
-31	37
-31	38
 \.
 
 
@@ -1160,7 +1941,6 @@ COPY public."_SectionToResource" ("A", "B") FROM stdin;
 10	5
 11	5
 12	5
-13	5
 14	5
 15	5
 16	5
@@ -1207,12 +1987,10 @@ COPY public."_SectionToResource" ("A", "B") FROM stdin;
 57	5
 58	5
 59	5
-60	5
 61	5
 62	5
 63	5
 64	5
-65	5
 66	5
 67	5
 68	5
@@ -1227,6 +2005,447 @@ COPY public."_SectionToResource" ("A", "B") FROM stdin;
 77	5
 78	5
 79	5
+80	5
+81	5
+82	5
+83	5
+84	5
+85	5
+86	5
+87	5
+88	5
+89	5
+90	5
+91	5
+92	5
+93	5
+94	5
+95	5
+96	5
+97	5
+98	5
+99	5
+100	5
+101	5
+102	5
+103	5
+104	5
+105	5
+106	5
+107	5
+108	5
+109	5
+110	5
+111	5
+112	5
+113	5
+114	5
+115	5
+116	5
+117	5
+118	5
+119	5
+120	5
+121	5
+122	5
+123	5
+124	5
+125	5
+126	5
+127	5
+128	5
+129	5
+130	5
+131	5
+132	5
+133	5
+134	5
+135	5
+136	5
+137	5
+138	5
+139	5
+140	5
+141	5
+142	5
+143	5
+144	5
+145	5
+146	5
+147	5
+148	5
+149	5
+150	5
+151	5
+152	5
+153	5
+154	5
+155	5
+156	5
+157	5
+158	5
+159	5
+160	5
+161	5
+162	5
+163	5
+164	5
+165	5
+166	5
+167	5
+168	5
+169	5
+170	5
+171	5
+172	5
+173	5
+174	5
+175	5
+176	5
+177	5
+178	5
+179	5
+180	5
+181	5
+182	5
+183	5
+184	5
+185	5
+186	5
+187	5
+188	5
+189	5
+190	5
+191	5
+192	5
+193	5
+194	5
+195	5
+196	5
+197	5
+198	5
+199	5
+200	5
+201	5
+202	5
+203	5
+204	5
+205	5
+206	5
+207	5
+208	5
+209	5
+210	5
+211	5
+212	5
+213	5
+214	5
+215	5
+216	5
+217	5
+218	5
+219	5
+220	5
+221	5
+222	5
+223	5
+224	5
+225	5
+226	5
+227	5
+228	5
+229	5
+230	5
+231	5
+232	3
+233	3
+234	3
+235	3
+236	3
+237	3
+238	3
+239	3
+240	3
+241	3
+242	3
+243	3
+244	3
+245	3
+246	3
+247	3
+248	3
+249	3
+250	3
+251	3
+252	3
+253	3
+254	3
+255	3
+256	3
+257	3
+258	3
+259	3
+260	3
+261	3
+262	3
+263	3
+264	3
+265	3
+266	3
+267	3
+268	3
+269	3
+270	3
+271	3
+272	3
+273	3
+274	3
+275	3
+276	3
+277	3
+278	3
+279	3
+280	3
+281	3
+282	3
+283	3
+284	3
+285	3
+286	3
+287	3
+288	3
+289	3
+290	3
+291	3
+292	3
+293	3
+294	3
+295	3
+296	3
+297	3
+298	3
+299	3
+300	3
+301	3
+302	3
+303	3
+304	3
+305	3
+306	3
+307	3
+308	3
+309	3
+310	3
+311	3
+312	3
+313	3
+314	3
+315	3
+316	3
+317	3
+318	3
+319	3
+320	3
+321	3
+322	3
+323	3
+324	3
+325	3
+326	3
+327	3
+328	3
+329	3
+330	3
+331	3
+332	3
+333	3
+334	3
+335	3
+336	3
+337	3
+338	3
+339	3
+340	3
+341	3
+342	3
+343	3
+344	3
+345	3
+346	3
+347	3
+348	3
+349	3
+350	3
+351	3
+352	5
+353	3
+354	3
+355	3
+356	3
+357	3
+358	3
+359	3
+360	3
+361	3
+362	3
+363	3
+364	3
+365	3
+366	3
+367	3
+368	3
+369	3
+370	3
+371	3
+372	3
+373	3
+374	10
+375	3
+376	3
+377	3
+378	3
+379	3
+380	3
+381	3
+382	3
+383	7
+384	3
+385	3
+386	3
+387	3
+388	3
+389	3
+390	3
+391	3
+392	3
+393	3
+394	3
+395	3
+396	3
+397	3
+398	3
+399	3
+400	3
+401	3
+402	3
+403	3
+404	3
+405	3
+406	3
+407	3
+408	3
+409	3
+410	3
+411	3
+412	3
+413	3
+414	3
+415	3
+416	3
+417	3
+418	3
+419	3
+420	3
+421	3
+422	3
+423	3
+424	3
+425	3
+426	3
+427	3
+428	3
+429	3
+430	3
+431	3
+432	3
+433	3
+434	3
+435	3
+436	3
+437	3
+438	3
+439	3
+440	3
+441	3
+442	3
+443	3
+444	3
+445	5
+446	3
+447	3
+448	3
+449	3
+450	3
+451	3
+452	3
+453	3
+454	3
+455	3
+456	3
+457	3
+458	3
+459	3
+460	3
+461	3
+462	3
+463	3
+464	3
+465	3
+466	3
+467	3
+468	3
+469	3
+470	3
+471	3
+472	3
+473	3
+474	3
+475	3
+476	3
+477	3
+478	3
+479	3
+480	3
+481	3
+482	3
+483	3
+484	3
+485	3
+486	3
+487	3
+488	3
+489	3
+490	3
+491	3
+492	3
+493	3
+494	3
+495	3
+496	3
+497	3
+498	3
+499	3
+500	3
+501	3
+502	3
+503	3
+504	3
+505	3
+506	3
+507	3
+508	3
+509	3
+510	3
+511	3
+512	5
+513	5
+514	5
+515	5
+516	5
+517	5
+518	5
+519	5
+520	5
 \.
 
 
@@ -1242,21 +2461,28 @@ COPY public._prisma_migrations (id, checksum, finished_at, migration_name, logs,
 -- Name: Category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yaugourt
 --
 
-SELECT pg_catalog.setval('public."Category_id_seq"', 31, true);
+SELECT pg_catalog.setval('public."Category_id_seq"', 36, true);
+
+
+--
+-- Name: Chapter_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yaugourt
+--
+
+SELECT pg_catalog.setval('public."Chapter_id_seq"', 19, true);
 
 
 --
 -- Name: Resource_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yaugourt
 --
 
-SELECT pg_catalog.setval('public."Resource_id_seq"', 79, true);
+SELECT pg_catalog.setval('public."Resource_id_seq"', 522, true);
 
 
 --
 -- Name: SectionInfo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yaugourt
 --
 
-SELECT pg_catalog.setval('public."SectionInfo_id_seq"', 52, true);
+SELECT pg_catalog.setval('public."SectionInfo_id_seq"', 56, true);
 
 
 --
@@ -1267,10 +2493,17 @@ SELECT pg_catalog.setval('public."Section_id_seq"', 38, true);
 
 
 --
+-- Name: TopicInfo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yaugourt
+--
+
+SELECT pg_catalog.setval('public."TopicInfo_id_seq"', 1, false);
+
+
+--
 -- Name: Topic_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yaugourt
 --
 
-SELECT pg_catalog.setval('public."Topic_id_seq"', 16, true);
+SELECT pg_catalog.setval('public."Topic_id_seq"', 18, true);
 
 
 --
@@ -1284,7 +2517,7 @@ SELECT pg_catalog.setval('public."Type_id_seq"', 2, true);
 -- Name: User_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yaugourt
 --
 
-SELECT pg_catalog.setval('public."User_id_seq"', 1, true);
+SELECT pg_catalog.setval('public."User_id_seq"', 2, true);
 
 
 --
@@ -1310,6 +2543,14 @@ ALTER TABLE ONLY public."Category"
 
 
 --
+-- Name: Chapter Chapter_pkey; Type: CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."Chapter"
+    ADD CONSTRAINT "Chapter_pkey" PRIMARY KEY (id);
+
+
+--
 -- Name: Resource Resource_pkey; Type: CONSTRAINT; Schema: public; Owner: yaugourt
 --
 
@@ -1331,6 +2572,14 @@ ALTER TABLE ONLY public."SectionInfo"
 
 ALTER TABLE ONLY public."Section"
     ADD CONSTRAINT "Section_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: TopicInfo TopicInfo_pkey; Type: CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."TopicInfo"
+    ADD CONSTRAINT "TopicInfo_pkey" PRIMARY KEY (id);
 
 
 --
@@ -1396,6 +2645,27 @@ CREATE UNIQUE INDEX "SectionInfo_sectionId_key" ON public."SectionInfo" USING bt
 
 
 --
+-- Name: Section_title_key; Type: INDEX; Schema: public; Owner: yaugourt
+--
+
+CREATE UNIQUE INDEX "Section_title_key" ON public."Section" USING btree (title);
+
+
+--
+-- Name: TopicInfo_topicId_key; Type: INDEX; Schema: public; Owner: yaugourt
+--
+
+CREATE UNIQUE INDEX "TopicInfo_topicId_key" ON public."TopicInfo" USING btree ("topicId");
+
+
+--
+-- Name: User_privyUserId_key; Type: INDEX; Schema: public; Owner: yaugourt
+--
+
+CREATE UNIQUE INDEX "User_privyUserId_key" ON public."User" USING btree ("privyUserId");
+
+
+--
 -- Name: _CategoryToResource_AB_unique; Type: INDEX; Schema: public; Owner: yaugourt
 --
 
@@ -1438,6 +2708,22 @@ CREATE INDEX "_SectionToResource_B_index" ON public."_SectionToResource" USING b
 
 
 --
+-- Name: Chapter Chapter_sectionId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."Chapter"
+    ADD CONSTRAINT "Chapter_sectionId_fkey" FOREIGN KEY ("sectionId") REFERENCES public."Section"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: Chapter Chapter_topicId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."Chapter"
+    ADD CONSTRAINT "Chapter_topicId_fkey" FOREIGN KEY ("topicId") REFERENCES public."Topic"(id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
 -- Name: Resource Resource_authorId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: yaugourt
 --
 
@@ -1467,6 +2753,14 @@ ALTER TABLE ONLY public."SectionInfo"
 
 ALTER TABLE ONLY public."Section"
     ADD CONSTRAINT "Section_topicId_fkey" FOREIGN KEY ("topicId") REFERENCES public."Topic"(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: TopicInfo TopicInfo_topicId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: yaugourt
+--
+
+ALTER TABLE ONLY public."TopicInfo"
+    ADD CONSTRAINT "TopicInfo_topicId_fkey" FOREIGN KEY ("topicId") REFERENCES public."Topic"(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --

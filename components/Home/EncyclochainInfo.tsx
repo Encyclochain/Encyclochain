@@ -1,31 +1,57 @@
-import prisma from '@/lib/db';
+"use client";
 
-export default async function EncyclochainInfo() {
-  // Fetches the section information for "Encyclochain" using Prisma.
-  const sectionInfo = await prisma.sectionInfo.findFirst({
-    where: {
-      section: {
-        title: {
-          equals: "Encyclochain", // Matches the section with the title "Encyclochain".
-        },
-      },
-    },
-    select: {
-      color: true, // Fetches the associated color of the section.
-      whitepaperLink: true, // Fetches the link to the whitepaper.
-      twitterLink: true, // Fetches the Twitter profile link.
-      websiteLink: true, // Fetches the official website link.
-      creator: true, // Fetches the name or identifier of the creator.
-      consensus: true, // Fetches the consensus mechanism used.
-    },
-  });
+import { useState, useEffect } from "react";
 
-  // Handles the case where no section information is found.
-  if (!sectionInfo) {
-    return <div className='font-poppins'>Informations not available.</div>;
+interface SectionInfo {
+  color: string;
+  whitepaperLink: string;
+  twitterLink: string;
+  websiteLink: string;
+  creator: string;
+  consensus: string;
+}
+
+export default function EncyclochainInfo() {
+  const [sectionInfo, setSectionInfo] = useState<SectionInfo | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchSectionInfo = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/encyclochainInfo`
+        );
+
+        if (!response.ok) {
+          throw new Error(`Erreur : ${response.statusText}`);
+        }
+
+        const data: SectionInfo = await response.json();
+        setSectionInfo(data);
+      } catch (err: any) {
+        console.error("Erreur lors de la récupération des informations :", err);
+        setError("Impossible de charger les informations.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSectionInfo();
+  }, []);
+
+  if (loading) {
+    return <p className="font-poppins">Chargement...</p>;
   }
 
-  // Destructure the sectionInfo object for easy access.
+  if (error) {
+    return <p className="font-poppins text-red-500">{error}</p>;
+  }
+
+  if (!sectionInfo) {
+    return <p className="font-poppins">Informations non disponibles.</p>;
+  }
+
   const {
     color,
     whitepaperLink,
@@ -38,28 +64,25 @@ export default async function EncyclochainInfo() {
   return (
     <aside className="w-full lg:w-[30%] bg-gray-100 border border-gray-200 rounded-lg p-6 shadow-sm">
       <ul className="space-y-2">
-        {/* Displays the creator if available */}
         {creator && (
           <li>
             <strong>Créateur</strong> : {creator}
           </li>
         )}
-        {/* Displays the consensus mechanism if available */}
         {consensus && (
           <li>
             <strong>Type de consensus</strong> : {consensus}
           </li>
         )}
-        {/* Displays the associated color with inline styling */}
         {color && (
           <li>
-            <strong>Couleur associée</strong> : <span style={{ color }}>{color}</span>
+            <strong>Couleur associée</strong> :{" "}
+            <span style={{ color }}>{color}</span>
           </li>
         )}
-        {/* Displays a link to the whitepaper if available */}
         {whitepaperLink && (
           <li>
-            <strong>Whitepaper</strong> :{' '}
+            <strong>Whitepaper</strong> :{" "}
             <a
               href={whitepaperLink}
               className="text-blue-600 hover:underline"
@@ -70,10 +93,9 @@ export default async function EncyclochainInfo() {
             </a>
           </li>
         )}
-        {/* Displays a link to the Twitter account if available */}
         {twitterLink && (
           <li>
-            <strong>Twitter</strong> :{' '}
+            <strong>Twitter</strong> :{" "}
             <a
               href={twitterLink}
               className="text-blue-600 hover:underline"
@@ -84,10 +106,9 @@ export default async function EncyclochainInfo() {
             </a>
           </li>
         )}
-        {/* Displays a link to the official website if available */}
         {websiteLink && (
           <li>
-            <strong>Site officiel</strong> :{' '}
+            <strong>Site officiel</strong> :{" "}
             <a
               href={websiteLink}
               className="text-blue-600 hover:underline"

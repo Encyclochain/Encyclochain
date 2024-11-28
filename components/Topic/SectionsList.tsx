@@ -1,6 +1,8 @@
-import prisma from "@/lib/db"; 
-import Link from "next/link"; 
-import Image from "next/image"; 
+"use client";
+
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import {
   Table,
   TableBody,
@@ -8,133 +10,118 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/Table"; //
+} from "@/components/ui/Table";
 
-// Explicit typing for SectionInfo interface (allows null for imageLink)
 interface SectionInfo {
-  color: string | null;  
-  imageLink: string | null;  
+  color: string | null;
+  imageLink: string | null;
 }
 
-// Typing for individual Section (allows null for sectionInfo)
 interface Section {
-  id: number;  
-  title: string;  
-  sectionInfo: SectionInfo | null;  
-  resourcesCount: number; 
-  categoriesCount: number; 
+  id: number;
+  title: string;
+  sectionInfo: SectionInfo | null;
+  resourcesCount: number;
+  categoriesCount: number;
 }
 
-// Typing for topic, which groups sections
-interface topic {
-  id: number;  
-  title: string;  
-  sections: Section[];  
+interface Topic {
+  id: number;
+  title: string;
+  sections: Section[];
 }
 
-// Props interface for the SectionSelect component
 interface SectionSelectProps {
-  page: string;  // Dynamic page title passed from the URL
+  page: string;
 }
 
-// Function to retrieve sections grouped by type using Prisma
-async function getSectionsGroupedByType(page: string): Promise<topic | null> {
-  const topic = await prisma.Topic.findFirst({
-    where: { title: page }, // Filter by the page title
-    select: {
-      id: true,  
-      title: true, 
-      sections: {  
-        select: {
-          id: true,  
-          title: true,  
-          sectionInfo: {  
-            select: {
-              color: true,
-              imageLink: true,
-            },
-          },
-          _count: {  // Count related resources and categories
-            select: {
-              resources: true,
-              categories: true,
-            },
-          },
-        },
-      },
-    },
-  });
+export default function SectionSelect({ page }: SectionSelectProps) {
+  const [topic, setTopic] = useState<Topic | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Format the topic data to include resources and categories count
-  return topic
-    ? {
-        ...topic,
-        sections: topic.sections.map((section) => ({
-          ...section,
-          resourcesCount: section._count.resources, // Number of resources
-          categoriesCount: section._count.categories, // Number of categories
-        })),
+  useEffect(() => {
+    const fetchSections = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/sectionList/${encodeURIComponent(page)}`
+        );
+
+        if (!response.ok) {
+          throw new Error(`Erreur : ${response.statusText}`);
+        }
+
+        const data: Topic = await response.json();
+        setTopic(data);
+      } catch (err: any) {
+        console.error("Erreur lors de la récupération des sections :", err);
+        setError("Impossible de charger les sections.");
+      } finally {
+        setLoading(false);
       }
-    : null;
-}
+    };
 
-// React component to display sections grouped by type
-export default async function SectionSelect({ page }: SectionSelectProps) {
-  const topic = await getSectionsGroupedByType(page);  // Fetch section data based on the page title
+    fetchSections();
+  }, [page]);
 
-  // If no topic is found, display a message
+  if (loading) {
+    return <p className="text-center font-poppins">Chargement...</p>;
+  }
+
+  if (error) {
+    return <p className="text-center font-poppins text-red-500">{error}</p>;
+  }
+
   if (!topic) {
     return <p className="text-center font-poppins">Aucune section trouvée pour ce type.</p>;
   }
 
   return (
     <div className="mt-[5%] mb-[5%] p-[50px] w-full">
-      {/* Display the title of the topic */}
       <h2 className="text-3xl font-bold text-black mb-6 lg:text-left text-center font-garamond">
         {topic.title}
       </h2>
       <Table className="rounded-md border">
         <TableHeader>
           <TableRow>
-            <TableHead className="py-2 text-black text-base">Section</TableHead> {/* Section header */}
-            <TableHead className="py-2 text-black text-base">Ressources</TableHead> {/* Ressources header */}
-            <TableHead className="py-2 text-black text-base">Category</TableHead> {/* Category header */}
-            <TableHead className="py-2 text-black text-base">Price</TableHead> {/* Placeholder for Price */}
+            <TableHead className="py-2 text-black text-base">Section</TableHead>
+            <TableHead className="py-2 text-black text-base">Ressources</TableHead>
+            <TableHead className="py-2 text-black text-base">Category</TableHead>
+            <TableHead className="py-2 text-black text-base">Price</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {topic.sections.map((section: Section) => (
+          {topic.sections.map((section) => (
             <TableRow key={section.id}>
               <TableCell className="py-2">
                 <Link
-                  href={`/section/${section.title}`}  // Link to the section's page
-                  className="contents text-black hover:bg-gray-100 font-poppins"  // Styling for the link
+                  href={`/section/${section.title}`}
+                  className="contents text-black hover:bg-gray-100 font-poppins"
                 >
                   <div className="flex items-center">
                     <div className="w-[30px] h-[30px] relative mr-4">
-                    {section.sectionInfo?.imageLink? (
-                      <Image
-                        src={section.sectionInfo?.imageLink } // Fallback to an empty string if imageLink is missing
-                        alt={`Logo ${section.title}`} // Alt text for the image
-                        width={80}
-                        height={80}
-                        style={{ objectFit: 'cover' }}
-                        className="rounded-full"
-                      />
-                    ) : (
-                      <span className="text-black font-bold text-xl font-garamond">
-                      {section.title.charAt(0).toUpperCase()}
-                    </span>
-                    )}
+                      {section.sectionInfo?.imageLink ? (
+                        <Image
+                          src={section.sectionInfo.imageLink}
+                          alt={`Logo ${section.title}`}
+                          width={80}
+                          height={80}
+                          style={{ objectFit: "cover" }}
+                          className="rounded-full"
+                        />
+                      ) : (
+                        <span className="text-black font-bold text-xl font-garamond">
+                          {section.title.charAt(0).toUpperCase()}
+                        </span>
+                      )}
                     </div>
                     <div className="text-base font-poppins">{section.title}</div>
                   </div>
                 </Link>
               </TableCell>
-              {/* Display the number of resources and categories for each section */}
-              <TableCell className="py-2 font-poppins">{section.resourcesCount} </TableCell>
-              <TableCell className="py-2 font-poppins">{section.categoriesCount} </TableCell>
-              <TableCell className="py-2 font-poppins">À définir</TableCell> {/* Placeholder for Price */}
+              <TableCell className="py-2 font-poppins">{section.resourcesCount}</TableCell>
+              <TableCell className="py-2 font-poppins">{section.categoriesCount}</TableCell>
+              <TableCell className="py-2 font-poppins">À définir</TableCell>
             </TableRow>
           ))}
         </TableBody>
